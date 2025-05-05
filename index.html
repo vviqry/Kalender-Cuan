@@ -540,9 +540,17 @@
         function showReminderImage() {
             const img = document.getElementById('reminderImage');
             img.classList.add('show');
-            setTimeout(() => {
+            // Add event listener to hide image when clicking outside
+            document.addEventListener('click', handleOutsideClick);
+        }
+
+        function handleOutsideClick(event) {
+            const img = document.getElementById('reminderImage');
+            if (!img.contains(event.target) && img.classList.contains('show')) {
                 img.classList.remove('show');
-            }, 3000); // Match the alert duration
+                // Remove event listener after hiding the image
+                document.removeEventListener('click', handleOutsideClick);
+            }
         }
 
         function handleCheckbox(dateStr) {
