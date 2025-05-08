@@ -540,7 +540,6 @@
         function showReminderImage() {
             const img = document.getElementById('reminderImage');
             img.classList.add('show');
-            // Add event listener to hide image when clicking outside
             document.addEventListener('click', handleOutsideClick);
         }
 
@@ -548,7 +547,6 @@
             const img = document.getElementById('reminderImage');
             if (!img.contains(event.target) && img.classList.contains('show')) {
                 img.classList.remove('show');
-                // Remove event listener after hiding the image
                 document.removeEventListener('click', handleOutsideClick);
             }
         }
@@ -604,7 +602,15 @@
 
         let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
+        function sortTodos() {
+            todos.sort((a, b) => {
+                if (b.rating !== a.rating) return b.rating - a.rating;
+                return (parseFloat(b.budget) || 0) - (parseFloat(a.budget) || 0);
+            });
+        }
+
         function renderTodos() {
+            sortTodos();
             const todoList = document.getElementById('todoList');
             todoList.innerHTML = '';
             let totalBudget = 0;
