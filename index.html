@@ -372,7 +372,7 @@
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
-            <div class="progress-text" id="progressText">Tabungan: 0 ribu / 10740 ribu</div>
+            <div class="progress-text" id="progressText">Tabungan: 0 ribu / 10350 ribu</div>
         </div>
 
         <div class="nav-buttons">
@@ -510,7 +510,7 @@
                 }
 
                 // Tambah checkbox khusus per bulan (Oktober 2025 - Maret 2026)
-                if (year === 2025 && month >= 10 || year === 2026 && month <= 3) {
+                if ((year === 2025 && month >= 10) || (year === 2026 && month <= 3)) {
                     const monthCheckbox = document.createElement('input');
                     monthCheckbox.type = 'checkbox';
                     monthCheckbox.className = 'month-checkbox';
@@ -603,16 +603,17 @@
 
         function handleMonthCheckbox(year, month) {
             const checkbox = document.getElementById(`month-${year}-${month}`);
-            localStorage.setItem(`month-${year}-${month}`, checkbox.checked);
-            if (checkbox.checked) {
-                let currentSavings = parseInt(localStorage.getItem('totalSavings') || 0);
-                let currentTarget = parseInt(localStorage.getItem('totalTarget') || totalSavings);
-                currentSavings -= 500000;
-                currentTarget -= 500000;
-                localStorage.setItem('totalSavings', currentSavings);
-                localStorage.setItem('totalTarget', currentTarget);
-                updateProgress();
+            const isChecked = checkbox.checked;
+            localStorage.setItem(`month-${year}-${month}`, isChecked);
+
+            let adjustmentCount = parseInt(localStorage.getItem('adjustmentCount') || 0);
+            if (isChecked) {
+                adjustmentCount += 1;
+            } else {
+                adjustmentCount = Math.max(0, adjustmentCount - 1);
             }
+            localStorage.setItem('adjustmentCount', adjustmentCount);
+            updateProgress();
         }
 
         function updateProgress() {
@@ -625,10 +626,17 @@
                     checkedCount++;
                 }
             }
-            let savings = checkedCount * dailySavings;
-            let target = parseInt(localStorage.getItem('totalTarget') || totalSavings);
-            savings = Math.max(0, savings - (parseInt(localStorage.getItem('totalSavingsAdjustment') || 0) * 500000));
-            document.getElementById('progress').style.width = `${(savings / target) * 100}%`;
+
+            const adjustmentCount = parseInt(localStorage.getItem('adjustmentCount') || 0);
+            const adjustmentAmount = adjustmentCount * 500; // 500 ribu per bulan
+
+            let savings = (checkedCount * dailySavings) - adjustmentAmount;
+            let target = totalSavings - adjustmentAmount;
+
+            savings = Math.max(0, savings);
+
+            const percentage = target > 0 ? (savings / target) * 100 : 100;
+            document.getElementById('progress').style.width = `${percentage}%`;
             document.getElementById('progressText').textContent = `Tabungan: ${savings} ribu / ${target} ribu`;
         }
 
