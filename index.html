@@ -372,7 +372,7 @@
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
-            <div class="progress-text" id="progressText">Tabungan: 0 ribu / 10350 ribu</div>
+            <div class="progress-text" id="progressText">Tabungan: 0 ribu / 5000 ribu</div>
         </div>
 
         <div class="nav-buttons">
@@ -439,9 +439,10 @@
     <script>
         const startDate = new Date('2025-09-16');
         const endDate = new Date('2026-04-10'); // Estimasi Lebaran 2026
-        const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
-        const dailySavings = 50;
-        const totalSavings = totalDays * dailySavings;
+        const tuesdayStartDate = new Date('2025-10-15'); // Selasa pertama mulai minggu ini
+        const totalTuesdays = 25; // Jumlah Selasa dari 15 Oct 2025 ke 10 Apr 2026
+        const weeklySavings = 200;
+        const totalSavings = totalTuesdays * weeklySavings;
         const specialDate = '2026-04-10';
 
         function formatRupiah(number) {
@@ -492,7 +493,8 @@
                     dayDiv.className = 'day';
                     const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-                    if (date >= checkboxStart && date <= checkboxEnd) {
+                    // Checkbox hanya untuk hari Selasa mulai dari 15 Oct 2025
+                    if (date.getDay() === 2 && date >= tuesdayStartDate && date <= checkboxEnd) {
                         dayDiv.className += ' checkbox';
                         const daySpan = document.createElement('span');
                         daySpan.textContent = day;
@@ -594,7 +596,7 @@
                     const modal = new bootstrap.Modal(document.getElementById('specialTasksModal'));
                     modal.show();
                 } else {
-                    alert('Anda sudah menabung 50rb.');
+                    alert('Anda sudah menabung 200rb.');
                     showReminderImage();
                 }
             }
@@ -618,19 +620,21 @@
 
         function updateProgress() {
             let checkedCount = 0;
-            const start = new Date('2025-09-16');
+            const start = new Date('2025-10-15');
             const end = new Date('2026-04-10');
             for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-                const dateStr = d.toISOString().split('T')[0];
-                if (localStorage.getItem(dateStr) === 'true') {
-                    checkedCount++;
+                if (d.getDay() === 2) { // Selasa
+                    const dateStr = d.toISOString().split('T')[0];
+                    if (localStorage.getItem(dateStr) === 'true') {
+                        checkedCount++;
+                    }
                 }
             }
 
             const adjustmentCount = parseInt(localStorage.getItem('adjustmentCount') || 0);
             const adjustmentAmount = adjustmentCount * 500; // 500 ribu per bulan
 
-            let savings = (checkedCount * dailySavings) - adjustmentAmount;
+            let savings = (checkedCount * weeklySavings) - adjustmentAmount;
             let target = totalSavings - adjustmentAmount;
 
             savings = Math.max(0, savings);
