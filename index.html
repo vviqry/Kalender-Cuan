@@ -112,22 +112,13 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             width: calc(33.33% - 14px);
             box-sizing: border-box;
-            position: relative; /* Untuk posisi checkbox khusus */
+            position: relative;
         }
 
         .month h2 {
             margin: 0 0 10px;
             text-align: center;
             font-size: 18px;
-        }
-
-        .month-checkbox {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
         }
 
         .calendar {
@@ -533,17 +524,6 @@
                     calendar.appendChild(dayDiv);
                 }
 
-                // Tambah checkbox khusus per bulan (Oktober 2025 - Maret 2026)
-                if ((year === 2025 && month >= 10) || (year === 2026 && month <= 3)) {
-                    const monthCheckbox = document.createElement('input');
-                    monthCheckbox.type = 'checkbox';
-                    monthCheckbox.className = 'month-checkbox';
-                    monthCheckbox.id = `month-${year}-${month}`;
-                    monthCheckbox.onchange = () => handleMonthCheckbox(year, month);
-                    monthCheckbox.checked = localStorage.getItem(`month-${year}-${month}`) === 'true';
-                    monthDiv.appendChild(monthCheckbox);
-                }
-
                 monthDiv.appendChild(calendar);
                 monthRow.appendChild(monthDiv);
             }
@@ -625,21 +605,6 @@
             updateProgress();
         }
 
-        function handleMonthCheckbox(year, month) {
-            const checkbox = document.getElementById(`month-${year}-${month}`);
-            const isChecked = checkbox.checked;
-            localStorage.setItem(`month-${year}-${month}`, isChecked);
-
-            let adjustmentCount = parseInt(localStorage.getItem('adjustmentCount') || 0);
-            if (isChecked) {
-                adjustmentCount += 1;
-            } else {
-                adjustmentCount = Math.max(0, adjustmentCount - 1);
-            }
-            localStorage.setItem('adjustmentCount', adjustmentCount);
-            updateProgress();
-        }
-
         function updateProgress() {
             let checkedCount = 0;
             const start = new Date('2025-10-15');
@@ -653,13 +618,8 @@
                 }
             }
 
-            const adjustmentCount = parseInt(localStorage.getItem('adjustmentCount') || 0);
-            const adjustmentAmount = adjustmentCount * 500; // 500 ribu per bulan
-
-            let savings = (checkedCount * weeklySavings) - adjustmentAmount;
-            let target = totalSavings - adjustmentAmount;
-
-            savings = Math.max(0, savings);
+            let savings = checkedCount * weeklySavings;
+            let target = totalSavings;
 
             const percentage = target > 0 ? (savings / target) * 100 : 100;
             document.getElementById('progress').style.width = `${percentage}%`;
