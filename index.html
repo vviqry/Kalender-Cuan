@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalender Tabungan</title>
+    <title>Kalender Tabungan Harian</title>
     <link rel="icon" href="icon.ico">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -361,8 +361,8 @@
             bottom: -100%;
             left: 50%;
             transform: translateX(-50%);
-            width: 100%; /* Mengatur lebar menjadi 100% */
-            height: 350px; /* Mengatur tinggi menjadi 350px */
+            width: 100%;
+            height: 350px;
             z-index: 1000;
             opacity: 0;
             transition: all 1s ease-in-out;
@@ -378,14 +378,14 @@
 <body>
     <div class="container">
         <div class="quote-section">
-            <p class="quote-text">"PAKSA MENABUNG Rp 200.000,- tiap minggu, apapun yang terjadi. walau langit akan runtuh"</p>
+            <p class="quote-text">"PAKSA MENABUNG Rp 50.000,- tiap hari, apapun yang terjadi. walau langit akan runtuh"</p>
         </div>
 
         <div class="progress-section">
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
-            <div class="progress-text" id="progressText">Tabungan: 0 ribu / 5000 ribu</div>
+            <div class="progress-text" id="progressText">Tabungan: 0 ribu / 8,050 ribu</div>
         </div>
 
         <div class="nav-buttons">
@@ -450,25 +450,29 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
-        const startDate = new Date('2025-09-16');
-        const endDate = new Date('2026-04-10'); // Estimasi Lebaran 2026
-        const tuesdayStartDate = new Date('2025-10-15'); // Selasa pertama mulai minggu ini
-        const totalTuesdays = 25; // Jumlah Selasa dari 15 Oct 2025 ke 10 Apr 2026
-        const weeklySavings = 200;
-        const totalSavings = totalTuesdays * weeklySavings;
+        // PERUBAHAN UTAMA: Sistem Rp 50.000/hari
+        const dailySavings = 50; // ribu
+        const startDate = new Date('2025-11-01'); // Mulai 1 Nov 2025
+        const endDate = new Date('2026-04-10'); // Sampai 10 Apr 2026
         const specialDate = '2026-04-10';
+        
+        // Hitung total hari dan target
+        const timeDiff = endDate.getTime() - startDate.getTime();
+        const totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1 untuk inklusif
+        const totalSavings = totalDays * dailySavings; // dalam ribu
 
+        // Fungsi helper
         function formatRupiah(number) {
             if (number === 0) return 'Rp. ,-';
             return 'Rp. ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',-';
         }
 
-        function generateCalendar(year, containerId, startMonth, endMonth, checkboxStart, checkboxEnd) {
+        // Fungsi untuk generate kalender FULL 24 bulan
+        function generateCalendar(year, containerId, startMonth, endMonth) {
             const container = document.getElementById(containerId);
             let monthRow = null;
 
             for (let month = startMonth; month <= endMonth; month++) {
-                // Pastikan monthRow selalu ada sebelum append
                 if (!monthRow || (month - 1) % 3 === 0) {
                     monthRow = document.createElement('div');
                     monthRow.className = 'month-row';
@@ -481,6 +485,7 @@
                 const calendar = document.createElement('div');
                 calendar.className = 'calendar';
 
+                // Header hari
                 const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
                 days.forEach(day => {
                     const header = document.createElement('div');
@@ -494,33 +499,47 @@
                 const startDay = firstDay.getDay();
                 const totalDaysInMonth = lastDay.getDate();
 
+                // Kotak kosong untuk hari sebelum tanggal 1
                 for (let i = 0; i < startDay; i++) {
                     const empty = document.createElement('div');
                     empty.className = 'empty';
                     calendar.appendChild(empty);
                 }
 
+                // Generate hari dalam bulan
                 for (let day = 1; day <= totalDaysInMonth; day++) {
                     const date = new Date(year, month - 1, day);
                     const dayDiv = document.createElement('div');
                     dayDiv.className = 'day';
                     const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-                    // Checkbox hanya untuk hari Selasa mulai dari 15 Oct 2025
-                    if (date.getDay() === 2 && date >= tuesdayStartDate && date <= checkboxEnd) {
+                    // Cek apakah tanggal dalam periode tabungan (1 Nov 2025 - 10 Apr 2026)
+                    // PERUBAHAN: Hanya periode ini yang punya checkbox
+                    if (date >= startDate && date <= endDate) {
                         dayDiv.className += ' checkbox';
                         const daySpan = document.createElement('span');
                         daySpan.textContent = day;
                         dayDiv.appendChild(daySpan);
+                        
                         const checkbox = document.createElement('input');
                         checkbox.type = 'checkbox';
                         checkbox.id = dateStr;
                         checkbox.onchange = () => handleCheckbox(dateStr);
                         dayDiv.appendChild(checkbox);
+                        
+                        // Load status dari localStorage
                         checkbox.checked = localStorage.getItem(dateStr) === 'true';
                     } else {
+                        // Untuk tanggal di luar periode, hanya tampilkan angka (tanpa checkbox)
                         dayDiv.textContent = day;
+                        
+                        // Beri warna abu-abu untuk bulan di luar periode
+                        if (date < startDate) {
+                            dayDiv.style.color = '#999';
+                            dayDiv.style.backgroundColor = '#f9f9f9';
+                        }
                     }
+                    
                     calendar.appendChild(dayDiv);
                 }
 
@@ -539,6 +558,7 @@
             return classes[month - 1];
         }
 
+        // Tugas khusus tanggal 17 (tetap dipertahankan)
         const specialTasks = [
             { text: 'Cek buku Gramedia & Mizan', completed: false },
             { text: 'Cek sundul shopee di Bigseller', completed: false }
@@ -564,6 +584,7 @@
             renderSpecialTasks(dateStr);
         }
 
+        // Fungsi untuk menampilkan gambar reminder
         function showReminderImage() {
             const img = document.getElementById('reminderImage');
             img.classList.add('show');
@@ -578,14 +599,19 @@
             }
         }
 
+        // PERUBAHAN: Handle checkbox untuk sistem harian
         function handleCheckbox(dateStr) {
             const checkbox = document.getElementById(dateStr);
             localStorage.setItem(dateStr, checkbox.checked);
+            
             if (checkbox.checked) {
+                // Tanggal spesial (10 Apr 2026) - tampilkan modal tabungan
                 if (dateStr === specialDate) {
                     const modal = new bootstrap.Modal(document.getElementById('todoModal'));
                     modal.show();
-                } else if (dateStr.endsWith('-17')) {
+                } 
+                // Tanggal 17 - tampilkan tugas khusus
+                else if (dateStr.endsWith('-17')) {
                     const savedTasks = localStorage.getItem(`specialTasks_${dateStr}`);
                     if (savedTasks) {
                         specialTasks.forEach((task, index) => {
@@ -597,41 +623,46 @@
                     renderSpecialTasks(dateStr);
                     const modal = new bootstrap.Modal(document.getElementById('specialTasksModal'));
                     modal.show();
-                } else {
-                    alert('Anda sudah menabung 200rb.');
+                } 
+                // Hari biasa - tampilkan alert Rp 50.000
+                else {
+                    alert('Anda sudah menabung 50rb.');
                     showReminderImage();
                 }
             }
+            
             updateProgress();
         }
 
+        // PERUBAHAN: Update progress untuk sistem harian
         function updateProgress() {
             let checkedCount = 0;
-            const start = new Date('2025-10-15');
-            const end = new Date('2026-04-10');
-            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-                if (d.getDay() === 2) { // Selasa
-                    const dateStr = d.toISOString().split('T')[0];
-                    if (localStorage.getItem(dateStr) === 'true') {
-                        checkedCount++;
-                    }
+            
+            // Hitung semua checkbox yang dicentang dalam periode
+            for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                const dateStr = d.toISOString().split('T')[0];
+                if (localStorage.getItem(dateStr) === 'true') {
+                    checkedCount++;
                 }
             }
 
-            let savings = checkedCount * weeklySavings;
-            let target = totalSavings;
-
+            const savings = checkedCount * dailySavings; // dalam ribu
+            const target = totalSavings; // dalam ribu
             const percentage = target > 0 ? (savings / target) * 100 : 100;
+            
             document.getElementById('progress').style.width = `${percentage}%`;
-            document.getElementById('progressText').textContent = `Tabungan: ${savings} ribu / ${target} ribu`;
+            document.getElementById('progressText').textContent = 
+                `Tabungan: ${savings} ribu / ${target.toLocaleString()} ribu`;
         }
 
+        // Fungsi untuk berpindah slide (tahun)
         function showSlide(index) {
             document.querySelectorAll('.slide').forEach((slide, i) => {
                 slide.classList.toggle('active', i === index);
             });
         }
 
+        // To-Do List Management (tetap sama)
         let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
         function sortTodos() {
@@ -646,11 +677,13 @@
             const todoList = document.getElementById('todoList');
             todoList.innerHTML = '';
             let totalBudget = 0;
+            
             todos.forEach((todo, index) => {
                 const li = document.createElement('li');
                 li.className = 'todo-item';
                 const stars = '★'.repeat(todo.rating) + '☆'.repeat(5 - todo.rating);
                 const budgetDisplay = formatRupiah(parseFloat(todo.budget) || 0);
+                
                 li.innerHTML = `
                     <input type="checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${index})">
                     <div class="budget-col">
@@ -664,9 +697,11 @@
                     </div>
                     <button class="btn btn-danger btn-sm" onclick="deleteTodo(${index})">Hapus</button>
                 `;
+                
                 todoList.appendChild(li);
                 if (!todo.completed) totalBudget += parseFloat(todo.budget) || 0;
             });
+            
             document.getElementById('totalBudget').textContent = `Total = ${formatRupiah(totalBudget)}`;
         }
 
@@ -674,12 +709,15 @@
             const budgetInput = document.getElementById('newBudgetInput');
             const textInput = document.getElementById('newTodoInput');
             const ratingInput = document.getElementById('newRatingInput');
+            
             const budget = parseFloat(budgetInput.value) || 0;
             const text = textInput.value.trim();
             const rating = parseInt(ratingInput.value);
+            
             if (text) {
                 todos.push({ budget, text, rating, completed: false });
                 localStorage.setItem('todos', JSON.stringify(todos));
+                
                 budgetInput.value = '';
                 textInput.value = '';
                 ratingInput.value = '1';
@@ -722,11 +760,23 @@
             renderTodos();
         }
 
-        generateCalendar(2025, 'slide-2025', 9, 12, new Date('2025-09-16'), new Date('2025-12-31'));
-        generateCalendar(2026, 'slide-2026', 1, 4, new Date('2026-01-01'), new Date('2026-04-10'));
+        // PERUBAHAN PENTING: Generate FULL 24 bulan
+        // Slide 2025: Januari - Desember 2025 (12 bulan full)
+        generateCalendar(2025, 'slide-2025', 1, 12);
+        
+        // Slide 2026: Januari - Desember 2026 (12 bulan full)
+        generateCalendar(2026, 'slide-2026', 1, 12);
 
+        // Inisialisasi
         updateProgress();
         renderTodos();
+
+        // Tampilkan info total hari di console untuk verifikasi
+        console.log(`Periode tabungan: ${startDate.toDateString()} - ${endDate.toDateString()}`);
+        console.log(`Total hari: ${totalDays} hari`);
+        console.log(`Target tabungan: Rp ${totalSavings.toLocaleString()} ribu`);
+        console.log(`Kalender ditampilkan: Jan 2025 - Des 2026 (24 bulan)`);
+        console.log(`Checkbox hanya muncul: Nov 2025 - Apr 2026`);
     </script>
 </body>
 </html>
