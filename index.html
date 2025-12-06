@@ -155,6 +155,7 @@
             align-items: center;
             gap: 4px;
             padding: 2px;
+            background-color: #e8f5e9; /* Warna hijau muda untuk hari dengan checkbox */
         }
 
         .calendar .day.checkbox span {
@@ -385,7 +386,7 @@
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
-            <div class="progress-text" id="progressText">Tabungan: 0 ribu / 8,050 ribu</div>
+            <div class="progress-text" id="progressText">Tabungan: 0 ribu / 5,300 ribu</div>
         </div>
 
         <div class="nav-buttons">
@@ -450,9 +451,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
-        // PERUBAHAN UTAMA: Sistem Rp 50.000/hari
+        // PERUBAHAN: Start dari 1 Desember 2025
         const dailySavings = 50; // ribu
-        const startDate = new Date('2025-11-01'); // Mulai 1 Nov 2025
+        const startDate = new Date('2025-12-01'); // Mulai 1 Des 2025
         const endDate = new Date('2026-04-10'); // Sampai 10 Apr 2026
         const specialDate = '2026-04-10';
         
@@ -461,24 +462,30 @@
         const totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1 untuk inklusif
         const totalSavings = totalDays * dailySavings; // dalam ribu
 
-        // Fungsi helper
+        console.log(`Total hari: ${totalDays} hari`);
+        console.log(`Target tabungan: Rp ${totalSavings.toLocaleString()} ribu`);
+
         function formatRupiah(number) {
             if (number === 0) return 'Rp. ,-';
             return 'Rp. ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',-';
         }
 
-        // Fungsi untuk generate kalender FULL 24 bulan
-        function generateCalendar(year, containerId, startMonth, endMonth) {
+        // PERUBAHAN: Generate semua bulan 2025 dan 2026
+        function generateAllMonths(year, containerId) {
             const container = document.getElementById(containerId);
-            let monthRow = null;
-
-            for (let month = startMonth; month <= endMonth; month++) {
-                if (!monthRow || (month - 1) % 3 === 0) {
-                    monthRow = document.createElement('div');
+            container.innerHTML = ''; // Clear container
+            
+            for (let month = 1; month <= 12; month++) {
+                // Buat baris baru setiap 3 bulan
+                if ((month - 1) % 3 === 0) {
+                    const monthRow = document.createElement('div');
                     monthRow.className = 'month-row';
                     container.appendChild(monthRow);
                 }
-
+                
+                const monthRows = container.querySelectorAll('.month-row');
+                const currentRow = monthRows[monthRows.length - 1];
+                
                 const monthDiv = document.createElement('div');
                 monthDiv.className = `month ${getMonthClass(month)}`;
                 monthDiv.innerHTML = `<h2>${getMonthName(month)} ${year}</h2>`;
@@ -513,8 +520,7 @@
                     dayDiv.className = 'day';
                     const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-                    // Cek apakah tanggal dalam periode tabungan (1 Nov 2025 - 10 Apr 2026)
-                    // PERUBAHAN: Hanya periode ini yang punya checkbox
+                    // Cek apakah tanggal dalam periode tabungan (1 Des 2025 - 10 Apr 2026)
                     if (date >= startDate && date <= endDate) {
                         dayDiv.className += ' checkbox';
                         const daySpan = document.createElement('span');
@@ -530,21 +536,14 @@
                         // Load status dari localStorage
                         checkbox.checked = localStorage.getItem(dateStr) === 'true';
                     } else {
-                        // Untuk tanggal di luar periode, hanya tampilkan angka (tanpa checkbox)
                         dayDiv.textContent = day;
-                        
-                        // Beri warna abu-abu untuk bulan di luar periode
-                        if (date < startDate) {
-                            dayDiv.style.color = '#999';
-                            dayDiv.style.backgroundColor = '#f9f9f9';
-                        }
                     }
                     
                     calendar.appendChild(dayDiv);
                 }
 
                 monthDiv.appendChild(calendar);
-                monthRow.appendChild(monthDiv);
+                currentRow.appendChild(monthDiv);
             }
         }
 
@@ -558,7 +557,6 @@
             return classes[month - 1];
         }
 
-        // Tugas khusus tanggal 17 (tetap dipertahankan)
         const specialTasks = [
             { text: 'Cek buku Gramedia & Mizan', completed: false },
             { text: 'Cek sundul shopee di Bigseller', completed: false }
@@ -584,7 +582,6 @@
             renderSpecialTasks(dateStr);
         }
 
-        // Fungsi untuk menampilkan gambar reminder
         function showReminderImage() {
             const img = document.getElementById('reminderImage');
             img.classList.add('show');
@@ -599,18 +596,15 @@
             }
         }
 
-        // PERUBAHAN: Handle checkbox untuk sistem harian
         function handleCheckbox(dateStr) {
             const checkbox = document.getElementById(dateStr);
             localStorage.setItem(dateStr, checkbox.checked);
             
             if (checkbox.checked) {
-                // Tanggal spesial (10 Apr 2026) - tampilkan modal tabungan
                 if (dateStr === specialDate) {
                     const modal = new bootstrap.Modal(document.getElementById('todoModal'));
                     modal.show();
                 } 
-                // Tanggal 17 - tampilkan tugas khusus
                 else if (dateStr.endsWith('-17')) {
                     const savedTasks = localStorage.getItem(`specialTasks_${dateStr}`);
                     if (savedTasks) {
@@ -624,7 +618,6 @@
                     const modal = new bootstrap.Modal(document.getElementById('specialTasksModal'));
                     modal.show();
                 } 
-                // Hari biasa - tampilkan alert Rp 50.000
                 else {
                     alert('Anda sudah menabung 50rb.');
                     showReminderImage();
@@ -634,7 +627,6 @@
             updateProgress();
         }
 
-        // PERUBAHAN: Update progress untuk sistem harian
         function updateProgress() {
             let checkedCount = 0;
             
@@ -655,14 +647,12 @@
                 `Tabungan: ${savings} ribu / ${target.toLocaleString()} ribu`;
         }
 
-        // Fungsi untuk berpindah slide (tahun)
         function showSlide(index) {
             document.querySelectorAll('.slide').forEach((slide, i) => {
                 slide.classList.toggle('active', i === index);
             });
         }
 
-        // To-Do List Management (tetap sama)
         let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
         function sortTodos() {
@@ -760,23 +750,13 @@
             renderTodos();
         }
 
-        // PERUBAHAN PENTING: Generate FULL 24 bulan
-        // Slide 2025: Januari - Desember 2025 (12 bulan full)
-        generateCalendar(2025, 'slide-2025', 1, 12);
-        
-        // Slide 2026: Januari - Desember 2026 (12 bulan full)
-        generateCalendar(2026, 'slide-2026', 1, 12);
+        // PERUBAHAN: Generate semua bulan untuk 2025 dan 2026
+        generateAllMonths(2025, 'slide-2025');
+        generateAllMonths(2026, 'slide-2026');
 
         // Inisialisasi
         updateProgress();
         renderTodos();
-
-        // Tampilkan info total hari di console untuk verifikasi
-        console.log(`Periode tabungan: ${startDate.toDateString()} - ${endDate.toDateString()}`);
-        console.log(`Total hari: ${totalDays} hari`);
-        console.log(`Target tabungan: Rp ${totalSavings.toLocaleString()} ribu`);
-        console.log(`Kalender ditampilkan: Jan 2025 - Des 2026 (24 bulan)`);
-        console.log(`Checkbox hanya muncul: Nov 2025 - Apr 2026`);
     </script>
 </body>
 </html>
