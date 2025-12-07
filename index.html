@@ -155,7 +155,7 @@
             align-items: center;
             gap: 4px;
             padding: 2px;
-            background-color: #e8f5e9; /* Warna hijau muda untuk hari dengan checkbox */
+            background-color: #e8f5e9;
         }
 
         .calendar .day.checkbox span {
@@ -386,7 +386,7 @@
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
-            <div class="progress-text" id="progressText">Tabungan: 0 ribu / 5,300 ribu</div>
+            <div class="progress-text" id="progressText">Tabungan: 0 ribu / 5,350 ribu</div>
         </div>
 
         <div class="nav-buttons">
@@ -451,9 +451,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
-        // PERUBAHAN: Start dari 1 Desember 2025
+        // PERUBAHAN: Start dari 30 November 2025
         const dailySavings = 50; // ribu
-        const startDate = new Date('2025-12-01'); // Mulai 1 Des 2025
+        const startDate = new Date('2025-11-30'); // Mulai 30 Nov 2025 (REVISI)
         const endDate = new Date('2026-04-10'); // Sampai 10 Apr 2026
         const specialDate = '2026-04-10';
         
@@ -462,6 +462,7 @@
         const totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1 untuk inklusif
         const totalSavings = totalDays * dailySavings; // dalam ribu
 
+        console.log(`Periode tabungan: ${startDate.toDateString()} - ${endDate.toDateString()}`);
         console.log(`Total hari: ${totalDays} hari`);
         console.log(`Target tabungan: Rp ${totalSavings.toLocaleString()} ribu`);
 
@@ -470,13 +471,12 @@
             return 'Rp. ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',-';
         }
 
-        // PERUBAHAN: Generate semua bulan 2025 dan 2026
+        // Fungsi yang sudah diperbaiki
         function generateAllMonths(year, containerId) {
             const container = document.getElementById(containerId);
-            container.innerHTML = ''; // Clear container
+            container.innerHTML = '';
             
             for (let month = 1; month <= 12; month++) {
-                // Buat baris baru setiap 3 bulan
                 if ((month - 1) % 3 === 0) {
                     const monthRow = document.createElement('div');
                     monthRow.className = 'month-row';
@@ -503,7 +503,7 @@
 
                 const firstDay = new Date(year, month - 1, 1);
                 const lastDay = new Date(year, month, 0);
-                const startDay = firstDay.getDay();
+                const startDay = firstDay.getDay(); // 0 = Minggu
                 const totalDaysInMonth = lastDay.getDate();
 
                 // Kotak kosong untuk hari sebelum tanggal 1
@@ -517,12 +517,11 @@
                 for (let day = 1; day <= totalDaysInMonth; day++) {
                     const date = new Date(year, month - 1, day);
                     const dayDiv = document.createElement('div');
-                    dayDiv.className = 'day';
                     const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-                    // Cek apakah tanggal dalam periode tabungan (1 Des 2025 - 10 Apr 2026)
+                    // Cek apakah tanggal dalam periode tabungan (30 Nov 2025 - 10 Apr 2026)
                     if (date >= startDate && date <= endDate) {
-                        dayDiv.className += ' checkbox';
+                        dayDiv.className = 'day checkbox';
                         const daySpan = document.createElement('span');
                         daySpan.textContent = day;
                         dayDiv.appendChild(daySpan);
@@ -533,13 +532,24 @@
                         checkbox.onchange = () => handleCheckbox(dateStr);
                         dayDiv.appendChild(checkbox);
                         
-                        // Load status dari localStorage
                         checkbox.checked = localStorage.getItem(dateStr) === 'true';
                     } else {
+                        dayDiv.className = 'day';
                         dayDiv.textContent = day;
                     }
                     
                     calendar.appendChild(dayDiv);
+                }
+
+                // Tambahkan kotak kosong untuk melengkapi grid (opsional)
+                const totalCells = calendar.children.length;
+                const remainingCells = 7 - (totalCells % 7);
+                if (remainingCells < 7) {
+                    for (let i = 0; i < remainingCells; i++) {
+                        const empty = document.createElement('div');
+                        empty.className = 'empty';
+                        calendar.appendChild(empty);
+                    }
                 }
 
                 monthDiv.appendChild(calendar);
@@ -630,7 +640,6 @@
         function updateProgress() {
             let checkedCount = 0;
             
-            // Hitung semua checkbox yang dicentang dalam periode
             for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
                 const dateStr = d.toISOString().split('T')[0];
                 if (localStorage.getItem(dateStr) === 'true') {
@@ -638,8 +647,8 @@
                 }
             }
 
-            const savings = checkedCount * dailySavings; // dalam ribu
-            const target = totalSavings; // dalam ribu
+            const savings = checkedCount * dailySavings;
+            const target = totalSavings;
             const percentage = target > 0 ? (savings / target) * 100 : 100;
             
             document.getElementById('progress').style.width = `${percentage}%`;
@@ -750,11 +759,10 @@
             renderTodos();
         }
 
-        // PERUBAHAN: Generate semua bulan untuk 2025 dan 2026
+        // Generate semua bulan
         generateAllMonths(2025, 'slide-2025');
         generateAllMonths(2026, 'slide-2026');
 
-        // Inisialisasi
         updateProgress();
         renderTodos();
     </script>
