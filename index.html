@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,11 +17,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
+            position: relative;
         }
 
         .container {
             max-width: 1200px;
             width: 100%;
+            margin-bottom: 80px; /* Ruang untuk floating button */
         }
 
         /* Quote Styling */
@@ -374,29 +378,144 @@
             transform: translate(-50%, 50%);
             opacity: 1;
         }
+
+        /* Floating Button Styling */
+        .floating-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        .floating-button {
+            width: 60px;
+            height: 60px;
+            background-color: #007bff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .floating-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+
+.collapse-container {
+    position: fixed;
+    top: 50%; /* Pindah ke tengah vertikal */
+    left: 50%; /* Pindah ke tengah horizontal */
+    transform: translate(-50%, -50%); /* Pusatkan tepat di tengah */
+    width: 500px; /* Bisa diperbesar agar lebih nyaman dibaca */
+    max-height: 80vh; /* Tinggi maksimal 80% viewport */
+    overflow-y: auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    display: none;
+    z-index: 1002;
+    padding: 20px;
+}
+
+        .collapse-container.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .habit-item {
+            margin-bottom: 10px;
+        }
+
+        .habit-button {
+            width: 100%;
+            text-align: left;
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #495057;
+            transition: all 0.2s ease;
+        }
+
+        .habit-button:hover {
+            background-color: #e9ecef;
+            color: #212529;
+        }
+
+        .habit-button:focus {
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+        }
+
+        .habit-button[aria-expanded="true"] {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .habit-content {
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #495057;
+        }
+
+        .habit-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #343a40;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+        }
+
+        /* Responsive untuk collapse container */
+        @media (max-width: 768px) {
+            .collapse-container {
+                width: 90vw;
+                max-width: 400px;
+                right: 5vw;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="quote-section">
             <p class="quote-text">"PAKSA MENABUNG Rp 50.000,- tiap hari, apapun yang terjadi. walau langit akan runtuh"</p>
         </div>
-
         <div class="progress-section">
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
             <div class="progress-text" id="progressText">Tabungan: 0 ribu / 5,350 ribu</div>
         </div>
-
         <div class="nav-buttons">
-            <button onclick="showSlide(0)"><< 2025</button>
-            <button onclick="showSlide(1)">2026 >></button>
+            <button onclick="showSlide(0)">
+                << 2025</button> <button onclick="showSlide(1)">2026 >>
+            </button>
         </div>
-
         <div class="slide active" id="slide-2025"></div>
         <div class="slide" id="slide-2026"></div>
-
         <div class="modal fade" id="todoModal" tabindex="-1" aria-labelledby="todoModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -429,7 +548,6 @@
                 </div>
             </div>
         </div>
-
         <div class="modal fade" id="specialTasksModal" tabindex="-1" aria-labelledby="specialTasksModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -443,247 +561,399 @@
                 </div>
             </div>
         </div>
-
         <!-- Reminder Image -->
         <img id="reminderImage" src="foto.jpg" alt="Daily Reminder">
     </div>
-
+    <!-- Floating Button dan Collapse Container -->
+    <div class="floating-container">
+        <button class="floating-button" onclick="toggleHabits()">📜</button>
+        <div class="collapse-container" id="collapseContainer">
+            <h3 class="habit-title">13 Kebiasaan yang Harus Dihilangkan</h3>
+            <div class="accordion" id="habitsAccordion">
+                <!-- Habit 1 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit1" aria-expanded="false" aria-controls="habit1">
+                        1. Tinggalkan gaya hidup tidak sehat
+                    </button>
+                    <div id="habit1" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Jika Anda ingin mencapai sesuatu dalam hidup, semuanya dimulai di sini. Pertama, Anda harus menjaga kesehatan Anda, dan hanya ada dua hal yang perlu Anda ingat yakni diet sehat dan aktivitas fisik.<br><br>
+                        Ini merupakan langkah kecil, tetapi suatu hari Anda akan berterima kasih pada diri sendiri.
+                    </div>
+                </div>
+                <!-- Habit 2 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit2" aria-expanded="false" aria-controls="habit2">
+                        2. Tinggalkan pola pikir jangka pendek
+                    </button>
+                    <div id="habit2" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Orang sukses memiliki tujuan jangka panjang, dan mereka tahu bahwa tujuan tersebut hanya bisa diwujudkan dengan kebiasaan kecil yang harus mereka lakukan setiap hari.
+                    </div>
+                </div>
+                <!-- Habit 3 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit3" aria-expanded="false" aria-controls="habit3">
+                        3. Harus berani mencoba
+                    </button>
+                    <div id="habit3" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Jika Anda tidak pernah mencoba dan mengambil peluang besar, atau membiarkan impian Anda menjadi kenyataan, Anda tidak akan pernah melepaskan potensi sejati Anda. Dan dunia tidak akan pernah mendapat manfaat dari apa yang bisa Anda capai.<br><br>
+                        Jadi suarakan ide Anda, jangan takut gagal, dan tentunya jangan takut untuk sukses.
+                    </div>
+                </div>
+                <!-- Habit 4 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit4" aria-expanded="false" aria-controls="habit4">
+                        4. Jangan banyak beralasan
+                    </button>
+                    <div id="habit4" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Orang-orang sukses tahu betul bahwa mereka bertanggung jawab atas hidup mereka, terlepas dari kelemahan dan kegagalan masa lalu mereka.<br><br>
+                        Menyadari bahwa Anda bertanggung jawab atas apa yang terjadi selanjutnya dalam hidup Anda menakutkan sekaligus mengasyikkan. Dan ketika Anda melakukannya, itu menjadi satu-satunya cara Anda bisa sukses, karena alasan membatasi dan mencegah kita tumbuh secara pribadi dan profesional.
+                    </div>
+                </div>
+                <!-- Habit 5 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit5" aria-expanded="false" aria-controls="habit5">
+                        5. Tinggalkan fixed mindset
+                    </button>
+                    <div id="habit5" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Orang-orang dengan fixed mindset percaya bahwa kecerdasan atau bakat mereka sudah tak bisa diubah. Padahal, hal itu keliru. Orang-orang sukses mengetahui hal ini. Mereka menginvestasikan banyak waktu setiap hari untuk mengembangkan mindset agar maju, mencari pengetahuan baru, mempelajari keterampilan baru, dan mengubah persepsi mereka sehingga dapat bermanfaat bagi kehidupan mereka.
+                    </div>
+                </div>
+                <!-- Habit 6 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit6" aria-expanded="false" aria-controls="habit6">
+                        6. Tidak berharap keajaiban
+                    </button>
+                    <div id="habit6" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Kesuksesan dalam semalam hanyalah mitos. Orang-orang sukses tahu bahwa membuat perbaikan terus-menerus kecil setiap hari akan bertambah dari waktu ke waktu, dan memberi mereka hasil yang diinginkan.<br><br>
+                        Itulah mengapa Anda harus merencanakan masa depan, tetapi fokuslah pada hari yang akan datang, dan tingkatkan hanya 1% setiap hari.
+                    </div>
+                </div>
+                <!-- Habit 7 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit7" aria-expanded="false" aria-controls="habit7">
+                        7. Hentikan sifat perfeksionisme
+                    </button>
+                    <div id="habit7" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Tidak ada yang sempurna, tidak peduli berapa banyak kita mencoba.<br><br>
+                        Ketakutan akan kegagalan (atau bahkan ketakutan akan kesuksesan) seringkali menghalangi kita untuk mengambil tindakan dan menampilkan kreasi kita di dunia. Tetapi banyak peluang akan hilang jika kita menunggu semuanya menjadi benar.
+                    </div>
+                </div>
+                <!-- Habit 8 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit8" aria-expanded="false" aria-controls="habit8">
+                        8. Memiliki fokus
+                    </button>
+                    <div id="habit8" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Orang-orang sukses mengetahui hal ini. Itu sebabnya mereka memilih satu hal untuk difokuskan. Berkomitmen pada satu tugas sangat diperlukan. Baik itu ide bisnis, hobi, atau olahraga.
+                    </div>
+                </div>
+                <!-- Habit 9 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit9" aria-expanded="false" aria-controls="habit9">
+                        9. Lepaskan keinginan untuk mengontrol segalanya
+                    </button>
+                    <div id="habit9" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Lepaskan diri dari hal-hal yang tidak dapat Anda kendalikan, dan fokuslah pada hal-hal yang dapat Anda kendalikan, dan ketahuilah bahwa terkadang, satu-satunya hal yang dapat Anda kendalikan adalah sikap Anda terhadap sesuatu.
+                    </div>
+                </div>
+                <!-- Habit 10 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit10" aria-expanded="false" aria-controls="habit10">
+                        10. Berhenti mengatakan "YA" untuk hal-hal yang tidak mendukung tujuan Anda
+                    </button>
+                    <div id="habit10" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Orang-orang sukses tahu bahwa untuk mencapai tujuan mereka, mereka harus mengatakan TIDAK pada tugas, aktivitas, dan tuntutan tertentu dari teman, keluarga, dan kolega mereka.<br><br>
+                        Dalam jangka pendek, Anda mungkin mengorbankan sedikit kepuasan instan, tetapi ketika tujuan Anda membuahkan hasil, semuanya akan sia-sia.
+                    </div>
+                </div>
+                <!-- Habit 11 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit11" aria-expanded="false" aria-controls="habit11">
+                        11. Hindari orang-orang toxic
+                    </button>
+                    <div id="habit11" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Orang-orang yang paling banyak menghabiskan waktu bersama kita, menambah menjadi seperti apa kita.<br><br>
+                        Ada orang yang kurang berprestasi dalam kehidupan pribadi dan profesionalnya, dan ada orang yang lebih berprestasi dari kita. Jika Anda menghabiskan waktu dengan mereka yang berada di belakang Anda, rata-rata Anda akan turun, dan dengan itu, kesuksesan Anda.<br><br>
+                        Tetapi jika Anda menghabiskan waktu dengan orang-orang yang lebih berhasil dari Anda, tidak peduli betapa menantangnya itu, Anda akan menjadi lebih sukses.<br><br>
+                        Lihatlah sekeliling Anda, dan lihat apakah Anda perlu melakukan perubahan.
+                    </div>
+                </div>
+                <!-- Habit 12 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit12" aria-expanded="false" aria-controls="habit12">
+                        12. Jangan takut tidak disukai
+                    </button>
+                    <div id="habit12" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Pikirkan diri Anda sebagai potensi pasar. Akan ada banyak orang yang menyukai potensi itu, dan akan ada orang yang tidak.<br><br>
+                        Dan apa pun yang Anda lakukan, Anda tidak akan dapat membuat seluruh pasar menyukai Anda. Ini sepenuhnya wajar, dan tidak perlu membenarkan diri sendiri.<br><br>
+                        Satu-satunya hal yang dapat Anda lakukan adalah tetap otentik, meningkatkan dan memberikan nilai setiap hari, dan mengetahui bahwa semakin banyak pembenci berarti Anda melakukan hal-hal penting.
+                    </div>
+                </div>
+                <!-- Habit 13 -->
+                <div class="habit-item">
+                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit13" aria-expanded="false" aria-controls="habit13">
+                        13. Hentikan ketergantungan Anda pada media sosial dan televisi
+                    </button>
+                    <div id="habit13" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                        Penjelajahan web yang impulsif dan menonton televisi adalah penyakit masyarakat saat ini. Keduanya seharusnya tidak pernah menjadi pelarian dari hidup Anda atau tujuan Anda.<br><br>
+                        Kecuali tujuan Anda bergantung pada keduanya, Anda harus meminimalkan (atau bahkan menghilangkan) ketergantungan Anda pada mereka, dan mengarahkan waktu itu untuk hal-hal yang dapat memperkaya hidup Anda.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
-        // PERUBAHAN: Start dari 30 November 2025
-        const dailySavings = 50; // ribu
-        const startDate = new Date('2025-11-30'); // Mulai 30 Nov 2025 (REVISI)
-        const endDate = new Date('2026-04-10'); // Sampai 10 Apr 2026
-        const specialDate = '2026-04-10';
-        
-        // Hitung total hari dan target
-        const timeDiff = endDate.getTime() - startDate.getTime();
-        const totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1 untuk inklusif
-        const totalSavings = totalDays * dailySavings; // dalam ribu
+    // PERUBAHAN: Start dari 30 November 2025
+    const dailySavings = 50; // ribu
+    const startDate = new Date('2025-11-30'); // Mulai 30 Nov 2025 (REVISI)
+    const endDate = new Date('2026-04-10'); // Sampai 10 Apr 2026
+    const specialDate = '2026-04-10';
 
-        console.log(`Periode tabungan: ${startDate.toDateString()} - ${endDate.toDateString()}`);
-        console.log(`Total hari: ${totalDays} hari`);
-        console.log(`Target tabungan: Rp ${totalSavings.toLocaleString()} ribu`);
+    // Hitung total hari dan target
+    const timeDiff = endDate.getTime() - startDate.getTime();
+    const totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1 untuk inklusif
+    const totalSavings = totalDays * dailySavings; // dalam ribu
 
-        function formatRupiah(number) {
-            if (number === 0) return 'Rp. ,-';
-            return 'Rp. ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',-';
+    console.log(`Periode tabungan: ${startDate.toDateString()} - ${endDate.toDateString()}`);
+    console.log(`Total hari: ${totalDays} hari`);
+    console.log(`Target tabungan: Rp ${totalSavings.toLocaleString()} ribu`);
+
+    function formatRupiah(number) {
+        if (number === 0) return 'Rp. ,-';
+        return 'Rp. ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',-';
+    }
+
+    // Fungsi untuk toggle collapse container
+    function toggleHabits() {
+        const container = document.getElementById('collapseContainer');
+        container.classList.toggle('show');
+    }
+
+    // Tutup collapse container jika klik di luar
+    document.addEventListener('click', function(event) {
+        const container = document.getElementById('collapseContainer');
+        const button = document.querySelector('.floating-button');
+
+        if (container.classList.contains('show') &&
+            !container.contains(event.target) &&
+            !button.contains(event.target)) {
+            container.classList.remove('show');
         }
+    });
 
-        // Fungsi yang sudah diperbaiki
-        function generateAllMonths(year, containerId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            
-            for (let month = 1; month <= 12; month++) {
-                if ((month - 1) % 3 === 0) {
-                    const monthRow = document.createElement('div');
-                    monthRow.className = 'month-row';
-                    container.appendChild(monthRow);
+    // Fungsi yang sudah diperbaiki
+    function generateAllMonths(year, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+
+        for (let month = 1; month <= 12; month++) {
+            if ((month - 1) % 3 === 0) {
+                const monthRow = document.createElement('div');
+                monthRow.className = 'month-row';
+                container.appendChild(monthRow);
+            }
+
+            const monthRows = container.querySelectorAll('.month-row');
+            const currentRow = monthRows[monthRows.length - 1];
+
+            const monthDiv = document.createElement('div');
+            monthDiv.className = `month ${getMonthClass(month)}`;
+            monthDiv.innerHTML = `<h2>${getMonthName(month)} ${year}</h2>`;
+            const calendar = document.createElement('div');
+            calendar.className = 'calendar';
+
+            // Header hari
+            const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'header';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+
+            const firstDay = new Date(year, month - 1, 1);
+            const lastDay = new Date(year, month, 0);
+            const startDay = firstDay.getDay(); // 0 = Minggu
+            const totalDaysInMonth = lastDay.getDate();
+
+            // Kotak kosong untuk hari sebelum tanggal 1
+            for (let i = 0; i < startDay; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'empty';
+                calendar.appendChild(empty);
+            }
+
+            // Generate hari dalam bulan
+            for (let day = 1; day <= totalDaysInMonth; day++) {
+                const date = new Date(year, month - 1, day);
+                const dayDiv = document.createElement('div');
+                const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+                // Cek apakah tanggal dalam periode tabungan (30 Nov 2025 - 10 Apr 2026)
+                if (date >= startDate && date <= endDate) {
+                    dayDiv.className = 'day checkbox';
+                    const daySpan = document.createElement('span');
+                    daySpan.textContent = day;
+                    dayDiv.appendChild(daySpan);
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = dateStr;
+                    checkbox.onchange = () => handleCheckbox(dateStr);
+                    dayDiv.appendChild(checkbox);
+
+                    checkbox.checked = localStorage.getItem(dateStr) === 'true';
+                } else {
+                    dayDiv.className = 'day';
+                    dayDiv.textContent = day;
                 }
-                
-                const monthRows = container.querySelectorAll('.month-row');
-                const currentRow = monthRows[monthRows.length - 1];
-                
-                const monthDiv = document.createElement('div');
-                monthDiv.className = `month ${getMonthClass(month)}`;
-                monthDiv.innerHTML = `<h2>${getMonthName(month)} ${year}</h2>`;
-                const calendar = document.createElement('div');
-                calendar.className = 'calendar';
 
-                // Header hari
-                const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
-                days.forEach(day => {
-                    const header = document.createElement('div');
-                    header.className = 'header';
-                    header.textContent = day;
-                    calendar.appendChild(header);
-                });
+                calendar.appendChild(dayDiv);
+            }
 
-                const firstDay = new Date(year, month - 1, 1);
-                const lastDay = new Date(year, month, 0);
-                const startDay = firstDay.getDay(); // 0 = Minggu
-                const totalDaysInMonth = lastDay.getDate();
-
-                // Kotak kosong untuk hari sebelum tanggal 1
-                for (let i = 0; i < startDay; i++) {
+            // Tambahkan kotak kosong untuk melengkapi grid (opsional)
+            const totalCells = calendar.children.length;
+            const remainingCells = 7 - (totalCells % 7);
+            if (remainingCells < 7) {
+                for (let i = 0; i < remainingCells; i++) {
                     const empty = document.createElement('div');
                     empty.className = 'empty';
                     calendar.appendChild(empty);
                 }
-
-                // Generate hari dalam bulan
-                for (let day = 1; day <= totalDaysInMonth; day++) {
-                    const date = new Date(year, month - 1, day);
-                    const dayDiv = document.createElement('div');
-                    const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-
-                    // Cek apakah tanggal dalam periode tabungan (30 Nov 2025 - 10 Apr 2026)
-                    if (date >= startDate && date <= endDate) {
-                        dayDiv.className = 'day checkbox';
-                        const daySpan = document.createElement('span');
-                        daySpan.textContent = day;
-                        dayDiv.appendChild(daySpan);
-                        
-                        const checkbox = document.createElement('input');
-                        checkbox.type = 'checkbox';
-                        checkbox.id = dateStr;
-                        checkbox.onchange = () => handleCheckbox(dateStr);
-                        dayDiv.appendChild(checkbox);
-                        
-                        checkbox.checked = localStorage.getItem(dateStr) === 'true';
-                    } else {
-                        dayDiv.className = 'day';
-                        dayDiv.textContent = day;
-                    }
-                    
-                    calendar.appendChild(dayDiv);
-                }
-
-                // Tambahkan kotak kosong untuk melengkapi grid (opsional)
-                const totalCells = calendar.children.length;
-                const remainingCells = 7 - (totalCells % 7);
-                if (remainingCells < 7) {
-                    for (let i = 0; i < remainingCells; i++) {
-                        const empty = document.createElement('div');
-                        empty.className = 'empty';
-                        calendar.appendChild(empty);
-                    }
-                }
-
-                monthDiv.appendChild(calendar);
-                currentRow.appendChild(monthDiv);
             }
+
+            monthDiv.appendChild(calendar);
+            currentRow.appendChild(monthDiv);
         }
+    }
 
-        function getMonthName(month) {
-            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            return months[month - 1];
-        }
+    function getMonthName(month) {
+        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        return months[month - 1];
+    }
 
-        function getMonthClass(month) {
-            const classes = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-            return classes[month - 1];
-        }
+    function getMonthClass(month) {
+        const classes = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+        return classes[month - 1];
+    }
 
-        const specialTasks = [
-            { text: 'Cek buku Gramedia & Mizan', completed: false },
-            { text: 'Cek sundul shopee di Bigseller', completed: false }
-        ];
+    const specialTasks = [
+        { text: 'Cek buku Gramedia & Mizan', completed: false },
+        { text: 'Cek sundul shopee di Bigseller', completed: false }
+    ];
 
-        function renderSpecialTasks(dateStr) {
-            const specialTasksList = document.getElementById('specialTasksList');
-            specialTasksList.innerHTML = '';
-            specialTasks.forEach((task, index) => {
-                const li = document.createElement('li');
-                li.className = 'todo-item';
-                li.innerHTML = `
+    function renderSpecialTasks(dateStr) {
+        const specialTasksList = document.getElementById('specialTasksList');
+        specialTasksList.innerHTML = '';
+        specialTasks.forEach((task, index) => {
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+            li.innerHTML = `
                     <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleSpecialTask(${index}, '${dateStr}')">
                     <input type="text" value="${task.text}" class="${task.completed ? 'completed' : ''}" readonly>
                 `;
-                specialTasksList.appendChild(li);
-            });
-        }
+            specialTasksList.appendChild(li);
+        });
+    }
 
-        function toggleSpecialTask(index, dateStr) {
-            specialTasks[index].completed = !specialTasks[index].completed;
-            localStorage.setItem(`specialTasks_${dateStr}`, JSON.stringify(specialTasks));
-            renderSpecialTasks(dateStr);
-        }
+    function toggleSpecialTask(index, dateStr) {
+        specialTasks[index].completed = !specialTasks[index].completed;
+        localStorage.setItem(`specialTasks_${dateStr}`, JSON.stringify(specialTasks));
+        renderSpecialTasks(dateStr);
+    }
 
-        function showReminderImage() {
-            const img = document.getElementById('reminderImage');
-            img.classList.add('show');
-            document.addEventListener('click', handleOutsideClick);
-        }
+    function showReminderImage() {
+        const img = document.getElementById('reminderImage');
+        img.classList.add('show');
+        document.addEventListener('click', handleOutsideClick);
+    }
 
-        function handleOutsideClick(event) {
-            const img = document.getElementById('reminderImage');
-            if (!img.contains(event.target) && img.classList.contains('show')) {
-                img.classList.remove('show');
-                document.removeEventListener('click', handleOutsideClick);
-            }
+    function handleOutsideClick(event) {
+        const img = document.getElementById('reminderImage');
+        if (!img.contains(event.target) && img.classList.contains('show')) {
+            img.classList.remove('show');
+            document.removeEventListener('click', handleOutsideClick);
         }
+    }
 
-        function handleCheckbox(dateStr) {
-            const checkbox = document.getElementById(dateStr);
-            localStorage.setItem(dateStr, checkbox.checked);
-            
-            if (checkbox.checked) {
-                if (dateStr === specialDate) {
-                    const modal = new bootstrap.Modal(document.getElementById('todoModal'));
-                    modal.show();
-                } 
-                else if (dateStr.endsWith('-17')) {
-                    const savedTasks = localStorage.getItem(`specialTasks_${dateStr}`);
-                    if (savedTasks) {
-                        specialTasks.forEach((task, index) => {
-                            task.completed = JSON.parse(savedTasks)[index].completed;
-                        });
-                    } else {
-                        specialTasks.forEach(task => task.completed = false);
-                    }
-                    renderSpecialTasks(dateStr);
-                    const modal = new bootstrap.Modal(document.getElementById('specialTasksModal'));
-                    modal.show();
-                } 
-                else {
-                    alert('Anda sudah menabung 50rb.');
-                    showReminderImage();
+    function handleCheckbox(dateStr) {
+        const checkbox = document.getElementById(dateStr);
+        localStorage.setItem(dateStr, checkbox.checked);
+
+        if (checkbox.checked) {
+            if (dateStr === specialDate) {
+                const modal = new bootstrap.Modal(document.getElementById('todoModal'));
+                modal.show();
+            } else if (dateStr.endsWith('-17')) {
+                const savedTasks = localStorage.getItem(`specialTasks_${dateStr}`);
+                if (savedTasks) {
+                    specialTasks.forEach((task, index) => {
+                        task.completed = JSON.parse(savedTasks)[index].completed;
+                    });
+                } else {
+                    specialTasks.forEach(task => task.completed = false);
                 }
+                renderSpecialTasks(dateStr);
+                const modal = new bootstrap.Modal(document.getElementById('specialTasksModal'));
+                modal.show();
+            } else {
+                alert('Anda sudah menabung 50rb.');
+                showReminderImage();
             }
-            
-            updateProgress();
         }
 
-        function updateProgress() {
-            let checkedCount = 0;
-            
-            for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-                const dateStr = d.toISOString().split('T')[0];
-                if (localStorage.getItem(dateStr) === 'true') {
-                    checkedCount++;
-                }
+        updateProgress();
+    }
+
+    function updateProgress() {
+        let checkedCount = 0;
+
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+            const dateStr = d.toISOString().split('T')[0];
+            if (localStorage.getItem(dateStr) === 'true') {
+                checkedCount++;
             }
-
-            const savings = checkedCount * dailySavings;
-            const target = totalSavings;
-            const percentage = target > 0 ? (savings / target) * 100 : 100;
-            
-            document.getElementById('progress').style.width = `${percentage}%`;
-            document.getElementById('progressText').textContent = 
-                `Tabungan: ${savings} ribu / ${target.toLocaleString()} ribu`;
         }
 
-        function showSlide(index) {
-            document.querySelectorAll('.slide').forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-            });
-        }
+        const savings = checkedCount * dailySavings;
+        const target = totalSavings;
+        const percentage = target > 0 ? (savings / target) * 100 : 100;
 
-        let todos = JSON.parse(localStorage.getItem('todos')) || [];
+        document.getElementById('progress').style.width = `${percentage}%`;
+        document.getElementById('progressText').textContent =
+            `Tabungan: ${savings} ribu / ${target.toLocaleString()} ribu`;
+    }
 
-        function sortTodos() {
-            todos.sort((a, b) => {
-                if (b.rating !== a.rating) return b.rating - a.rating;
-                return (parseFloat(b.budget) || 0) - (parseFloat(a.budget) || 0);
-            });
-        }
+    function showSlide(index) {
+        document.querySelectorAll('.slide').forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+        });
+    }
 
-        function renderTodos() {
-            sortTodos();
-            const todoList = document.getElementById('todoList');
-            todoList.innerHTML = '';
-            let totalBudget = 0;
-            
-            todos.forEach((todo, index) => {
-                const li = document.createElement('li');
-                li.className = 'todo-item';
-                const stars = '★'.repeat(todo.rating) + '☆'.repeat(5 - todo.rating);
-                const budgetDisplay = formatRupiah(parseFloat(todo.budget) || 0);
-                
-                li.innerHTML = `
+    let todos = JSON.parse(localStorage.getItem('todos')) || [];
+
+    function sortTodos() {
+        todos.sort((a, b) => {
+            if (b.rating !== a.rating) return b.rating - a.rating;
+            return (parseFloat(b.budget) || 0) - (parseFloat(a.budget) || 0);
+        });
+    }
+
+    function renderTodos() {
+        sortTodos();
+        const todoList = document.getElementById('todoList');
+        todoList.innerHTML = '';
+        let totalBudget = 0;
+
+        todos.forEach((todo, index) => {
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+            const stars = '★'.repeat(todo.rating) + '☆'.repeat(5 - todo.rating);
+            const budgetDisplay = formatRupiah(parseFloat(todo.budget) || 0);
+
+            li.innerHTML = `
                     <input type="checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${index})">
                     <div class="budget-col">
                         <input type="text" value="${budgetDisplay}" class="${todo.completed ? 'completed' : ''}" onfocus="this.value = this.value.replace(/[^0-9]/g, '')" onblur="editBudget(${index}, this.value)" placeholder="Rp. ,-" style="text-align: right;">
@@ -696,75 +966,76 @@
                     </div>
                     <button class="btn btn-danger btn-sm" onclick="deleteTodo(${index})">Hapus</button>
                 `;
-                
-                todoList.appendChild(li);
-                if (!todo.completed) totalBudget += parseFloat(todo.budget) || 0;
-            });
-            
-            document.getElementById('totalBudget').textContent = `Total = ${formatRupiah(totalBudget)}`;
-        }
 
-        function addTodo() {
-            const budgetInput = document.getElementById('newBudgetInput');
-            const textInput = document.getElementById('newTodoInput');
-            const ratingInput = document.getElementById('newRatingInput');
-            
-            const budget = parseFloat(budgetInput.value) || 0;
-            const text = textInput.value.trim();
-            const rating = parseInt(ratingInput.value);
-            
-            if (text) {
-                todos.push({ budget, text, rating, completed: false });
-                localStorage.setItem('todos', JSON.stringify(todos));
-                
-                budgetInput.value = '';
-                textInput.value = '';
-                ratingInput.value = '1';
-                renderTodos();
-            }
-        }
+            todoList.appendChild(li);
+            if (!todo.completed) totalBudget += parseFloat(todo.budget) || 0;
+        });
 
-        function editTodo(index, newText) {
-            todos[index].text = newText.trim();
-            if (todos[index].text === '') {
-                deleteTodo(index);
-            } else {
-                localStorage.setItem('todos', JSON.stringify(todos));
-                renderTodos();
-            }
-        }
+        document.getElementById('totalBudget').textContent = `Total = ${formatRupiah(totalBudget)}`;
+    }
 
-        function editBudget(index, newBudget) {
-            const cleanBudget = newBudget.replace(/[^0-9]/g, '');
-            todos[index].budget = parseFloat(cleanBudget) || 0;
+    function addTodo() {
+        const budgetInput = document.getElementById('newBudgetInput');
+        const textInput = document.getElementById('newTodoInput');
+        const ratingInput = document.getElementById('newRatingInput');
+
+        const budget = parseFloat(budgetInput.value) || 0;
+        const text = textInput.value.trim();
+        const rating = parseInt(ratingInput.value);
+
+        if (text) {
+            todos.push({ budget, text, rating, completed: false });
+            localStorage.setItem('todos', JSON.stringify(todos));
+
+            budgetInput.value = '';
+            textInput.value = '';
+            ratingInput.value = '1';
+            renderTodos();
+        }
+    }
+
+    function editTodo(index, newText) {
+        todos[index].text = newText.trim();
+        if (todos[index].text === '') {
+            deleteTodo(index);
+        } else {
             localStorage.setItem('todos', JSON.stringify(todos));
             renderTodos();
         }
+    }
 
-        function updateRating(index, rating) {
-            todos[index].rating = rating;
-            localStorage.setItem('todos', JSON.stringify(todos));
-            renderTodos();
-        }
-
-        function toggleTodo(index) {
-            todos[index].completed = !todos[index].completed;
-            localStorage.setItem('todos', JSON.stringify(todos));
-            renderTodos();
-        }
-
-        function deleteTodo(index) {
-            todos.splice(index, 1);
-            localStorage.setItem('todos', JSON.stringify(todos));
-            renderTodos();
-        }
-
-        // Generate semua bulan
-        generateAllMonths(2025, 'slide-2025');
-        generateAllMonths(2026, 'slide-2026');
-
-        updateProgress();
+    function editBudget(index, newBudget) {
+        const cleanBudget = newBudget.replace(/[^0-9]/g, '');
+        todos[index].budget = parseFloat(cleanBudget) || 0;
+        localStorage.setItem('todos', JSON.stringify(todos));
         renderTodos();
+    }
+
+    function updateRating(index, rating) {
+        todos[index].rating = rating;
+        localStorage.setItem('todos', JSON.stringify(todos));
+        renderTodos();
+    }
+
+    function toggleTodo(index) {
+        todos[index].completed = !todos[index].completed;
+        localStorage.setItem('todos', JSON.stringify(todos));
+        renderTodos();
+    }
+
+    function deleteTodo(index) {
+        todos.splice(index, 1);
+        localStorage.setItem('todos', JSON.stringify(todos));
+        renderTodos();
+    }
+
+    // Generate semua bulan
+    generateAllMonths(2025, 'slide-2025');
+    generateAllMonths(2026, 'slide-2026');
+
+    updateProgress();
+    renderTodos();
     </script>
 </body>
+
 </html>
