@@ -8,6 +8,8 @@
     <link rel="icon" href="icon.ico">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,7 +26,7 @@
         .container {
             max-width: 1200px;
             width: 100%;
-            margin-bottom: 80px; /* Ruang untuk floating button */
+            margin-bottom: 80px;
         }
 
         /* Quote Styling */
@@ -379,12 +381,16 @@
             opacity: 1;
         }
 
-        /* Floating Button Styling */
+        /* Floating Button Styling - DUA BUTTON SEJAJAR */
         .floating-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
         }
 
         .floating-button {
@@ -403,43 +409,67 @@
             border: none;
         }
 
+        /* Button pertama (kebiasaan) */
+        .floating-button.habits {
+            background-color: #007bff;
+        }
+
+        /* Button kedua (kedewasaan) */
+        .floating-button.maturity {
+            background-color: #28a745; /* Warna hijau berbeda */
+        }
+
         .floating-button:hover {
-            background-color: #0056b3;
             transform: scale(1.1);
             box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
 
-.collapse-container {
-    position: fixed;
-    top: 50%; /* Pindah ke tengah vertikal */
-    left: 50%; /* Pindah ke tengah horizontal */
-    transform: translate(-50%, -50%); /* Pusatkan tepat di tengah */
-    width: 500px; /* Bisa diperbesar agar lebih nyaman dibaca */
-    max-height: 80vh; /* Tinggi maksimal 80% viewport */
-    overflow-y: auto;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    display: none;
-    z-index: 1002;
-    padding: 20px;
-}
+        .floating-button.habits:hover {
+            background-color: #0056b3;
+        }
+
+        .floating-button.maturity:hover {
+            background-color: #218838;
+        }
+
+        /* Collapse Container Styling - DUA CONTAINER BERBEDA */
+        .collapse-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1002;
+            padding: 25px;
+        }
 
         .collapse-container.show {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: fadeInScale 0.3s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInScale {
+            from { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1);
+            }
         }
 
-        .habit-item {
+        .habit-item, .maturity-item {
             margin-bottom: 10px;
         }
 
-        .habit-button {
+        .habit-button, .maturity-button {
             width: 100%;
             text-align: left;
             padding: 12px 15px;
@@ -451,12 +481,12 @@
             transition: all 0.2s ease;
         }
 
-        .habit-button:hover {
+        .habit-button:hover, .maturity-button:hover {
             background-color: #e9ecef;
             color: #212529;
         }
 
-        .habit-button:focus {
+        .habit-button:focus, .maturity-button:focus {
             box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
         }
 
@@ -466,7 +496,13 @@
             border-color: #007bff;
         }
 
-        .habit-content {
+        .maturity-button[aria-expanded="true"] {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .habit-content, .maturity-content {
             padding: 15px;
             background-color: white;
             border: 1px solid #dee2e6;
@@ -477,22 +513,79 @@
             color: #495057;
         }
 
-        .habit-title {
+        .habit-title, .maturity-title {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 15px;
             color: #343a40;
             text-align: center;
             padding-bottom: 10px;
+        }
+
+        .habit-title {
             border-bottom: 2px solid #007bff;
+        }
+
+        .maturity-title {
+            border-bottom: 2px solid #28a745;
+        }
+
+        /* Kesimpulan Container - UNIK TANPA COLLAPSE */
+        .conclusion-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border-left: 5px solid #28a745;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .conclusion-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+
+        .conclusion-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #495057;
+        }
+
+        .conclusion-content ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        .conclusion-content li {
+            margin-bottom: 8px;
         }
 
         /* Responsive untuk collapse container */
         @media (max-width: 768px) {
             .collapse-container {
                 width: 90vw;
-                max-width: 400px;
-                right: 5vw;
+                max-width: 500px;
+                padding: 20px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .collapse-container {
+                width: 95vw;
+                padding: 15px 10px;
+            }
+            
+            .floating-container {
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .floating-button {
+                width: 55px;
+                height: 55px;
+                font-size: 22px;
             }
         }
     </style>
@@ -564,144 +657,255 @@
         <!-- Reminder Image -->
         <img id="reminderImage" src="foto.jpg" alt="Daily Reminder">
     </div>
+
     <!-- Floating Button dan Collapse Container -->
     <div class="floating-container">
-        <button class="floating-button" onclick="toggleHabits()">📜</button>
-        <div class="collapse-container" id="collapseContainer">
-            <h3 class="habit-title">13 Kebiasaan yang Harus Dihilangkan</h3>
-            <div class="accordion" id="habitsAccordion">
-                <!-- Habit 1 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit1" aria-expanded="false" aria-controls="habit1">
-                        1. Tinggalkan gaya hidup tidak sehat
-                    </button>
-                    <div id="habit1" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Jika Anda ingin mencapai sesuatu dalam hidup, semuanya dimulai di sini. Pertama, Anda harus menjaga kesehatan Anda, dan hanya ada dua hal yang perlu Anda ingat yakni diet sehat dan aktivitas fisik.<br><br>
-                        Ini merupakan langkah kecil, tetapi suatu hari Anda akan berterima kasih pada diri sendiri.
-                    </div>
+        <!-- Button 1: 13 Kebiasaan (Scroll) -->
+        <button class="floating-button habits" onclick="toggleHabits()">📜</button>
+        
+        <!-- Button 2: Ciri-ciri Kedewasaan (Bapak-bapak) -->
+        <button class="floating-button maturity" onclick="toggleMaturity()">👤
+            <i class="bi bi-person-arms-up"></i>
+        </button>
+    </div>
+
+    <!-- Container 1: 13 Kebiasaan -->
+    <div class="collapse-container" id="habitsContainer">
+        <h3 class="habit-title">13 Kebiasaan yang Harus Dihilangkan</h3>
+        <div class="accordion" id="habitsAccordion">
+            <!-- Habit 1 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit1" aria-expanded="false" aria-controls="habit1">
+                    1. Tinggalkan gaya hidup tidak sehat
+                </button>
+                <div id="habit1" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Jika Anda ingin mencapai sesuatu dalam hidup, semuanya dimulai di sini. Pertama, Anda harus menjaga kesehatan Anda, dan hanya ada dua hal yang perlu Anda ingat yakni diet sehat dan aktivitas fisik.<br><br>
+                    Ini merupakan langkah kecil, tetapi suatu hari Anda akan berterima kasih pada diri sendiri.
                 </div>
-                <!-- Habit 2 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit2" aria-expanded="false" aria-controls="habit2">
-                        2. Tinggalkan pola pikir jangka pendek
-                    </button>
-                    <div id="habit2" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Orang sukses memiliki tujuan jangka panjang, dan mereka tahu bahwa tujuan tersebut hanya bisa diwujudkan dengan kebiasaan kecil yang harus mereka lakukan setiap hari.
-                    </div>
+            </div>
+            <!-- Habit 2-13 (sama seperti sebelumnya) -->
+            <!-- Habit 2 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit2" aria-expanded="false" aria-controls="habit2">
+                    2. Tinggalkan pola pikir jangka pendek
+                </button>
+                <div id="habit2" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Orang sukses memiliki tujuan jangka panjang, dan mereka tahu bahwa tujuan tersebut hanya bisa diwujudkan dengan kebiasaan kecil yang harus mereka lakukan setiap hari.
                 </div>
-                <!-- Habit 3 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit3" aria-expanded="false" aria-controls="habit3">
-                        3. Harus berani mencoba
-                    </button>
-                    <div id="habit3" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Jika Anda tidak pernah mencoba dan mengambil peluang besar, atau membiarkan impian Anda menjadi kenyataan, Anda tidak akan pernah melepaskan potensi sejati Anda. Dan dunia tidak akan pernah mendapat manfaat dari apa yang bisa Anda capai.<br><br>
-                        Jadi suarakan ide Anda, jangan takut gagal, dan tentunya jangan takut untuk sukses.
-                    </div>
+            </div>
+            <!-- Habit 3 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit3" aria-expanded="false" aria-controls="habit3">
+                    3. Harus berani mencoba
+                </button>
+                <div id="habit3" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Jika Anda tidak pernah mencoba dan mengambil peluang besar, atau membiarkan impian Anda menjadi kenyataan, Anda tidak akan pernah melepaskan potensi sejati Anda. Dan dunia tidak akan pernah mendapat manfaat dari apa yang bisa Anda capai.<br><br>
+                    Jadi suarakan ide Anda, jangan takut gagal, dan tentunya jangan takut untuk sukses.
                 </div>
-                <!-- Habit 4 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit4" aria-expanded="false" aria-controls="habit4">
-                        4. Jangan banyak beralasan
-                    </button>
-                    <div id="habit4" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Orang-orang sukses tahu betul bahwa mereka bertanggung jawab atas hidup mereka, terlepas dari kelemahan dan kegagalan masa lalu mereka.<br><br>
-                        Menyadari bahwa Anda bertanggung jawab atas apa yang terjadi selanjutnya dalam hidup Anda menakutkan sekaligus mengasyikkan. Dan ketika Anda melakukannya, itu menjadi satu-satunya cara Anda bisa sukses, karena alasan membatasi dan mencegah kita tumbuh secara pribadi dan profesional.
-                    </div>
+            </div>
+            <!-- Habit 4 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit4" aria-expanded="false" aria-controls="habit4">
+                    4. Jangan banyak beralasan
+                </button>
+                <div id="habit4" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Orang-orang sukses tahu betul bahwa mereka bertanggung jawab atas hidup mereka, terlepas dari kelemahan dan kegagalan masa lalu mereka.<br><br>
+                    Menyadari bahwa Anda bertanggung jawab atas apa yang terjadi selanjutnya dalam hidup Anda menakutkan sekaligus mengasyikkan. Dan ketika Anda melakukannya, itu menjadi satu-satunya cara Anda bisa sukses, karena alasan membatasi dan mencegah kita tumbuh secara pribadi dan profesional.
                 </div>
-                <!-- Habit 5 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit5" aria-expanded="false" aria-controls="habit5">
-                        5. Tinggalkan fixed mindset
-                    </button>
-                    <div id="habit5" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Orang-orang dengan fixed mindset percaya bahwa kecerdasan atau bakat mereka sudah tak bisa diubah. Padahal, hal itu keliru. Orang-orang sukses mengetahui hal ini. Mereka menginvestasikan banyak waktu setiap hari untuk mengembangkan mindset agar maju, mencari pengetahuan baru, mempelajari keterampilan baru, dan mengubah persepsi mereka sehingga dapat bermanfaat bagi kehidupan mereka.
-                    </div>
+            </div>
+            <!-- Habit 5 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit5" aria-expanded="false" aria-controls="habit5">
+                    5. Tinggalkan fixed mindset
+                </button>
+                <div id="habit5" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Orang-orang dengan fixed mindset percaya bahwa kecerdasan atau bakat mereka sudah tak bisa diubah. Padahal, hal itu keliru. Orang-orang sukses mengetahui hal ini. Mereka menginvestasikan banyak waktu setiap hari untuk mengembangkan mindset agar maju, mencari pengetahuan baru, mempelajari keterampilan baru, dan mengubah persepsi mereka sehingga dapat bermanfaat bagi kehidupan mereka.
                 </div>
-                <!-- Habit 6 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit6" aria-expanded="false" aria-controls="habit6">
-                        6. Tidak berharap keajaiban
-                    </button>
-                    <div id="habit6" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Kesuksesan dalam semalam hanyalah mitos. Orang-orang sukses tahu bahwa membuat perbaikan terus-menerus kecil setiap hari akan bertambah dari waktu ke waktu, dan memberi mereka hasil yang diinginkan.<br><br>
-                        Itulah mengapa Anda harus merencanakan masa depan, tetapi fokuslah pada hari yang akan datang, dan tingkatkan hanya 1% setiap hari.
-                    </div>
+            </div>
+            <!-- Habit 6 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit6" aria-expanded="false" aria-controls="habit6">
+                    6. Tidak berharap keajaiban
+                </button>
+                <div id="habit6" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Kesuksesan dalam semalam hanyalah mitos. Orang-orang sukses tahu bahwa membuat perbaikan terus-menerus kecil setiap hari akan bertambah dari waktu ke waktu, dan memberi mereka hasil yang diinginkan.<br><br>
+                    Itulah mengapa Anda harus merencanakan masa depan, tetapi fokuslah pada hari yang akan datang, dan tingkatkan hanya 1% setiap hari.
                 </div>
-                <!-- Habit 7 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit7" aria-expanded="false" aria-controls="habit7">
-                        7. Hentikan sifat perfeksionisme
-                    </button>
-                    <div id="habit7" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Tidak ada yang sempurna, tidak peduli berapa banyak kita mencoba.<br><br>
-                        Ketakutan akan kegagalan (atau bahkan ketakutan akan kesuksesan) seringkali menghalangi kita untuk mengambil tindakan dan menampilkan kreasi kita di dunia. Tetapi banyak peluang akan hilang jika kita menunggu semuanya menjadi benar.
-                    </div>
+            </div>
+            <!-- Habit 7 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit7" aria-expanded="false" aria-controls="habit7">
+                    7. Hentikan sifat perfeksionisme
+                </button>
+                <div id="habit7" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Tidak ada yang sempurna, tidak peduli berapa banyak kita mencoba.<br><br>
+                    Ketakutan akan kegagalan (atau bahkan ketakutan akan kesuksesan) seringkali menghalangi kita untuk mengambil tindakan dan menampilkan kreasi kita di dunia. Tetapi banyak peluang akan hilang jika kita menunggu semuanya menjadi benar.
                 </div>
-                <!-- Habit 8 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit8" aria-expanded="false" aria-controls="habit8">
-                        8. Memiliki fokus
-                    </button>
-                    <div id="habit8" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Orang-orang sukses mengetahui hal ini. Itu sebabnya mereka memilih satu hal untuk difokuskan. Berkomitmen pada satu tugas sangat diperlukan. Baik itu ide bisnis, hobi, atau olahraga.
-                    </div>
+            </div>
+            <!-- Habit 8 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit8" aria-expanded="false" aria-controls="habit8">
+                    8. Memiliki fokus
+                </button>
+                <div id="habit8" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Orang-orang sukses mengetahui hal ini. Itu sebabnya mereka memilih satu hal untuk difokuskan. Berkomitmen pada satu tugas sangat diperlukan. Baik itu ide bisnis, hobi, atau olahraga.
                 </div>
-                <!-- Habit 9 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit9" aria-expanded="false" aria-controls="habit9">
-                        9. Lepaskan keinginan untuk mengontrol segalanya
-                    </button>
-                    <div id="habit9" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Lepaskan diri dari hal-hal yang tidak dapat Anda kendalikan, dan fokuslah pada hal-hal yang dapat Anda kendalikan, dan ketahuilah bahwa terkadang, satu-satunya hal yang dapat Anda kendalikan adalah sikap Anda terhadap sesuatu.
-                    </div>
+            </div>
+            <!-- Habit 9 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit9" aria-expanded="false" aria-controls="habit9">
+                    9. Lepaskan keinginan untuk mengontrol segalanya
+                </button>
+                <div id="habit9" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Lepaskan diri dari hal-hal yang tidak dapat Anda kendalikan, dan fokuslah pada hal-hal yang dapat Anda kendalikan, dan ketahuilah bahwa terkadang, satu-satunya hal yang dapat Anda kendalikan adalah sikap Anda terhadap sesuatu.
                 </div>
-                <!-- Habit 10 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit10" aria-expanded="false" aria-controls="habit10">
-                        10. Berhenti mengatakan "YA" untuk hal-hal yang tidak mendukung tujuan Anda
-                    </button>
-                    <div id="habit10" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Orang-orang sukses tahu bahwa untuk mencapai tujuan mereka, mereka harus mengatakan TIDAK pada tugas, aktivitas, dan tuntutan tertentu dari teman, keluarga, dan kolega mereka.<br><br>
-                        Dalam jangka pendek, Anda mungkin mengorbankan sedikit kepuasan instan, tetapi ketika tujuan Anda membuahkan hasil, semuanya akan sia-sia.
-                    </div>
+            </div>
+            <!-- Habit 10 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit10" aria-expanded="false" aria-controls="habit10">
+                    10. Berhenti mengatakan "YA" untuk hal-hal yang tidak mendukung tujuan Anda
+                </button>
+                <div id="habit10" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Orang-orang sukses tahu bahwa untuk mencapai tujuan mereka, mereka harus mengatakan TIDAK pada tugas, aktivitas, dan tuntutan tertentu dari teman, keluarga, dan kolega mereka.<br><br>
+                    Dalam jangka pendek, Anda mungkin mengorbankan sedikit kepuasan instan, tetapi ketika tujuan Anda membuahkan hasil, semuanya akan sia-sia.
                 </div>
-                <!-- Habit 11 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit11" aria-expanded="false" aria-controls="habit11">
-                        11. Hindari orang-orang toxic
-                    </button>
-                    <div id="habit11" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Orang-orang yang paling banyak menghabiskan waktu bersama kita, menambah menjadi seperti apa kita.<br><br>
-                        Ada orang yang kurang berprestasi dalam kehidupan pribadi dan profesionalnya, dan ada orang yang lebih berprestasi dari kita. Jika Anda menghabiskan waktu dengan mereka yang berada di belakang Anda, rata-rata Anda akan turun, dan dengan itu, kesuksesan Anda.<br><br>
-                        Tetapi jika Anda menghabiskan waktu dengan orang-orang yang lebih berhasil dari Anda, tidak peduli betapa menantangnya itu, Anda akan menjadi lebih sukses.<br><br>
-                        Lihatlah sekeliling Anda, dan lihat apakah Anda perlu melakukan perubahan.
-                    </div>
+            </div>
+            <!-- Habit 11 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit11" aria-expanded="false" aria-controls="habit11">
+                    11. Hindari orang-orang toxic
+                </button>
+                <div id="habit11" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Orang-orang yang paling banyak menghabiskan waktu bersama kita, menambah menjadi seperti apa kita.<br><br>
+                    Ada orang yang kurang berprestasi dalam kehidupan pribadi dan profesionalnya, dan ada orang yang lebih berprestasi dari kita. Jika Anda menghabiskan waktu dengan mereka yang berada di belakang Anda, rata-rata Anda akan turun, dan dengan itu, kesuksesan Anda.<br><br>
+                    Tetapi jika Anda menghabiskan waktu dengan orang-orang yang lebih berhasil dari Anda, tidak peduli betapa menantangnya itu, Anda akan menjadi lebih sukses.<br><br>
+                    Lihatlah sekeliling Anda, dan lihat apakah Anda perlu melakukan perubahan.
                 </div>
-                <!-- Habit 12 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit12" aria-expanded="false" aria-controls="habit12">
-                        12. Jangan takut tidak disukai
-                    </button>
-                    <div id="habit12" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Pikirkan diri Anda sebagai potensi pasar. Akan ada banyak orang yang menyukai potensi itu, dan akan ada orang yang tidak.<br><br>
-                        Dan apa pun yang Anda lakukan, Anda tidak akan dapat membuat seluruh pasar menyukai Anda. Ini sepenuhnya wajar, dan tidak perlu membenarkan diri sendiri.<br><br>
-                        Satu-satunya hal yang dapat Anda lakukan adalah tetap otentik, meningkatkan dan memberikan nilai setiap hari, dan mengetahui bahwa semakin banyak pembenci berarti Anda melakukan hal-hal penting.
-                    </div>
+            </div>
+            <!-- Habit 12 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit12" aria-expanded="false" aria-controls="habit12">
+                    12. Jangan takut tidak disukai
+                </button>
+                <div id="habit12" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Pikirkan diri Anda sebagai potensi pasar. Akan ada banyak orang yang menyukai potensi itu, dan akan ada orang yang tidak.<br><br>
+                    Dan apa pun yang Anda lakukan, Anda tidak akan dapat membuat seluruh pasar menyukai Anda. Ini sepenuhnya wajar, dan tidak perlu membenarkan diri sendiri.<br><br>
+                    Satu-satunya hal yang dapat Anda lakukan adalah tetap otentik, meningkatkan dan memberikan nilai setiap hari, dan mengetahui bahwa semakin banyak pembenci berarti Anda melakukan hal-hal penting.
                 </div>
-                <!-- Habit 13 -->
-                <div class="habit-item">
-                    <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit13" aria-expanded="false" aria-controls="habit13">
-                        13. Hentikan ketergantungan Anda pada media sosial dan televisi
-                    </button>
-                    <div id="habit13" class="collapse habit-content" data-bs-parent="#habitsAccordion">
-                        Penjelajahan web yang impulsif dan menonton televisi adalah penyakit masyarakat saat ini. Keduanya seharusnya tidak pernah menjadi pelarian dari hidup Anda atau tujuan Anda.<br><br>
-                        Kecuali tujuan Anda bergantung pada keduanya, Anda harus meminimalkan (atau bahkan menghilangkan) ketergantungan Anda pada mereka, dan mengarahkan waktu itu untuk hal-hal yang dapat memperkaya hidup Anda.
-                    </div>
+            </div>
+            <!-- Habit 13 -->
+            <div class="habit-item">
+                <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit13" aria-expanded="false" aria-controls="habit13">
+                    13. Hentikan ketergantungan Anda pada media sosial dan televisi
+                </button>
+                <div id="habit13" class="collapse habit-content" data-bs-parent="#habitsAccordion">
+                    Penjelajahan web yang impulsif dan menonton televisi adalah penyakit masyarakat saat ini. Keduanya seharusnya tidak pernah menjadi pelarian dari hidup Anda atau tujuan Anda.<br><br>
+                    Kecuali tujuan Anda bergantung pada keduanya, Anda harus meminimalkan (atau bahkan menghilangkan) ketergantungan Anda pada mereka, dan mengarahkan waktu itu untuk hal-hal yang dapat memperkaya hidup Anda.
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Container 2: Ciri-ciri Orang Belum Dewasa -->
+    <div class="collapse-container" id="maturityContainer">
+        <h3 class="maturity-title">Ciri-ciri Orang Belum Dewasa</h3>
+        <div class="accordion" id="maturityAccordion">
+            <!-- Ciri 1 -->
+            <div class="maturity-item">
+                <button class="maturity-button" type="button" data-bs-toggle="collapse" data-bs-target="#maturity1" aria-expanded="false" aria-controls="maturity1">
+                    1. Tidak memiliki tanggung jawab
+                </button>
+                <div id="maturity1" class="collapse maturity-content" data-bs-parent="#maturityAccordion">
+                    Mengakui kesalahan setelah melakukan perbuatan fatal mungkin memang bukan hal mudah. Namun, justru inilah kemampuan yang seharusnya dimiliki orang dewasa.<br><br>
+                    Mengakui kesalahan merupakan bentuk tanggung jawab atas tindakan Anda sendiri sekaligus menunjukkan bahwa Anda tidak mudah menyalahkan orang lain atas kesalahan yang dilakukan.<br><br>
+                    Melepaskan diri dari tanggung jawab hanya akan membuat Anda semakin tidak dipercaya dan dihargai oleh orang lain.
+                </div>
+            </div>
+            <!-- Ciri 2 -->
+            <div class="maturity-item">
+                <button class="maturity-button" type="button" data-bs-toggle="collapse" data-bs-target="#maturity2" aria-expanded="false" aria-controls="maturity2">
+                    2. Tidak mempunyai empati pada orang lain
+                </button>
+                <div id="maturity2" class="collapse maturity-content" data-bs-parent="#maturityAccordion">
+                    Kedewasaan tidak hanya dinilai dari cara Anda bersikap pada diri sendiri, tapi juga dari tingkat kepedulian terhadap orang-orang di sekitar. Hal ini dikenal sebagai kemampuan untuk berempati.<br><br>
+                    Orang yang punya empati pasti tahu bahwa apa pun yang dilakukannya akan sangat memengaruhi tindakan orang lain, baik itu perilaku buruk atau baik.<br><br>
+                    Sebenarnya, sangat mudah untuk menilai apakah seseorang memiliki empati. Biasanya, orang-orang dengan empati yang tinggi mau mendengarkan tanpa menghakimi orang di sekitarnya.
+                </div>
+            </div>
+            <!-- Ciri 3 -->
+            <div class="maturity-item">
+                <button class="maturity-button" type="button" data-bs-toggle="collapse" data-bs-target="#maturity3" aria-expanded="false" aria-controls="maturity3">
+                    3. Tidak jujur dengan diri sendiri
+                </button>
+                <div id="maturity3" class="collapse maturity-content" data-bs-parent="#maturityAccordion">
+                    Sebagian besar ciri-ciri orang yang belum dewasa dikaitkan dengan ketidakmampuan untuk memegang kendali atas emosi dan perilakunya sendiri.<br><br>
+                    Apa pun yang keluar dari mulutnya hanyalah omong kosong belaka karena perasaan dan kalimat yang ia ucapkan sebenarnya saling bertentangan.<br><br>
+                    Akan tetapi, orang yang belum dewasa secara emosional tetap akan mencari pembenaran di balik perbuatan salah tersebut dan tidak mengakuinya.<br><br>
+                    Tak jarang, mereka mencari kesempurnaan yang mungkin sangat sulit didapatkan. Akibatnya, yang mereka lakukan hanyalah menyiksa diri sendiri dengan target-target tertentu.
+                </div>
+            </div>
+            <!-- Ciri 4 -->
+            <div class="maturity-item">
+                <button class="maturity-button" type="button" data-bs-toggle="collapse" data-bs-target="#maturity4" aria-expanded="false" aria-controls="maturity4">
+                    4. Mudah menyimpan dendam
+                </button>
+                <div id="maturity4" class="collapse maturity-content" data-bs-parent="#maturityAccordion">
+                    Setiap orang pasti pernah membuat kesalahan, baik itu kecil atau besar. Lantas, apakah kesalahan tersebut masih diungkit-ungkit setelahnya?<br><br>
+                    Jika benar, artinya orang tersebut masih belum dewasa secara emosional. Mereka cenderung menyimpan dendam untuk kesalahan sekecil apa pun dalam waktu yang lama.<br><br>
+                    Pada umumnya, seseorang menyimpan dendam karena kesulitan dalam berterus-terang. Ini mungkin terjadi karena seseorang gengsi atau merasa dirinya paling benar.<br><br>
+                    Menurut Mayo Clinic, menyimpan dendam justru berpotensi membuat Anda selalu berada dalam kondisi cemas, sulit menjalin hubungan dengan orang baru, dan tentunya bisa mengganggu kondisi mental Anda.
+                </div>
+            </div>
+            <!-- Ciri 5 -->
+            <div class="maturity-item">
+                <button class="maturity-button" type="button" data-bs-toggle="collapse" data-bs-target="#maturity5" aria-expanded="false" aria-controls="maturity5">
+                    5. Membuat keputusan sendiri tanpa peduli orang lain
+                </button>
+                <div id="maturity5" class="collapse maturity-content" data-bs-parent="#maturityAccordion">
+                    Tidak ada orang yang sempurna, apalagi terbebas dari kesalahan. Oleh sebab itu, Anda tetap membutuhkan orang lain untuk menyampaikan pendapat dalam menemukan solusi atas suatu permasalahan.<br><br>
+                    Begitu pun saat Anda sedang berada dalam sebuah kelompok kecil maupun besar. Dalam menyelesaikan suatu permasalahan, sudah seharusnya terdapat musyawarah untuk pengambilan keputusan.<br><br>
+                    Hal yang sama mungkin juga akan dialami oleh orang-orang yang belum dewasa, terutama saat menerima kritikan. Seseorang yang sudah dewasa akan lebih leluasa dalam menerima umpan balik.<br><br>
+                    Sebaliknya, sifat kekanak-kanakan akan membuat Anda cenderung menganggap kritikan sebagai serangan pribadi.
+                </div>
+            </div>
+            <!-- Ciri 6 -->
+            <div class="maturity-item">
+                <button class="maturity-button" type="button" data-bs-toggle="collapse" data-bs-target="#maturity6" aria-expanded="false" aria-controls="maturity6">
+                    6. Selalu mengungkit kesalahan masa lalu
+                </button>
+                <div id="maturity6" class="collapse maturity-content" data-bs-parent="#maturityAccordion">
+                    Tidak sepatutnya Anda menghukum diri sendiri atas kesalahan masa lalu. Sebaliknya, Anda harus berpegang teguh pada diri sendiri dan belajar untuk melepaskan rasa bersalah dan segala penyesalan.<br><br>
+                    Bersikap sebaik mungkin sambil tetap memikirkan diri sendiri merupakan bentuk kedewasaan seseorang.<br><br>
+                    Jadi, paling tidak Anda sudah belajar dari kesalahan di masa lalu dan mencoba untuk tidak mengulanginya kembali di masa mendatang.
+                </div>
+            </div>
+            <!-- Ciri 7 -->
+            <div class="maturity-item">
+                <button class="maturity-button" type="button" data-bs-toggle="collapse" data-bs-target="#maturity7" aria-expanded="false" aria-controls="maturity7">
+                    7. Tidak mampu mengendalikan rasa takut dan cemas
+                </button>
+                <div id="maturity7" class="collapse maturity-content" data-bs-parent="#maturityAccordion">
+                    Hal yang mustahil jika Anda tidak pernah merasa takut atau cemas. Bagaimana cara Anda menghadapi keduanya justru bisa menjadi ciri kedewasaan.<br><br>
+                    Menjadi dewasa secara emosional berarti bahwa Anda menyadari ada sesuatu yang salah sehingga muncullah perasaan takut dan cemas.<br><br>
+                    Dalam kondisi tersebut, yakinkanlah diri sendiri bahwa Anda bisa melewatinya. Ingatlah bahwa ketakutan dan kecemasan adalah fase kehidupan yang pasti bisa dilalui.<br><br>
+                    Mengetahui ciri-ciri orang yang belum dewasa sangatlah penting karena dengan begitu, Anda bisa segera mengubah sikap yang kiranya masih merugikan diri sendiri dan orang lain.
+                </div>
+            </div>
+        </div>
+
+        <!-- Kesimpulan Container - UNIK TANPA COLLAPSE -->
+        <div class="conclusion-container">
+            <div class="conclusion-title">🎯 KESIMPULAN</div>
+            <div class="conclusion-content">
+                <ul>
+                    <li><strong>Orang dewasa seharusnya mampu mengemban tanggung jawab</strong>, punya empati, dan tidak mudah menyimpan dendam. Ketiadaan sifat tersebut bisa berarti bahwa Anda belum dewasa.</li>
+                    <li><strong>Seseorang yang sudah dewasa seharusnya juga jujur pada diri sendiri.</strong> Mereka tidak akan berusaha terlalu keras mencapai kesempurnaan yang hampir mustahil didapatkan.</li>
+                    <li><strong>Dewasa secara emosional seharusnya membuat Anda lebih terbuka pada masukan.</strong> Anda seharusnya sudah mulai berdamai dengan masa lalu, bukannya mengungkitnya terus-menerus.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
@@ -725,21 +929,49 @@
         return 'Rp. ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',-';
     }
 
-    // Fungsi untuk toggle collapse container
+    // Fungsi untuk toggle container 13 Kebiasaan
     function toggleHabits() {
-        const container = document.getElementById('collapseContainer');
-        container.classList.toggle('show');
+        const habitsContainer = document.getElementById('habitsContainer');
+        const maturityContainer = document.getElementById('maturityContainer');
+        
+        habitsContainer.classList.toggle('show');
+        // Tutup container maturity jika terbuka
+        if (maturityContainer.classList.contains('show')) {
+            maturityContainer.classList.remove('show');
+        }
+    }
+
+    // Fungsi untuk toggle container Kedewasaan
+    function toggleMaturity() {
+        const habitsContainer = document.getElementById('habitsContainer');
+        const maturityContainer = document.getElementById('maturityContainer');
+        
+        maturityContainer.classList.toggle('show');
+        // Tutup container habits jika terbuka
+        if (habitsContainer.classList.contains('show')) {
+            habitsContainer.classList.remove('show');
+        }
     }
 
     // Tutup collapse container jika klik di luar
     document.addEventListener('click', function(event) {
-        const container = document.getElementById('collapseContainer');
-        const button = document.querySelector('.floating-button');
-
-        if (container.classList.contains('show') &&
-            !container.contains(event.target) &&
-            !button.contains(event.target)) {
-            container.classList.remove('show');
+        const habitsContainer = document.getElementById('habitsContainer');
+        const maturityContainer = document.getElementById('maturityContainer');
+        const habitsButton = document.querySelector('.floating-button.habits');
+        const maturityButton = document.querySelector('.floating-button.maturity');
+        
+        // Tutup habits container jika klik di luar
+        if (habitsContainer.classList.contains('show') &&
+            !habitsContainer.contains(event.target) &&
+            !habitsButton.contains(event.target)) {
+            habitsContainer.classList.remove('show');
+        }
+        
+        // Tutup maturity container jika klik di luar
+        if (maturityContainer.classList.contains('show') &&
+            !maturityContainer.contains(event.target) &&
+            !maturityButton.contains(event.target)) {
+            maturityContainer.classList.remove('show');
         }
     });
 
