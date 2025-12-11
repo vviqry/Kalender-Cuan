@@ -26,7 +26,7 @@
         .container {
             max-width: 1200px;
             width: 100%;
-            margin-bottom: 80px;
+            margin-bottom: 100px;
         }
 
         /* Quote Styling */
@@ -381,7 +381,7 @@
             opacity: 1;
         }
 
-        /* Floating Button Styling - DUA BUTTON SEJAJAR */
+        /* Floating Button Styling - TIGA BUTTON SEJAJAR */
         .floating-container {
             position: fixed;
             bottom: 20px;
@@ -396,7 +396,6 @@
         .floating-button {
             width: 60px;
             height: 60px;
-            background-color: #007bff;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -409,14 +408,19 @@
             border: none;
         }
 
-        /* Button pertama (kebiasaan) */
+        /* Button 1: 13 Kebiasaan */
         .floating-button.habits {
             background-color: #007bff;
         }
 
-        /* Button kedua (kedewasaan) */
+        /* Button 2: Kedewasaan */
         .floating-button.maturity {
-            background-color: #28a745; /* Warna hijau berbeda */
+            background-color: #28a745;
+        }
+
+        /* Button 3: Video Bosan */
+        .floating-button.video {
+            background-color: #dc3545; /* Warna merah untuk peringatan/danger */
         }
 
         .floating-button:hover {
@@ -432,7 +436,90 @@
             background-color: #218838;
         }
 
-        /* Collapse Container Styling - DUA CONTAINER BERBEDA */
+        .floating-button.video:hover {
+            background-color: #c82333;
+        }
+
+        /* Container Video */
+        .video-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px; /* Lebar untuk video vertikal 9:16 */
+            max-width: 90vw;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1002;
+            overflow: hidden;
+        }
+
+        .video-container.show {
+            display: block;
+            animation: fadeInScale 0.3s ease;
+        }
+
+        .video-header {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .video-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .video-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .video-close:hover {
+            opacity: 0.8;
+        }
+
+        .video-content {
+            padding: 0;
+            background-color: #000;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 568px; /* Tinggi untuk rasio 9:16 (320 * 16/9 = 568) */
+            max-height: 80vh;
+            background-color: #000;
+            border-radius: 0 0 15px 15px;
+            overflow: hidden;
+        }
+
+        .video-player video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-warning {
+            padding: 15px 20px;
+            background-color: #fff3cd;
+            border-top: 1px solid #ffeaa7;
+            font-size: 14px;
+            color: #856404;
+            text-align: center;
+        }
+
+        /* Collapse Container Styling */
         .collapse-container {
             position: fixed;
             top: 50%;
@@ -562,18 +649,40 @@
             margin-bottom: 8px;
         }
 
-        /* Responsive untuk collapse container */
+        /* Responsive untuk semua container */
         @media (max-width: 768px) {
-            .collapse-container {
+            .collapse-container, .video-container {
                 width: 90vw;
                 max-width: 500px;
+            }
+            
+            .video-container {
+                width: 300px;
+            }
+            
+            .video-player {
+                height: 533px; /* 300 * 16/9 = 533 */
+            }
+            
+            .collapse-container {
                 padding: 20px 15px;
             }
         }
 
         @media (max-width: 480px) {
-            .collapse-container {
+            .collapse-container, .video-container {
                 width: 95vw;
+            }
+            
+            .video-container {
+                width: 280px;
+            }
+            
+            .video-player {
+                height: 498px; /* 280 * 16/9 = 498 */
+            }
+            
+            .collapse-container {
                 padding: 15px 10px;
             }
             
@@ -658,14 +767,18 @@
         <img id="reminderImage" src="foto.jpg" alt="Daily Reminder">
     </div>
 
-    <!-- Floating Button dan Collapse Container -->
+    <!-- Floating Button dan Container -->
     <div class="floating-container">
         <!-- Button 1: 13 Kebiasaan (Scroll) -->
         <button class="floating-button habits" onclick="toggleHabits()">📜</button>
         
         <!-- Button 2: Ciri-ciri Kedewasaan (Bapak-bapak) -->
-        <button class="floating-button maturity" onclick="toggleMaturity()">👤
-            <i class="bi bi-person-arms-up"></i>
+        <button class="floating-button maturity" onclick="toggleMaturity()">🤵‍
+        </button>
+        
+        <!-- Button 3: Video Bosan itu Berbahaya -->
+        <button class="floating-button video" onclick="toggleVideo()">
+            <i class="bi bi-exclamation-triangle-fill"></i>
         </button>
     </div>
 
@@ -673,6 +786,7 @@
     <div class="collapse-container" id="habitsContainer">
         <h3 class="habit-title">13 Kebiasaan yang Harus Dihilangkan</h3>
         <div class="accordion" id="habitsAccordion">
+            <!-- Habit 1-13 (sama seperti sebelumnya) -->
             <!-- Habit 1 -->
             <div class="habit-item">
                 <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit1" aria-expanded="false" aria-controls="habit1">
@@ -683,7 +797,6 @@
                     Ini merupakan langkah kecil, tetapi suatu hari Anda akan berterima kasih pada diri sendiri.
                 </div>
             </div>
-            <!-- Habit 2-13 (sama seperti sebelumnya) -->
             <!-- Habit 2 -->
             <div class="habit-item">
                 <button class="habit-button" type="button" data-bs-toggle="collapse" data-bs-target="#habit2" aria-expanded="false" aria-controls="habit2">
@@ -810,6 +923,7 @@
     <div class="collapse-container" id="maturityContainer">
         <h3 class="maturity-title">Ciri-ciri Orang Belum Dewasa</h3>
         <div class="accordion" id="maturityAccordion">
+            <!-- Ciri 1-7 (sama seperti sebelumnya) -->
             <!-- Ciri 1 -->
             <div class="maturity-item">
                 <button class="maturity-button" type="button" data-bs-toggle="collapse" data-bs-target="#maturity1" aria-expanded="false" aria-controls="maturity1">
@@ -906,6 +1020,25 @@
         </div>
     </div>
 
+    <!-- Container 3: Video Bosan itu Berbahaya -->
+    <div class="video-container" id="videoContainer">
+        <div class="video-header">
+            <h3 class="video-title">BOSAN itu BERBAHAYA</h3>
+            <button class="video-close" onclick="toggleVideo()">×</button>
+        </div>
+        <div class="video-content">
+            <div class="video-player">
+                <video id="bosanVideo" controls playsinline>
+                    <source src="1.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
+        </div>
+        <div class="video-warning">
+            ⚠️ <strong>Peringatan:</strong> Bosan dapat merusak produktivitas dan motivasi!
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
@@ -933,11 +1066,16 @@
     function toggleHabits() {
         const habitsContainer = document.getElementById('habitsContainer');
         const maturityContainer = document.getElementById('maturityContainer');
+        const videoContainer = document.getElementById('videoContainer');
         
         habitsContainer.classList.toggle('show');
-        // Tutup container maturity jika terbuka
+        // Tutup container lain jika terbuka
         if (maturityContainer.classList.contains('show')) {
             maturityContainer.classList.remove('show');
+        }
+        if (videoContainer.classList.contains('show')) {
+            videoContainer.classList.remove('show');
+            pauseVideo();
         }
     }
 
@@ -945,20 +1083,58 @@
     function toggleMaturity() {
         const habitsContainer = document.getElementById('habitsContainer');
         const maturityContainer = document.getElementById('maturityContainer');
+        const videoContainer = document.getElementById('videoContainer');
         
         maturityContainer.classList.toggle('show');
-        // Tutup container habits jika terbuka
+        // Tutup container lain jika terbuka
         if (habitsContainer.classList.contains('show')) {
             habitsContainer.classList.remove('show');
         }
+        if (videoContainer.classList.contains('show')) {
+            videoContainer.classList.remove('show');
+            pauseVideo();
+        }
     }
 
-    // Tutup collapse container jika klik di luar
+    // Fungsi untuk toggle container Video
+    function toggleVideo() {
+        const habitsContainer = document.getElementById('habitsContainer');
+        const maturityContainer = document.getElementById('maturityContainer');
+        const videoContainer = document.getElementById('videoContainer');
+        const video = document.getElementById('bosanVideo');
+        
+        videoContainer.classList.toggle('show');
+        // Tutup container lain jika terbuka
+        if (habitsContainer.classList.contains('show')) {
+            habitsContainer.classList.remove('show');
+        }
+        if (maturityContainer.classList.contains('show')) {
+            maturityContainer.classList.remove('show');
+        }
+        
+        // Reset video ke awal saat dibuka
+        if (videoContainer.classList.contains('show')) {
+            video.currentTime = 0;
+        } else {
+            pauseVideo();
+        }
+    }
+
+    // Fungsi untuk pause video
+    function pauseVideo() {
+        const video = document.getElementById('bosanVideo');
+        video.pause();
+    }
+
+    // Tutup semua container jika klik di luar
     document.addEventListener('click', function(event) {
         const habitsContainer = document.getElementById('habitsContainer');
         const maturityContainer = document.getElementById('maturityContainer');
+        const videoContainer = document.getElementById('videoContainer');
         const habitsButton = document.querySelector('.floating-button.habits');
         const maturityButton = document.querySelector('.floating-button.maturity');
+        const videoButton = document.querySelector('.floating-button.video');
+        const videoClose = document.querySelector('.video-close');
         
         // Tutup habits container jika klik di luar
         if (habitsContainer.classList.contains('show') &&
@@ -972,6 +1148,15 @@
             !maturityContainer.contains(event.target) &&
             !maturityButton.contains(event.target)) {
             maturityContainer.classList.remove('show');
+        }
+        
+        // Tutup video container jika klik di luar
+        if (videoContainer.classList.contains('show') &&
+            !videoContainer.contains(event.target) &&
+            !videoButton.contains(event.target) &&
+            !videoClose.contains(event.target)) {
+            videoContainer.classList.remove('show');
+            pauseVideo();
         }
     });
 
