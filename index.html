@@ -26,7 +26,7 @@
         .container {
             max-width: 1200px;
             width: 100%;
-            margin-bottom: 100px;
+            margin-bottom: 120px;
         }
 
         /* Quote Styling */
@@ -381,7 +381,7 @@
             opacity: 1;
         }
 
-        /* Floating Button Styling - TIGA BUTTON SEJAJAR */
+        /* Floating Button Styling - EMPAT BUTTON SEJAJAR */
         .floating-container {
             position: fixed;
             bottom: 20px;
@@ -419,8 +419,13 @@
         }
 
         /* Button 3: Video Bosan */
-        .floating-button.video {
-            background-color: #dc3545; /* Warna merah untuk peringatan/danger */
+        .floating-button.video-danger {
+            background-color: #dc3545;
+        }
+
+        /* Button 4: Video Target Muslim */
+        .floating-button.video-muslim {
+            background-color: #9c27b0; /* Warna ungu untuk spiritual */
         }
 
         .floating-button:hover {
@@ -436,17 +441,21 @@
             background-color: #218838;
         }
 
-        .floating-button.video:hover {
+        .floating-button.video-danger:hover {
             background-color: #c82333;
         }
 
-        /* Container Video */
+        .floating-button.video-muslim:hover {
+            background-color: #7b1fa2;
+        }
+
+        /* Container Video Umum */
         .video-container {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 320px; /* Lebar untuk video vertikal 9:16 */
+            width: 320px;
             max-width: 90vw;
             background-color: white;
             border-radius: 15px;
@@ -461,9 +470,18 @@
             animation: fadeInScale 0.3s ease;
         }
 
+        /* Video Container 1: Bosan itu Berbahaya */
+        #videoDangerContainer .video-header {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        /* Video Container 2: Target Muslim */
+        #videoMuslimContainer .video-header {
+            background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+        }
+
         .video-header {
             padding: 15px 20px;
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
             display: flex;
             justify-content: space-between;
@@ -474,6 +492,10 @@
             font-size: 18px;
             font-weight: bold;
             margin: 0;
+        }
+
+        .video-title i {
+            margin-right: 8px;
         }
 
         .video-close {
@@ -510,13 +532,22 @@
             object-fit: cover;
         }
 
-        .video-warning {
+        .video-message {
             padding: 15px 20px;
-            background-color: #fff3cd;
-            border-top: 1px solid #ffeaa7;
-            font-size: 14px;
-            color: #856404;
             text-align: center;
+            font-size: 14px;
+        }
+
+        #videoDangerContainer .video-message {
+            background-color: #fff3cd;
+            color: #856404;
+            border-top: 1px solid #ffeaa7;
+        }
+
+        #videoMuslimContainer .video-message {
+            background-color: #f3e5f5;
+            color: #4a148c;
+            border-top: 1px solid #e1bee7;
         }
 
         /* Collapse Container Styling */
@@ -773,12 +804,18 @@
         <button class="floating-button habits" onclick="toggleHabits()">📜</button>
         
         <!-- Button 2: Ciri-ciri Kedewasaan (Bapak-bapak) -->
-        <button class="floating-button maturity" onclick="toggleMaturity()">🤵‍
+        <button class="floating-button maturity" onclick="toggleMaturity()">
+            <i class="bi bi-person-arms-up"></i>
         </button>
         
         <!-- Button 3: Video Bosan itu Berbahaya -->
-        <button class="floating-button video" onclick="toggleVideo()">
+        <button class="floating-button video-danger" onclick="toggleVideoDanger()">
             <i class="bi bi-exclamation-triangle-fill"></i>
+        </button>
+        
+        <!-- Button 4: Video Target Muslim -->
+        <button class="floating-button video-muslim" onclick="toggleVideoMuslim()">
+            🎯
         </button>
     </div>
 
@@ -1021,10 +1058,10 @@
     </div>
 
     <!-- Container 3: Video Bosan itu Berbahaya -->
-    <div class="video-container" id="videoContainer">
+    <div class="video-container" id="videoDangerContainer">
         <div class="video-header">
-            <h3 class="video-title">BOSAN itu BERBAHAYA</h3>
-            <button class="video-close" onclick="toggleVideo()">×</button>
+            <h3 class="video-title"><i class="bi bi-exclamation-triangle-fill"></i> BOSAN itu BERBAHAYA</h3>
+            <button class="video-close" onclick="toggleVideoDanger()">×</button>
         </div>
         <div class="video-content">
             <div class="video-player">
@@ -1034,8 +1071,27 @@
                 </video>
             </div>
         </div>
-        <div class="video-warning">
+        <div class="video-message">
             ⚠️ <strong>Peringatan:</strong> Bosan dapat merusak produktivitas dan motivasi!
+        </div>
+    </div>
+
+    <!-- Container 4: Video Target Seorang Muslim -->
+    <div class="video-container" id="videoMuslimContainer">
+        <div class="video-header">
+            <h3 class="video-title">🎯 TARGET SEORANG MUSLIM</h3>
+            <button class="video-close" onclick="toggleVideoMuslim()">×</button>
+        </div>
+        <div class="video-content">
+            <div class="video-player">
+                <video id="muslimVideo" controls playsinline>
+                    <source src="77.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
+        </div>
+        <div class="video-message">
+            ✨ <strong>Inspirasi:</strong> Tujuan hidup seorang muslim menurut Al-Qur'an dan Sunnah
         </div>
     </div>
 
@@ -1066,97 +1122,149 @@
     function toggleHabits() {
         const habitsContainer = document.getElementById('habitsContainer');
         const maturityContainer = document.getElementById('maturityContainer');
-        const videoContainer = document.getElementById('videoContainer');
+        const videoDangerContainer = document.getElementById('videoDangerContainer');
+        const videoMuslimContainer = document.getElementById('videoMuslimContainer');
         
         habitsContainer.classList.toggle('show');
         // Tutup container lain jika terbuka
-        if (maturityContainer.classList.contains('show')) {
-            maturityContainer.classList.remove('show');
-        }
-        if (videoContainer.classList.contains('show')) {
-            videoContainer.classList.remove('show');
-            pauseVideo();
-        }
+        closeOtherContainers(habitsContainer);
+        pauseAllVideos();
     }
 
     // Fungsi untuk toggle container Kedewasaan
     function toggleMaturity() {
         const habitsContainer = document.getElementById('habitsContainer');
         const maturityContainer = document.getElementById('maturityContainer');
-        const videoContainer = document.getElementById('videoContainer');
         
         maturityContainer.classList.toggle('show');
         // Tutup container lain jika terbuka
-        if (habitsContainer.classList.contains('show')) {
-            habitsContainer.classList.remove('show');
-        }
-        if (videoContainer.classList.contains('show')) {
-            videoContainer.classList.remove('show');
-            pauseVideo();
-        }
+        closeOtherContainers(maturityContainer);
+        pauseAllVideos();
     }
 
-    // Fungsi untuk toggle container Video
-    function toggleVideo() {
-        const habitsContainer = document.getElementById('habitsContainer');
-        const maturityContainer = document.getElementById('maturityContainer');
-        const videoContainer = document.getElementById('videoContainer');
-        const video = document.getElementById('bosanVideo');
+    // Fungsi untuk toggle container Video Bosan
+    function toggleVideoDanger() {
+        const videoDangerContainer = document.getElementById('videoDangerContainer');
+        const bosanVideo = document.getElementById('bosanVideo');
         
-        videoContainer.classList.toggle('show');
+        videoDangerContainer.classList.toggle('show');
         // Tutup container lain jika terbuka
-        if (habitsContainer.classList.contains('show')) {
-            habitsContainer.classList.remove('show');
-        }
-        if (maturityContainer.classList.contains('show')) {
-            maturityContainer.classList.remove('show');
-        }
+        closeOtherContainers(videoDangerContainer);
         
         // Reset video ke awal saat dibuka
-        if (videoContainer.classList.contains('show')) {
-            video.currentTime = 0;
+        if (videoDangerContainer.classList.contains('show')) {
+            bosanVideo.currentTime = 0;
+            pauseOtherVideos('bosanVideo');
         } else {
-            pauseVideo();
+            bosanVideo.pause();
         }
     }
 
-    // Fungsi untuk pause video
-    function pauseVideo() {
-        const video = document.getElementById('bosanVideo');
-        video.pause();
+    // Fungsi untuk toggle container Video Muslim
+    function toggleVideoMuslim() {
+        const videoMuslimContainer = document.getElementById('videoMuslimContainer');
+        const muslimVideo = document.getElementById('muslimVideo');
+        
+        videoMuslimContainer.classList.toggle('show');
+        // Tutup container lain jika terbuka
+        closeOtherContainers(videoMuslimContainer);
+        
+        // Reset video ke awal saat dibuka
+        if (videoMuslimContainer.classList.contains('show')) {
+            muslimVideo.currentTime = 0;
+            pauseOtherVideos('muslimVideo');
+        } else {
+            muslimVideo.pause();
+        }
+    }
+
+    // Fungsi untuk menutup semua container kecuali yang aktif
+    function closeOtherContainers(activeContainer) {
+        const containers = [
+            document.getElementById('habitsContainer'),
+            document.getElementById('maturityContainer'),
+            document.getElementById('videoDangerContainer'),
+            document.getElementById('videoMuslimContainer')
+        ];
+        
+        containers.forEach(container => {
+            if (container !== activeContainer && container.classList.contains('show')) {
+                container.classList.remove('show');
+            }
+        });
+    }
+
+    // Fungsi untuk pause semua video
+    function pauseAllVideos() {
+        const videos = [
+            document.getElementById('bosanVideo'),
+            document.getElementById('muslimVideo')
+        ];
+        
+        videos.forEach(video => {
+            if (video) video.pause();
+        });
+    }
+
+    // Fungsi untuk pause video lain
+    function pauseOtherVideos(currentVideoId) {
+        const videos = {
+            'bosanVideo': document.getElementById('bosanVideo'),
+            'muslimVideo': document.getElementById('muslimVideo')
+        };
+        
+        for (const [id, video] of Object.entries(videos)) {
+            if (id !== currentVideoId && video) {
+                video.pause();
+            }
+        }
     }
 
     // Tutup semua container jika klik di luar
     document.addEventListener('click', function(event) {
         const habitsContainer = document.getElementById('habitsContainer');
         const maturityContainer = document.getElementById('maturityContainer');
-        const videoContainer = document.getElementById('videoContainer');
+        const videoDangerContainer = document.getElementById('videoDangerContainer');
+        const videoMuslimContainer = document.getElementById('videoMuslimContainer');
+        
         const habitsButton = document.querySelector('.floating-button.habits');
         const maturityButton = document.querySelector('.floating-button.maturity');
-        const videoButton = document.querySelector('.floating-button.video');
-        const videoClose = document.querySelector('.video-close');
+        const videoDangerButton = document.querySelector('.floating-button.video-danger');
+        const videoMuslimButton = document.querySelector('.floating-button.video-muslim');
         
-        // Tutup habits container jika klik di luar
-        if (habitsContainer.classList.contains('show') &&
-            !habitsContainer.contains(event.target) &&
-            !habitsButton.contains(event.target)) {
-            habitsContainer.classList.remove('show');
-        }
+        const videoCloseButtons = document.querySelectorAll('.video-close');
         
-        // Tutup maturity container jika klik di luar
-        if (maturityContainer.classList.contains('show') &&
-            !maturityContainer.contains(event.target) &&
-            !maturityButton.contains(event.target)) {
-            maturityContainer.classList.remove('show');
-        }
+        // Cek jika klik di luar container
+        const isClickInsideContainer = 
+            habitsContainer.contains(event.target) ||
+            maturityContainer.contains(event.target) ||
+            videoDangerContainer.contains(event.target) ||
+            videoMuslimContainer.contains(event.target);
         
-        // Tutup video container jika klik di luar
-        if (videoContainer.classList.contains('show') &&
-            !videoContainer.contains(event.target) &&
-            !videoButton.contains(event.target) &&
-            !videoClose.contains(event.target)) {
-            videoContainer.classList.remove('show');
-            pauseVideo();
+        const isClickOnButton = 
+            habitsButton.contains(event.target) ||
+            maturityButton.contains(event.target) ||
+            videoDangerButton.contains(event.target) ||
+            videoMuslimButton.contains(event.target);
+        
+        const isClickOnVideoClose = Array.from(videoCloseButtons).some(btn => btn.contains(event.target));
+        
+        // Tutup container yang terbuka jika klik di luar
+        if (!isClickInsideContainer && !isClickOnButton && !isClickOnVideoClose) {
+            if (habitsContainer.classList.contains('show')) {
+                habitsContainer.classList.remove('show');
+            }
+            if (maturityContainer.classList.contains('show')) {
+                maturityContainer.classList.remove('show');
+            }
+            if (videoDangerContainer.classList.contains('show')) {
+                videoDangerContainer.classList.remove('show');
+                document.getElementById('bosanVideo').pause();
+            }
+            if (videoMuslimContainer.classList.contains('show')) {
+                videoMuslimContainer.classList.remove('show');
+                document.getElementById('muslimVideo').pause();
+            }
         }
     });
 
