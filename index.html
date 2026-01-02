@@ -458,6 +458,16 @@
             background-color: #f57c00;
         }
 
+        /* Button 6: Video Triple (Biohazard) */
+        .floating-button.video-triple {
+            background: linear-gradient(135deg, #cddc39 0%, #8bc34a 100%);
+            color: #000;
+        }
+
+        .floating-button.video-triple:hover {
+            background: linear-gradient(135deg, #afb42b 0%, #689f38 100%);
+        }
+
         /* Container Video Umum */
         .video-container {
             position: fixed;
@@ -583,6 +593,60 @@
             background-color: #fff3e0;
             color: #ef6c00;
             border-top: 1px solid #ffcc80;
+        }
+
+        /* Video Triple Container (3 video horizontal) */
+        #videoTripleContainer {
+            width: auto;
+            max-width: 95vw;
+            background-color: #000;
+            border-radius: 15px;
+        }
+
+        #videoTripleContainer .video-header {
+            background: linear-gradient(135deg, #cddc39 0%, #8bc34a 100%);
+        }
+
+        #videoTripleContainer .video-title {
+            color: #000;
+        }
+
+        #videoTripleContainer .video-close {
+            color: #000;
+        }
+
+        .video-triple-grid {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            padding: 15px;
+            background-color: #000;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .video-triple-item {
+            width: 280px;
+            flex-shrink: 0;
+            border: 3px solid #5b5b5b;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .video-triple-item video {
+            width: 280px;
+            height: 498px; /* Rasio 9:16 vertikal = 280 * 16/9 */
+            object-fit: contain;
+            background-color: #000;
+            display: block;
+        }
+
+        #videoTripleContainer .video-message {
+            background-color: #f0f4c3;
+            color: #33691e;
+            border-top: 1px solid #c5e1a5;
+            text-align: center;
         }
 
         /* Collapse Container Styling */
@@ -744,6 +808,30 @@
                 height: calc(90vw * 9/16); /* Proporsional */
                 max-height: 50vh;
             }
+
+            /* Video Triple responsive */
+            #videoTripleContainer {
+                width: 95vw;
+                max-width: 95vw;
+                overflow-x: auto;
+            }
+
+            .video-triple-grid {
+                padding: 10px;
+                gap: 10px;
+                justify-content: flex-start;
+                overflow-x: auto;
+            }
+
+            .video-triple-item {
+                width: 250px;
+                flex-shrink: 0;
+            }
+
+            .video-triple-item video {
+                width: 250px;
+                height: 444px; /* 250 * 16/9 */
+            }
         }
 
         @media (max-width: 480px) {
@@ -781,6 +869,25 @@
                 width: 55px;
                 height: 55px;
                 font-size: 22px;
+            }
+
+            /* Video Triple untuk mobile - horizontal scroll */
+            .video-triple-grid {
+                flex-direction: row;
+                gap: 10px;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 10px;
+            }
+
+            .video-triple-item {
+                width: 220px;
+                flex-shrink: 0;
+            }
+
+            .video-triple-item video {
+                width: 220px;
+                height: 391px; /* 220 * 16/9 = 391 - rasio 9:16 */
             }
         }
     </style>
@@ -876,6 +983,11 @@
         <!-- Button 5: Video Pejuang Suku Maya -->
         <button class="floating-button video-maya" onclick="toggleVideoMaya()">
             🔞
+        </button>
+        
+        <!-- Button 6: Video Triple (Biohazard) -->
+        <button class="floating-button video-triple" onclick="toggleVideoTriple()" title="Catatan Dopamin Hits: Baik & Buruk">
+            ☣️
         </button>
     </div>
 
@@ -1175,6 +1287,37 @@
         </div>
     </div>
 
+    <!-- Container 6: Video Triple (3 Video Vertikal Horizontal) -->
+    <div class="video-container" id="videoTripleContainer">
+        <div class="video-header">
+            <h3 class="video-title">☣️ Catatan Dopamin Hits: Baik & Buruk</h3>
+            <button class="video-close" onclick="toggleVideoTriple()">×</button>
+        </div>
+        <div class="video-triple-grid">
+            <div class="video-triple-item">
+                <video id="tripleVideo1" controls playsinline>
+                    <source src="x.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
+            <div class="video-triple-item">
+                <video id="tripleVideo2" controls playsinline>
+                    <source src="xxx.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
+            <div class="video-triple-item">
+                <video id="tripleVideo3" controls playsinline>
+                    <source src="xx.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
+        </div>
+        <div class="video-message">
+            🧠 <strong>Catatan Penting:</strong> Dopamin hits yang baik dan buruk untuk kesehatan mental
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
@@ -1270,6 +1413,30 @@
         }
     }
 
+    // Fungsi untuk toggle container Video Triple
+    function toggleVideoTriple() {
+        const videoTripleContainer = document.getElementById('videoTripleContainer');
+        const tripleVideo1 = document.getElementById('tripleVideo1');
+        const tripleVideo2 = document.getElementById('tripleVideo2');
+        const tripleVideo3 = document.getElementById('tripleVideo3');
+        
+        videoTripleContainer.classList.toggle('show');
+        // Tutup container lain jika terbuka
+        closeOtherContainers(videoTripleContainer);
+        
+        // Reset semua video ke awal saat dibuka
+        if (videoTripleContainer.classList.contains('show')) {
+            tripleVideo1.currentTime = 0;
+            tripleVideo2.currentTime = 0;
+            tripleVideo3.currentTime = 0;
+            pauseOtherVideos('tripleVideo1');
+        } else {
+            tripleVideo1.pause();
+            tripleVideo2.pause();
+            tripleVideo3.pause();
+        }
+    }
+
     // Fungsi untuk menutup semua container kecuali yang aktif
     function closeOtherContainers(activeContainer) {
         const containers = [
@@ -1277,7 +1444,8 @@
             document.getElementById('maturityContainer'),
             document.getElementById('videoDangerContainer'),
             document.getElementById('videoMuslimContainer'),
-            document.getElementById('videoMayaContainer')
+            document.getElementById('videoMayaContainer'),
+            document.getElementById('videoTripleContainer')
         ];
         
         containers.forEach(container => {
@@ -1292,7 +1460,10 @@
         const videos = [
             document.getElementById('bosanVideo'),
             document.getElementById('muslimVideo'),
-            document.getElementById('mayaVideo')
+            document.getElementById('mayaVideo'),
+            document.getElementById('tripleVideo1'),
+            document.getElementById('tripleVideo2'),
+            document.getElementById('tripleVideo3')
         ];
         
         videos.forEach(video => {
@@ -1305,7 +1476,10 @@
         const videos = {
             'bosanVideo': document.getElementById('bosanVideo'),
             'muslimVideo': document.getElementById('muslimVideo'),
-            'mayaVideo': document.getElementById('mayaVideo')
+            'mayaVideo': document.getElementById('mayaVideo'),
+            'tripleVideo1': document.getElementById('tripleVideo1'),
+            'tripleVideo2': document.getElementById('tripleVideo2'),
+            'tripleVideo3': document.getElementById('tripleVideo3')
         };
         
         for (const [id, video] of Object.entries(videos)) {
@@ -1322,12 +1496,14 @@
         const videoDangerContainer = document.getElementById('videoDangerContainer');
         const videoMuslimContainer = document.getElementById('videoMuslimContainer');
         const videoMayaContainer = document.getElementById('videoMayaContainer');
+        const videoTripleContainer = document.getElementById('videoTripleContainer');
         
         const habitsButton = document.querySelector('.floating-button.habits');
         const maturityButton = document.querySelector('.floating-button.maturity');
         const videoDangerButton = document.querySelector('.floating-button.video-danger');
         const videoMuslimButton = document.querySelector('.floating-button.video-muslim');
         const videoMayaButton = document.querySelector('.floating-button.video-maya');
+        const videoTripleButton = document.querySelector('.floating-button.video-triple');
         
         const videoCloseButtons = document.querySelectorAll('.video-close');
         
@@ -1337,14 +1513,16 @@
             maturityContainer.contains(event.target) ||
             videoDangerContainer.contains(event.target) ||
             videoMuslimContainer.contains(event.target) ||
-            videoMayaContainer.contains(event.target);
+            videoMayaContainer.contains(event.target) ||
+            videoTripleContainer.contains(event.target);
         
         const isClickOnButton = 
             habitsButton.contains(event.target) ||
             maturityButton.contains(event.target) ||
             videoDangerButton.contains(event.target) ||
             videoMuslimButton.contains(event.target) ||
-            videoMayaButton.contains(event.target);
+            videoMayaButton.contains(event.target) ||
+            videoTripleButton.contains(event.target);
         
         const isClickOnVideoClose = Array.from(videoCloseButtons).some(btn => btn.contains(event.target));
         
@@ -1355,7 +1533,8 @@
                 {container: maturityContainer},
                 {container: videoDangerContainer, videoId: 'bosanVideo'},
                 {container: videoMuslimContainer, videoId: 'muslimVideo'},
-                {container: videoMayaContainer, videoId: 'mayaVideo'}
+                {container: videoMayaContainer, videoId: 'mayaVideo'},
+                {container: videoTripleContainer, videoIds: ['tripleVideo1', 'tripleVideo2', 'tripleVideo3']}
             ];
             
             containers.forEach(item => {
@@ -1364,6 +1543,12 @@
                     if (item.videoId) {
                         const video = document.getElementById(item.videoId);
                         if (video) video.pause();
+                    }
+                    if (item.videoIds) {
+                        item.videoIds.forEach(videoId => {
+                            const video = document.getElementById(videoId);
+                            if (video) video.pause();
+                        });
                     }
                 }
             });
