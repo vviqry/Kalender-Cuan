@@ -468,6 +468,16 @@
             background: linear-gradient(135deg, #afb42b 0%, #689f38 100%);
         }
 
+        /* Button 7: Video Ax (Grin/Senyum) */
+        .floating-button.video-ax {
+            background: linear-gradient(135deg, #ffeb3b 0%, #ffc107 100%);
+            color: #000;
+        }
+
+        .floating-button.video-ax:hover {
+            background: linear-gradient(135deg, #fdd835 0%, #ffb300 100%);
+        }
+
         /* Container Video Umum */
         .video-container {
             position: fixed;
@@ -647,6 +657,75 @@
             color: #33691e;
             border-top: 1px solid #c5e1a5;
             text-align: center;
+        }
+
+        /* Video Ax Container (video vertikal tunggal dengan quote tooltip) */
+        #videoAxContainer {
+            width: 320px;
+        }
+
+        #videoAxContainer .video-header {
+            background: linear-gradient(135deg, #ffeb3b 0%, #ffc107 100%);
+        }
+
+        #videoAxContainer .video-title {
+            color: #000;
+        }
+
+        #videoAxContainer .video-close {
+            color: #000;
+        }
+
+        #videoAxContainer .video-message {
+            background-color: #fffde7;
+            color: #f57f17;
+            border-top: 1px solid #fff59d;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Quote dengan Tooltip */
+        .quote-with-tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            border-bottom: 1px dashed #f57f17;
+        }
+
+        .quote-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            background-color: #333;
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1010;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .quote-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 8px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
+        .quote-with-tooltip:hover .quote-tooltip {
+            visibility: visible;
+            opacity: 1;
         }
 
         /* Collapse Container Styling */
@@ -989,6 +1068,11 @@
         <button class="floating-button video-triple" onclick="toggleVideoTriple()" title="Catatan Dopamin Hits: Baik & Buruk">
             ☣️
         </button>
+        
+        <!-- Button 7: Video Ax (Grin/Senyum) -->
+        <button class="floating-button video-ax" onclick="toggleVideoAx()" title="You do more, you get more, you lose more">
+            😁
+        </button>
     </div>
 
     <!-- Container 1: 13 Kebiasaan -->
@@ -1318,6 +1402,32 @@
         </div>
     </div>
 
+    <!-- Container 7: Video Ax (Grin/Senyum) -->
+    <div class="video-container" id="videoAxContainer">
+        <div class="video-header">
+            <h3 class="video-title">😁 Life Wisdom</h3>
+            <button class="video-close" onclick="toggleVideoAx()">×</button>
+        </div>
+        <div class="video-content">
+            <div class="video-player vertical">
+                <video id="axVideo" controls playsinline>
+                    <source src="ax.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
+        </div>
+        <div class="video-message">
+            <span class="quote-with-tooltip">
+                💡 <strong>"You do more, you get more, you lose more"</strong>
+                <span class="quote-tooltip">
+                    <strong>Makna Quote:</strong><br><br>
+                    Semakin banyak kamu melakukan sesuatu, semakin banyak yang kamu dapatkan — baik pengalaman, keterampilan, maupun hasil. Namun, semakin banyak pula yang kamu "hilangkan" seperti waktu, energi, atau kesempatan lain.<br><br>
+                    <em>Intinya:</em> Setiap pilihan memiliki trade-off. Fokus pada apa yang benar-benar penting, dan siap untuk melepaskan hal lain demi mencapai tujuan utamamu.
+                </span>
+            </span>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
@@ -1437,6 +1547,24 @@
         }
     }
 
+    // Fungsi untuk toggle container Video Ax
+    function toggleVideoAx() {
+        const videoAxContainer = document.getElementById('videoAxContainer');
+        const axVideo = document.getElementById('axVideo');
+        
+        videoAxContainer.classList.toggle('show');
+        // Tutup container lain jika terbuka
+        closeOtherContainers(videoAxContainer);
+        
+        // Reset video ke awal saat dibuka
+        if (videoAxContainer.classList.contains('show')) {
+            axVideo.currentTime = 0;
+            pauseOtherVideos('axVideo');
+        } else {
+            axVideo.pause();
+        }
+    }
+
     // Fungsi untuk menutup semua container kecuali yang aktif
     function closeOtherContainers(activeContainer) {
         const containers = [
@@ -1445,7 +1573,8 @@
             document.getElementById('videoDangerContainer'),
             document.getElementById('videoMuslimContainer'),
             document.getElementById('videoMayaContainer'),
-            document.getElementById('videoTripleContainer')
+            document.getElementById('videoTripleContainer'),
+            document.getElementById('videoAxContainer')
         ];
         
         containers.forEach(container => {
@@ -1463,7 +1592,8 @@
             document.getElementById('mayaVideo'),
             document.getElementById('tripleVideo1'),
             document.getElementById('tripleVideo2'),
-            document.getElementById('tripleVideo3')
+            document.getElementById('tripleVideo3'),
+            document.getElementById('axVideo')
         ];
         
         videos.forEach(video => {
@@ -1479,7 +1609,8 @@
             'mayaVideo': document.getElementById('mayaVideo'),
             'tripleVideo1': document.getElementById('tripleVideo1'),
             'tripleVideo2': document.getElementById('tripleVideo2'),
-            'tripleVideo3': document.getElementById('tripleVideo3')
+            'tripleVideo3': document.getElementById('tripleVideo3'),
+            'axVideo': document.getElementById('axVideo')
         };
         
         for (const [id, video] of Object.entries(videos)) {
@@ -1497,6 +1628,7 @@
         const videoMuslimContainer = document.getElementById('videoMuslimContainer');
         const videoMayaContainer = document.getElementById('videoMayaContainer');
         const videoTripleContainer = document.getElementById('videoTripleContainer');
+        const videoAxContainer = document.getElementById('videoAxContainer');
         
         const habitsButton = document.querySelector('.floating-button.habits');
         const maturityButton = document.querySelector('.floating-button.maturity');
@@ -1504,6 +1636,7 @@
         const videoMuslimButton = document.querySelector('.floating-button.video-muslim');
         const videoMayaButton = document.querySelector('.floating-button.video-maya');
         const videoTripleButton = document.querySelector('.floating-button.video-triple');
+        const videoAxButton = document.querySelector('.floating-button.video-ax');
         
         const videoCloseButtons = document.querySelectorAll('.video-close');
         
@@ -1514,7 +1647,8 @@
             videoDangerContainer.contains(event.target) ||
             videoMuslimContainer.contains(event.target) ||
             videoMayaContainer.contains(event.target) ||
-            videoTripleContainer.contains(event.target);
+            videoTripleContainer.contains(event.target) ||
+            videoAxContainer.contains(event.target);
         
         const isClickOnButton = 
             habitsButton.contains(event.target) ||
@@ -1522,7 +1656,8 @@
             videoDangerButton.contains(event.target) ||
             videoMuslimButton.contains(event.target) ||
             videoMayaButton.contains(event.target) ||
-            videoTripleButton.contains(event.target);
+            videoTripleButton.contains(event.target) ||
+            videoAxButton.contains(event.target);
         
         const isClickOnVideoClose = Array.from(videoCloseButtons).some(btn => btn.contains(event.target));
         
@@ -1534,7 +1669,8 @@
                 {container: videoDangerContainer, videoId: 'bosanVideo'},
                 {container: videoMuslimContainer, videoId: 'muslimVideo'},
                 {container: videoMayaContainer, videoId: 'mayaVideo'},
-                {container: videoTripleContainer, videoIds: ['tripleVideo1', 'tripleVideo2', 'tripleVideo3']}
+                {container: videoTripleContainer, videoIds: ['tripleVideo1', 'tripleVideo2', 'tripleVideo3']},
+                {container: videoAxContainer, videoId: 'axVideo'}
             ];
             
             containers.forEach(item => {
