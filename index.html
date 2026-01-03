@@ -659,9 +659,12 @@
             text-align: center;
         }
 
-        /* Video Ax Container (video vertikal tunggal dengan quote tooltip) */
+        /* Video Ax Container (2 video vertikal berdampingan dengan quote tooltip) */
         #videoAxContainer {
-            width: 320px;
+            width: auto;
+            max-width: 95vw;
+            background-color: #000;
+            border-radius: 15px;
         }
 
         #videoAxContainer .video-header {
@@ -674,6 +677,48 @@
 
         #videoAxContainer .video-close {
             color: #000;
+        }
+
+        /* Grid untuk 2 video vertikal */
+        .video-dual-grid {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            padding: 15px;
+            background-color: #000;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .video-dual-item {
+            width: 280px;
+            flex-shrink: 0;
+            border: 3px solid #ffeb3b;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-dual-item video {
+            width: 280px;
+            height: 498px; /* Rasio 9:16 vertikal = 280 * 16/9 */
+            object-fit: contain;
+            background-color: #000;
+            display: block;
+        }
+
+        .video-dual-item .video-item-caption {
+            padding: 10px 12px;
+            background-color: #fffde7;
+            color: #f57f17;
+            font-size: 13px;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #videoAxContainer .video-message {
@@ -937,6 +982,30 @@
             
             #videoMayaContainer .video-player.horizontal {
                 height: calc(95vw * 9/16); /* Proporsional */
+            }
+
+            /* Video Dual untuk mobile - horizontal scroll */
+            .video-dual-grid {
+                gap: 10px;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 10px;
+            }
+
+            .video-dual-item {
+                width: 220px;
+                flex-shrink: 0;
+            }
+
+            .video-dual-item video {
+                width: 220px;
+                height: 391px; /* 220 * 16/9 = 391 - rasio 9:16 */
+            }
+
+            .video-dual-item .video-item-caption {
+                font-size: 11px;
+                padding: 8px;
+                min-height: 50px;
             }
             
             .floating-container {
@@ -1402,29 +1471,53 @@
         </div>
     </div>
 
-    <!-- Container 7: Video Ax (Grin/Senyum) -->
+    <!-- Container 7: Video Ax (Grin/Senyum) - Dual Video -->
     <div class="video-container" id="videoAxContainer">
         <div class="video-header">
-            <h3 class="video-title">😁 Life Wisdom</h3>
+            <h3 class="video-title">😁 Life Wisdom - Rahasia Sukses</h3>
             <button class="video-close" onclick="toggleVideoAx()">×</button>
         </div>
-        <div class="video-content">
-            <div class="video-player vertical">
+        <div class="video-dual-grid">
+            <!-- Video 1: ax.mp4 -->
+            <div class="video-dual-item">
                 <video id="axVideo" controls playsinline>
                     <source src="ax.mp4" type="video/mp4">
                     Browser Anda tidak mendukung pemutar video.
                 </video>
+                <div class="video-item-caption">
+                    <span class="quote-with-tooltip">
+                        💡 <strong>"You do more, you get more, you lose more"</strong>
+                        <span class="quote-tooltip">
+                            <strong>Makna Quote:</strong><br><br>
+                            Semakin banyak kamu melakukan sesuatu, semakin banyak yang kamu dapatkan — baik pengalaman, keterampilan, maupun hasil. Namun, semakin banyak pula yang kamu "hilangkan" seperti waktu, energi, atau kesempatan lain.<br><br>
+                            <em>Intinya:</em> Setiap pilihan memiliki trade-off. Fokus pada apa yang benar-benar penting, dan siap untuk melepaskan hal lain demi mencapai tujuan utamamu.
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <!-- Video 2: xv.mp4 -->
+            <div class="video-dual-item">
+                <video id="xvVideo" controls playsinline>
+                    <source src="xv.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+                <div class="video-item-caption">
+                    <span class="quote-with-tooltip">
+                        🏆 <strong>"Yang Tenang Yang Menang"</strong>
+                        <span class="quote-tooltip">
+                            <strong>Rahasia Mudah Cari Duit:</strong><br><br>
+                            Orang yang tenang punya kendali atas emosi dan keputusannya. Di dunia bisnis dan keuangan, kepanikan adalah musuh terbesar. Dengan tetap tenang, kamu bisa:<br><br>
+                            • Mengambil keputusan lebih bijak<br>
+                            • Melihat peluang yang orang lain lewati<br>
+                            • Bertindak dengan strategi, bukan reaksi<br><br>
+                            <em>Intinya:</em> Ketenangan adalah senjata rahasia untuk memenangkan permainan uang.
+                        </span>
+                    </span>
+                </div>
             </div>
         </div>
         <div class="video-message">
-            <span class="quote-with-tooltip">
-                💡 <strong>"You do more, you get more, you lose more"</strong>
-                <span class="quote-tooltip">
-                    <strong>Makna Quote:</strong><br><br>
-                    Semakin banyak kamu melakukan sesuatu, semakin banyak yang kamu dapatkan — baik pengalaman, keterampilan, maupun hasil. Namun, semakin banyak pula yang kamu "hilangkan" seperti waktu, energi, atau kesempatan lain.<br><br>
-                    <em>Intinya:</em> Setiap pilihan memiliki trade-off. Fokus pada apa yang benar-benar penting, dan siap untuk melepaskan hal lain demi mencapai tujuan utamamu.
-                </span>
-            </span>
+            🧠 <strong>Tips Sukses:</strong> Tenangkan pikiran, tajamkan strategi, dan action!
         </div>
     </div>
 
@@ -1547,21 +1640,24 @@
         }
     }
 
-    // Fungsi untuk toggle container Video Ax
+    // Fungsi untuk toggle container Video Ax (Dual Video)
     function toggleVideoAx() {
         const videoAxContainer = document.getElementById('videoAxContainer');
         const axVideo = document.getElementById('axVideo');
+        const xvVideo = document.getElementById('xvVideo');
         
         videoAxContainer.classList.toggle('show');
         // Tutup container lain jika terbuka
         closeOtherContainers(videoAxContainer);
         
-        // Reset video ke awal saat dibuka
+        // Reset kedua video ke awal saat dibuka
         if (videoAxContainer.classList.contains('show')) {
             axVideo.currentTime = 0;
+            xvVideo.currentTime = 0;
             pauseOtherVideos('axVideo');
         } else {
             axVideo.pause();
+            xvVideo.pause();
         }
     }
 
@@ -1593,7 +1689,8 @@
             document.getElementById('tripleVideo1'),
             document.getElementById('tripleVideo2'),
             document.getElementById('tripleVideo3'),
-            document.getElementById('axVideo')
+            document.getElementById('axVideo'),
+            document.getElementById('xvVideo')
         ];
         
         videos.forEach(video => {
@@ -1610,7 +1707,8 @@
             'tripleVideo1': document.getElementById('tripleVideo1'),
             'tripleVideo2': document.getElementById('tripleVideo2'),
             'tripleVideo3': document.getElementById('tripleVideo3'),
-            'axVideo': document.getElementById('axVideo')
+            'axVideo': document.getElementById('axVideo'),
+            'xvVideo': document.getElementById('xvVideo')
         };
         
         for (const [id, video] of Object.entries(videos)) {
