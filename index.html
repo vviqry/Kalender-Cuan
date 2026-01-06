@@ -1101,12 +1101,14 @@
 
         .goal-item {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
             padding: 12px;
+            padding-right: 30px;
             background: linear-gradient(135deg, #e0f7fa 0%, #b2dfdb 100%);
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
         }
 
         /* Small Round Photo */
@@ -1184,10 +1186,11 @@
             margin-bottom: 4px;
             padding: 2px 0;
             resize: none;
-            min-height: 40px;
+            min-height: 20px;
             line-height: 1.4;
             font-family: inherit;
-            overflow-y: auto;
+            overflow: hidden;
+            field-sizing: content;
         }
 
         .goal-desc-input:focus {
@@ -1218,21 +1221,23 @@
             color: #ffcc80;
         }
 
-        /* Goal Actions */
+        /* Goal Actions - Small button at top-right */
         .goal-delete-btn {
             background: #ef5350;
             color: white;
             border: none;
-            width: 32px;
-            height: 32px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
-            flex-shrink: 0;
+            position: absolute;
+            top: 8px;
+            right: 8px;
         }
 
         .goal-delete-btn:hover {
