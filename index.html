@@ -1038,6 +1038,299 @@
                 height: 391px; /* 220 * 16/9 = 391 - rasio 9:16 */
             }
         }
+
+        /* Floating Button Top Left - Target Goals */
+        .floating-button-top-right {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+        }
+
+        .floating-button.target-goals {
+            background: linear-gradient(135deg, #00bcd4 0%, #009688 100%);
+        }
+
+        .floating-button.target-goals:hover {
+            background: linear-gradient(135deg, #00acc1 0%, #00897b 100%);
+        }
+
+        /* Target Goals Container */
+        #targetGoalsContainer {
+            width: 550px;
+            max-width: 95vw;
+        }
+
+        .target-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00897b;
+            text-align: center;
+            margin-bottom: 5px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #00bcd4;
+        }
+
+        .target-subtitle {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .add-goal-btn {
+            width: 100%;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #00bcd4 0%, #009688 100%);
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        .add-goal-btn:hover {
+            background: linear-gradient(135deg, #00acc1 0%, #00897b 100%);
+        }
+
+        .goals-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2dfdb 100%);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Small Round Photo */
+        .goal-image-container {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .goal-image-small {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+            border: 3px solid #00bcd4;
+            transition: transform 0.2s ease;
+        }
+
+        .goal-image-small:hover {
+            transform: scale(1.1);
+        }
+
+        .goal-image-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #cfd8dc 0%, #b0bec5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 3px dashed #00bcd4;
+            font-size: 24px;
+            color: #00897b;
+            transition: all 0.2s ease;
+        }
+
+        .goal-image-placeholder:hover {
+            background: linear-gradient(135deg, #b0bec5 0%, #90a4ae 100%);
+            transform: scale(1.1);
+        }
+
+        /* Goal Info */
+        .goal-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .goal-title-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            font-weight: bold;
+            color: #00695c;
+            margin-bottom: 4px;
+            padding: 2px 0;
+        }
+
+        .goal-title-input:focus {
+            outline: none;
+            border-bottom: 1px solid #00bcd4;
+        }
+
+        .goal-title-input::placeholder {
+            color: #80cbc4;
+        }
+
+        .goal-desc-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 4px;
+            padding: 2px 0;
+        }
+
+        .goal-desc-input:focus {
+            outline: none;
+            border-bottom: 1px solid #00bcd4;
+        }
+
+        .goal-desc-input::placeholder {
+            color: #a5d6a7;
+        }
+
+        .goal-price-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            font-weight: bold;
+            color: #e65100;
+            padding: 2px 0;
+        }
+
+        .goal-price-input:focus {
+            outline: none;
+            border-bottom: 1px solid #ff9800;
+        }
+
+        .goal-price-input::placeholder {
+            color: #ffcc80;
+        }
+
+        /* Goal Actions */
+        .goal-delete-btn {
+            background: #ef5350;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .goal-delete-btn:hover {
+            background: #d32f2f;
+            transform: scale(1.1);
+        }
+
+        /* Image Upload Hidden Input */
+        .goal-image-input {
+            display: none;
+        }
+
+        /* Photo Zoom Overlay - 5x larger with 25px border-radius */
+        .goal-image-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            cursor: pointer;
+        }
+
+        .goal-image-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .goal-image-large {
+            width: 500px;  /* 60px * 5 = 300px */
+            height: 500px;
+            border-radius: 25px;
+            object-fit: cover;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive untuk target goals */
+        @media (max-width: 480px) {
+            .floating-button-top-right {
+                top: 15px;
+                left: 15px;
+            }
+
+            .floating-button-top-right .floating-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            #targetGoalsContainer {
+                width: 95vw;
+                padding: 15px;
+            }
+
+            .goal-item {
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .goal-image-small,
+            .goal-image-placeholder {
+                width: 50px;
+                height: 50px;
+            }
+
+            .goal-title-input {
+                font-size: 14px;
+            }
+
+            .goal-desc-input {
+                font-size: 12px;
+            }
+
+            .goal-price-input {
+                font-size: 13px;
+            }
+
+            .goal-image-large {
+                width: 250px;
+                height: 250px;
+            }
+        }
     </style>
 </head>
 
@@ -1106,6 +1399,13 @@
         </div>
         <!-- Reminder Image -->
         <img id="reminderImage" src="foto.jpg" alt="Daily Reminder">
+    </div>
+
+    <!-- Floating Button Top Right - Target Goals -->
+    <div class="floating-button-top-right">
+        <button class="floating-button target-goals" onclick="toggleTargetGoals()" title="Target Jangka Panjang - Alasan Menabung">
+            🎯
+        </button>
     </div>
 
     <!-- Floating Button dan Container -->
@@ -1521,6 +1821,25 @@
         </div>
     </div>
 
+    <!-- Container: Target Jangka Panjang -->
+    <div class="collapse-container target-container" id="targetGoalsContainer">
+        <h3 class="target-title">🎯 Target Jangka Panjang</h3>
+        <p class="target-subtitle">Alasan kenapa gua memulai...</p>
+        
+        <!-- Add New Goal Button -->
+        <button class="btn btn-primary add-goal-btn" onclick="addNewGoal()">
+            + Tambah Target Baru
+        </button>
+        
+        <!-- Goals List -->
+        <div id="goalsList" class="goals-list"></div>
+    </div>
+
+    <!-- Image Zoom Overlay -->
+    <div class="goal-image-overlay" id="goalImageOverlay" onclick="closeImageOverlay()">
+        <img class="goal-image-large" id="goalImageLarge" src="" alt="Goal Image">
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
@@ -1561,6 +1880,136 @@
         closeOtherContainers(maturityContainer);
         pauseAllVideos();
     }
+
+    // ==================== TARGET GOALS FUNCTIONS ====================
+    
+    // Load goals from localStorage
+    let targetGoals = JSON.parse(localStorage.getItem('targetGoals')) || [];
+
+    // Toggle Target Goals Container
+    function toggleTargetGoals() {
+        const targetGoalsContainer = document.getElementById('targetGoalsContainer');
+        targetGoalsContainer.classList.toggle('show');
+        closeOtherContainers(targetGoalsContainer);
+        pauseAllVideos();
+        
+        // Render goals when opened
+        if (targetGoalsContainer.classList.contains('show')) {
+            renderGoals();
+        }
+    }
+
+    // Render all goals to DOM
+    function renderGoals() {
+        const goalsList = document.getElementById('goalsList');
+        goalsList.innerHTML = '';
+        
+        targetGoals.forEach((goal, index) => {
+            const goalItem = document.createElement('div');
+            goalItem.className = 'goal-item';
+            goalItem.innerHTML = `
+                <div class="goal-image-container">
+                    ${goal.image ? 
+                        `<img src="${goal.image}" class="goal-image-small" onclick="showImageOverlay(${index})" alt="Goal">` :
+                        `<div class="goal-image-placeholder" onclick="triggerImageUpload(${index})">📷</div>`
+                    }
+                    <input type="file" class="goal-image-input" id="goalImage${index}" accept="image/*" onchange="handleGoalImageUpload(${index}, event)">
+                </div>
+                <div class="goal-info">
+                    <input type="text" class="goal-title-input" value="${goal.title}" 
+                           placeholder="Judul target..." onblur="updateGoal(${index}, 'title', this.value)">
+                    <input type="text" class="goal-desc-input" value="${goal.description}" 
+                           placeholder="Deskripsi..." onblur="updateGoal(${index}, 'description', this.value)">
+                    <input type="text" class="goal-price-input" value="${formatGoalPrice(goal.price)}" 
+                           placeholder="Rp 0" onfocus="this.value = goal.price || ''" 
+                           onblur="updateGoalPrice(${index}, this.value)">
+                </div>
+                <button class="goal-delete-btn" onclick="deleteGoal(${index})">×</button>
+            `;
+            goalsList.appendChild(goalItem);
+        });
+    }
+
+    // Format price for display
+    function formatGoalPrice(price) {
+        if (!price || price === 0) return '';
+        return 'Rp ' + parseInt(price).toLocaleString('id-ID');
+    }
+
+    // Add new goal
+    function addNewGoal() {
+        targetGoals.push({
+            image: '',
+            title: '',
+            description: '',
+            price: 0
+        });
+        saveGoals();
+        renderGoals();
+    }
+
+    // Update goal field
+    function updateGoal(index, field, value) {
+        targetGoals[index][field] = value;
+        saveGoals();
+    }
+
+    // Update goal price
+    function updateGoalPrice(index, value) {
+        const cleanPrice = value.replace(/[^0-9]/g, '');
+        targetGoals[index].price = parseInt(cleanPrice) || 0;
+        saveGoals();
+        renderGoals();
+    }
+
+    // Delete goal
+    function deleteGoal(index) {
+        if (confirm('Hapus target ini?')) {
+            targetGoals.splice(index, 1);
+            saveGoals();
+            renderGoals();
+        }
+    }
+
+    // Save goals to localStorage
+    function saveGoals() {
+        localStorage.setItem('targetGoals', JSON.stringify(targetGoals));
+    }
+
+    // Trigger file upload
+    function triggerImageUpload(index) {
+        document.getElementById(`goalImage${index}`).click();
+    }
+
+    // Handle image upload
+    function handleGoalImageUpload(index, event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                targetGoals[index].image = e.target.result;
+                saveGoals();
+                renderGoals();
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Show image overlay (zoom 5x)
+    function showImageOverlay(index) {
+        const overlay = document.getElementById('goalImageOverlay');
+        const largeImage = document.getElementById('goalImageLarge');
+        largeImage.src = targetGoals[index].image;
+        overlay.classList.add('show');
+    }
+
+    // Close image overlay
+    function closeImageOverlay() {
+        const overlay = document.getElementById('goalImageOverlay');
+        overlay.classList.remove('show');
+    }
+
+    // ==================== END TARGET GOALS FUNCTIONS ====================
 
     // Fungsi untuk toggle container Video Bosan
     function toggleVideoDanger() {
@@ -1670,7 +2119,8 @@
             document.getElementById('videoMuslimContainer'),
             document.getElementById('videoMayaContainer'),
             document.getElementById('videoTripleContainer'),
-            document.getElementById('videoAxContainer')
+            document.getElementById('videoAxContainer'),
+            document.getElementById('targetGoalsContainer')
         ];
         
         containers.forEach(container => {
@@ -1727,6 +2177,7 @@
         const videoMayaContainer = document.getElementById('videoMayaContainer');
         const videoTripleContainer = document.getElementById('videoTripleContainer');
         const videoAxContainer = document.getElementById('videoAxContainer');
+        const targetGoalsContainer = document.getElementById('targetGoalsContainer');
         
         const habitsButton = document.querySelector('.floating-button.habits');
         const maturityButton = document.querySelector('.floating-button.maturity');
@@ -1735,6 +2186,7 @@
         const videoMayaButton = document.querySelector('.floating-button.video-maya');
         const videoTripleButton = document.querySelector('.floating-button.video-triple');
         const videoAxButton = document.querySelector('.floating-button.video-ax');
+        const targetGoalsButton = document.querySelector('.floating-button.target-goals');
         
         const videoCloseButtons = document.querySelectorAll('.video-close');
         
@@ -1746,7 +2198,8 @@
             videoMuslimContainer.contains(event.target) ||
             videoMayaContainer.contains(event.target) ||
             videoTripleContainer.contains(event.target) ||
-            videoAxContainer.contains(event.target);
+            videoAxContainer.contains(event.target) ||
+            targetGoalsContainer.contains(event.target);
         
         const isClickOnButton = 
             habitsButton.contains(event.target) ||
@@ -1755,7 +2208,8 @@
             videoMuslimButton.contains(event.target) ||
             videoMayaButton.contains(event.target) ||
             videoTripleButton.contains(event.target) ||
-            videoAxButton.contains(event.target);
+            videoAxButton.contains(event.target) ||
+            targetGoalsButton.contains(event.target);
         
         const isClickOnVideoClose = Array.from(videoCloseButtons).some(btn => btn.contains(event.target));
         
@@ -1768,7 +2222,8 @@
                 {container: videoMuslimContainer, videoId: 'muslimVideo'},
                 {container: videoMayaContainer, videoId: 'mayaVideo'},
                 {container: videoTripleContainer, videoIds: ['tripleVideo1', 'tripleVideo2', 'tripleVideo3']},
-                {container: videoAxContainer, videoId: 'axVideo'}
+                {container: videoAxContainer, videoId: 'axVideo'},
+                {container: targetGoalsContainer}
             ];
             
             containers.forEach(item => {
