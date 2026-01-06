@@ -1183,6 +1183,11 @@
             color: #444;
             margin-bottom: 4px;
             padding: 2px 0;
+            resize: none;
+            min-height: 40px;
+            line-height: 1.4;
+            font-family: inherit;
+            overflow-y: auto;
         }
 
         .goal-desc-input:focus {
@@ -1918,8 +1923,8 @@
                 <div class="goal-info">
                     <input type="text" class="goal-title-input" value="${goal.title}" 
                            placeholder="Judul target..." onblur="updateGoal(${index}, 'title', this.value)">
-                    <input type="text" class="goal-desc-input" value="${goal.description}" 
-                           placeholder="Deskripsi..." onblur="updateGoal(${index}, 'description', this.value)">
+                    <textarea class="goal-desc-input" placeholder="Deskripsi..." 
+                              onblur="updateGoal(${index}, 'description', this.value)">${goal.description}</textarea>
                     <input type="text" class="goal-price-input" value="${formatGoalPrice(goal.price)}" 
                            placeholder="Rp 0" onfocus="this.value = goal.price || ''" 
                            onblur="updateGoalPrice(${index}, this.value)">
