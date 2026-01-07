@@ -478,6 +478,83 @@
             background: linear-gradient(135deg, #fdd835 0%, #ffb300 100%);
         }
 
+        /* Floating Container Left - New Buttons */
+        .floating-container-left {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        /* Button 8: Video Bisnis (Briefcase) */
+        .floating-button.video-bisnis {
+            background: linear-gradient(135deg, #455a64 0%, #37474f 100%);
+        }
+
+        .floating-button.video-bisnis:hover {
+            background: linear-gradient(135deg, #37474f 0%, #263238 100%);
+        }
+
+        /* Button 9: Video KING (Crown) */
+        .floating-button.video-king {
+            background: linear-gradient(135deg, #ffd700 0%, #ffa000 100%);
+            color: #000;
+        }
+
+        .floating-button.video-king:hover {
+            background: linear-gradient(135deg, #ffca28 0%, #ff8f00 100%);
+        }
+
+        /* Video Bisnis Container */
+        #videoBisnisContainer {
+            width: auto;
+            max-width: 95vw;
+            background-color: #000;
+            border-radius: 15px;
+        }
+
+        #videoBisnisContainer .video-header {
+            background: linear-gradient(135deg, #455a64 0%, #37474f 100%);
+        }
+
+        #videoBisnisContainer .video-message {
+            background-color: #eceff1;
+            color: #37474f;
+            border-top: 1px solid #b0bec5;
+            text-align: center;
+        }
+
+        /* Video KING Container */
+        #videoKingContainer {
+            width: auto;
+            max-width: 95vw;
+            background-color: #000;
+            border-radius: 15px;
+        }
+
+        #videoKingContainer .video-header {
+            background: linear-gradient(135deg, #ffd700 0%, #ffa000 100%);
+        }
+
+        #videoKingContainer .video-title {
+            color: #000;
+        }
+
+        #videoKingContainer .video-close {
+            color: #000;
+        }
+
+        #videoKingContainer .video-message {
+            background-color: #fff8e1;
+            color: #ff6f00;
+            border-top: 1px solid #ffe082;
+            text-align: center;
+        }
+
         /* Container Video Umum */
         .video-container {
             position: fixed;
@@ -1012,6 +1089,11 @@
                 bottom: 15px;
                 right: 15px;
             }
+
+            .floating-container-left {
+                bottom: 15px;
+                left: 15px;
+            }
             
             .floating-button {
                 width: 55px;
@@ -1454,6 +1536,19 @@
         </button>
     </div>
 
+    <!-- Floating Container Left - New Buttons -->
+    <div class="floating-container-left">
+        <!-- Button 8: Video Bisnis (Briefcase) -->
+        <button class="floating-button video-bisnis" onclick="toggleVideoBisnis()" title="Mindset Bisnis & Entrepreneur">
+            💼
+        </button>
+        
+        <!-- Button 9: Video KING (Crown) -->
+        <button class="floating-button video-king" onclick="toggleVideoKing()" title="Be The KING - Motivasi">
+            👑
+        </button>
+    </div>
+
     <!-- Container 1: 13 Kebiasaan -->
     <div class="collapse-container" id="habitsContainer">
         <h3 class="habit-title">13 Kebiasaan yang Harus Dihilangkan</h3>
@@ -1831,6 +1926,100 @@
         </div>
     </div>
 
+    <!-- Container 8: Video Bisnis (Dual Video) -->
+    <div class="video-container" id="videoBisnisContainer">
+        <div class="video-header">
+            <h3 class="video-title">💼 Mindset Bisnis & Entrepreneur</h3>
+            <button class="video-close" onclick="toggleVideoBisnis()">×</button>
+        </div>
+        <div class="video-dual-grid">
+            <!-- Video 1: Bisnis.mp4 -->
+            <div class="video-dual-item">
+                <video id="bisnisVideo1" controls playsinline>
+                    <source src="Bisnis.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+                <div class="video-item-caption">
+                    <span class="quote-with-tooltip">
+                        💡 <strong>"Think Big, Start Small, Act Now"</strong>
+                        <span class="quote-tooltip">
+                            <strong>Prinsip Bisnis:</strong><br><br>
+                            Bermimpi besar itu penting, tapi mulai dari langkah kecil yang bisa dilakukan sekarang. Jangan tunggu sempurna!<br><br>
+                            <em>Intinya:</em> Eksekusi lebih penting daripada perencanaan sempurna.
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <!-- Video 2: Bisnis1.mp4 -->
+            <div class="video-dual-item">
+                <video id="bisnisVideo2" controls playsinline>
+                    <source src="Bisnis1.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+                <div class="video-item-caption">
+                    <span class="quote-with-tooltip">
+                        🚀 <strong>"Revenue is Vanity, Profit is Sanity"</strong>
+                        <span class="quote-tooltip">
+                            <strong>Wisdom Bisnis:</strong><br><br>
+                            Omzet besar tidak berarti apa-apa jika tidak ada keuntungan. Fokus pada margin dan profit yang sehat.<br><br>
+                            <em>Intinya:</em> Cash is King. Profit adalah napas bisnis.
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="video-message">
+            💼 <strong>Business Mindset:</strong> Belajar dari pengalaman, gagal cepat, bangkit lebih cepat!
+        </div>
+    </div>
+
+    <!-- Container 9: Video KING (Dual Video) -->
+    <div class="video-container" id="videoKingContainer">
+        <div class="video-header">
+            <h3 class="video-title">👑 Be The KING - Motivasi</h3>
+            <button class="video-close" onclick="toggleVideoKing()">×</button>
+        </div>
+        <div class="video-dual-grid">
+            <!-- Video 1: KING.mp4 -->
+            <div class="video-dual-item">
+                <video id="kingVideo1" controls playsinline>
+                    <source src="KING.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+                <div class="video-item-caption">
+                    <span class="quote-with-tooltip">
+                        👑 <strong>"A King is not born, He is made"</strong>
+                        <span class="quote-tooltip">
+                            <strong>Mentalitas Raja:</strong><br><br>
+                            Tidak ada yang lahir sebagai pemimpin. Kebesaran dibangun melalui kerja keras, disiplin, dan pengorbanan.<br><br>
+                            <em>Intinya:</em> Jadilah raja atas hidupmu sendiri.
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <!-- Video 2: KING1.mp4 -->
+            <div class="video-dual-item">
+                <video id="kingVideo2" controls playsinline>
+                    <source src="KING1.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+                <div class="video-item-caption">
+                    <span class="quote-with-tooltip">
+                        🦁 <strong>"Lions don't lose sleep over the opinions of sheep"</strong>
+                        <span class="quote-tooltip">
+                            <strong>Mindset Singa:</strong><br><br>
+                            Jangan buang waktumu memikirkan opini orang-orang yang tidak relevan. Fokus pada visimu!<br><br>
+                            <em>Intinya:</em> Jadi pemimpin, bukan pengikut.
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="video-message">
+            👑 <strong>King's Wisdom:</strong> Kuasai dirimu, kuasai dunia!
+        </div>
+    </div>
+
     <!-- Container: Target Jangka Panjang -->
     <div class="collapse-container target-container" id="targetGoalsContainer">
         <h3 class="target-title">🎯 Target Jangka Panjang</h3>
@@ -2120,6 +2309,48 @@
         }
     }
 
+    // Fungsi untuk toggle container Video Bisnis (Dual Video)
+    function toggleVideoBisnis() {
+        const videoBisnisContainer = document.getElementById('videoBisnisContainer');
+        const bisnisVideo1 = document.getElementById('bisnisVideo1');
+        const bisnisVideo2 = document.getElementById('bisnisVideo2');
+        
+        videoBisnisContainer.classList.toggle('show');
+        // Tutup container lain jika terbuka
+        closeOtherContainers(videoBisnisContainer);
+        
+        // Reset kedua video ke awal saat dibuka
+        if (videoBisnisContainer.classList.contains('show')) {
+            bisnisVideo1.currentTime = 0;
+            bisnisVideo2.currentTime = 0;
+            pauseOtherVideos('bisnisVideo1');
+        } else {
+            bisnisVideo1.pause();
+            bisnisVideo2.pause();
+        }
+    }
+
+    // Fungsi untuk toggle container Video KING (Dual Video)
+    function toggleVideoKing() {
+        const videoKingContainer = document.getElementById('videoKingContainer');
+        const kingVideo1 = document.getElementById('kingVideo1');
+        const kingVideo2 = document.getElementById('kingVideo2');
+        
+        videoKingContainer.classList.toggle('show');
+        // Tutup container lain jika terbuka
+        closeOtherContainers(videoKingContainer);
+        
+        // Reset kedua video ke awal saat dibuka
+        if (videoKingContainer.classList.contains('show')) {
+            kingVideo1.currentTime = 0;
+            kingVideo2.currentTime = 0;
+            pauseOtherVideos('kingVideo1');
+        } else {
+            kingVideo1.pause();
+            kingVideo2.pause();
+        }
+    }
+
     // Fungsi untuk menutup semua container kecuali yang aktif
     function closeOtherContainers(activeContainer) {
         const containers = [
@@ -2130,6 +2361,8 @@
             document.getElementById('videoMayaContainer'),
             document.getElementById('videoTripleContainer'),
             document.getElementById('videoAxContainer'),
+            document.getElementById('videoBisnisContainer'),
+            document.getElementById('videoKingContainer'),
             document.getElementById('targetGoalsContainer')
         ];
         
@@ -2150,7 +2383,11 @@
             document.getElementById('tripleVideo2'),
             document.getElementById('tripleVideo3'),
             document.getElementById('axVideo'),
-            document.getElementById('xvVideo')
+            document.getElementById('xvVideo'),
+            document.getElementById('bisnisVideo1'),
+            document.getElementById('bisnisVideo2'),
+            document.getElementById('kingVideo1'),
+            document.getElementById('kingVideo2')
         ];
         
         videos.forEach(video => {
@@ -2168,7 +2405,11 @@
             'tripleVideo2': document.getElementById('tripleVideo2'),
             'tripleVideo3': document.getElementById('tripleVideo3'),
             'axVideo': document.getElementById('axVideo'),
-            'xvVideo': document.getElementById('xvVideo')
+            'xvVideo': document.getElementById('xvVideo'),
+            'bisnisVideo1': document.getElementById('bisnisVideo1'),
+            'bisnisVideo2': document.getElementById('bisnisVideo2'),
+            'kingVideo1': document.getElementById('kingVideo1'),
+            'kingVideo2': document.getElementById('kingVideo2')
         };
         
         for (const [id, video] of Object.entries(videos)) {
@@ -2187,6 +2428,8 @@
         const videoMayaContainer = document.getElementById('videoMayaContainer');
         const videoTripleContainer = document.getElementById('videoTripleContainer');
         const videoAxContainer = document.getElementById('videoAxContainer');
+        const videoBisnisContainer = document.getElementById('videoBisnisContainer');
+        const videoKingContainer = document.getElementById('videoKingContainer');
         const targetGoalsContainer = document.getElementById('targetGoalsContainer');
         
         const habitsButton = document.querySelector('.floating-button.habits');
@@ -2196,6 +2439,8 @@
         const videoMayaButton = document.querySelector('.floating-button.video-maya');
         const videoTripleButton = document.querySelector('.floating-button.video-triple');
         const videoAxButton = document.querySelector('.floating-button.video-ax');
+        const videoBisnisButton = document.querySelector('.floating-button.video-bisnis');
+        const videoKingButton = document.querySelector('.floating-button.video-king');
         const targetGoalsButton = document.querySelector('.floating-button.target-goals');
         
         const videoCloseButtons = document.querySelectorAll('.video-close');
@@ -2209,6 +2454,8 @@
             videoMayaContainer.contains(event.target) ||
             videoTripleContainer.contains(event.target) ||
             videoAxContainer.contains(event.target) ||
+            videoBisnisContainer.contains(event.target) ||
+            videoKingContainer.contains(event.target) ||
             targetGoalsContainer.contains(event.target);
         
         const isClickOnButton = 
@@ -2219,6 +2466,8 @@
             videoMayaButton.contains(event.target) ||
             videoTripleButton.contains(event.target) ||
             videoAxButton.contains(event.target) ||
+            videoBisnisButton.contains(event.target) ||
+            videoKingButton.contains(event.target) ||
             targetGoalsButton.contains(event.target);
         
         const isClickOnVideoClose = Array.from(videoCloseButtons).some(btn => btn.contains(event.target));
@@ -2232,7 +2481,9 @@
                 {container: videoMuslimContainer, videoId: 'muslimVideo'},
                 {container: videoMayaContainer, videoId: 'mayaVideo'},
                 {container: videoTripleContainer, videoIds: ['tripleVideo1', 'tripleVideo2', 'tripleVideo3']},
-                {container: videoAxContainer, videoId: 'axVideo'},
+                {container: videoAxContainer, videoIds: ['axVideo', 'xvVideo']},
+                {container: videoBisnisContainer, videoIds: ['bisnisVideo1', 'bisnisVideo2']},
+                {container: videoKingContainer, videoIds: ['kingVideo1', 'kingVideo2']},
                 {container: targetGoalsContainer}
             ];
             
