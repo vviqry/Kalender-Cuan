@@ -574,9 +574,12 @@
             animation: fadeInScale 0.3s ease;
         }
 
-        /* Video Container 1: Bosan itu Berbahaya */
+        /* Video Container 1: Bosan itu Berbahaya (Triple Video) */
         #videoDangerContainer {
-            width: 320px; /* Video vertikal */
+            width: auto;
+            max-width: 95vw;
+            background-color: #000;
+            border-radius: 15px;
         }
 
         #videoDangerContainer .video-header {
@@ -1538,14 +1541,14 @@
 
     <!-- Floating Container Left - New Buttons -->
     <div class="floating-container-left">
-        <!-- Button 8: Video Bisnis (Briefcase) -->
-        <button class="floating-button video-bisnis" onclick="toggleVideoBisnis()" title="Mindset Bisnis & Entrepreneur">
-            💼
-        </button>
-        
-        <!-- Button 9: Video KING (Crown) -->
+        <!-- Button 8: Video KING (Crown) - Di atas -->
         <button class="floating-button video-king" onclick="toggleVideoKing()" title="Be The KING - Motivasi">
             👑
+        </button>
+        
+        <!-- Button 9: Video Bisnis (Briefcase) - Di bawah -->
+        <button class="floating-button video-bisnis" onclick="toggleVideoBisnis()" title="Mindset Bisnis & Entrepreneur">
+            💼
         </button>
     </div>
 
@@ -1787,16 +1790,28 @@
         </div>
     </div>
 
-    <!-- Container 3: Video Bosan itu Berbahaya -->
+    <!-- Container 3: Video Bosan itu Berbahaya (Triple Video) -->
     <div class="video-container" id="videoDangerContainer">
         <div class="video-header">
             <h3 class="video-title"><i class="bi bi-exclamation-triangle-fill"></i> BOSAN itu BERBAHAYA</h3>
             <button class="video-close" onclick="toggleVideoDanger()">×</button>
         </div>
-        <div class="video-content">
-            <div class="video-player vertical">
+        <div class="video-triple-grid">
+            <div class="video-triple-item">
                 <video id="bosanVideo" controls playsinline>
                     <source src="1.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
+            <div class="video-triple-item">
+                <video id="bosanVideo2" controls playsinline>
+                    <source src="2.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
+            <div class="video-triple-item">
+                <video id="bosanVideo3" controls playsinline>
+                    <source src="3.mp4" type="video/mp4">
                     Browser Anda tidak mendukung pemutar video.
                 </video>
             </div>
@@ -1932,40 +1947,19 @@
             <h3 class="video-title">💼 Mindset Bisnis & Entrepreneur</h3>
             <button class="video-close" onclick="toggleVideoBisnis()">×</button>
         </div>
-        <div class="video-dual-grid">
+        <div class="video-triple-grid">
             <!-- Video 1: Bisnis.mp4 -->
-            <div class="video-dual-item">
+            <div class="video-triple-item">
                 <video id="bisnisVideo1" controls playsinline>
                     <source src="Bisnis.mp4" type="video/mp4">
                     Browser Anda tidak mendukung pemutar video.
                 </video>
-                <div class="video-item-caption">
-                    <span class="quote-with-tooltip">
-                        💡 <strong>"Think Big, Start Small, Act Now"</strong>
-                        <span class="quote-tooltip">
-                            <strong>Prinsip Bisnis:</strong><br><br>
-                            Bermimpi besar itu penting, tapi mulai dari langkah kecil yang bisa dilakukan sekarang. Jangan tunggu sempurna!<br><br>
-                            <em>Intinya:</em> Eksekusi lebih penting daripada perencanaan sempurna.
-                        </span>
-                    </span>
-                </div>
             </div>
-            <!-- Video 2: Bisnis1.mp4 -->
-            <div class="video-dual-item">
+            <div class="video-triple-item">
                 <video id="bisnisVideo2" controls playsinline>
                     <source src="Bisnis1.mp4" type="video/mp4">
                     Browser Anda tidak mendukung pemutar video.
                 </video>
-                <div class="video-item-caption">
-                    <span class="quote-with-tooltip">
-                        🚀 <strong>"Revenue is Vanity, Profit is Sanity"</strong>
-                        <span class="quote-tooltip">
-                            <strong>Wisdom Bisnis:</strong><br><br>
-                            Omzet besar tidak berarti apa-apa jika tidak ada keuntungan. Fokus pada margin dan profit yang sehat.<br><br>
-                            <em>Intinya:</em> Cash is King. Profit adalah napas bisnis.
-                        </span>
-                    </span>
-                </div>
             </div>
         </div>
         <div class="video-message">
@@ -1979,40 +1973,20 @@
             <h3 class="video-title">👑 Be The KING - Motivasi</h3>
             <button class="video-close" onclick="toggleVideoKing()">×</button>
         </div>
-        <div class="video-dual-grid">
+        <div class="video-triple-grid">
             <!-- Video 1: KING.mp4 -->
-            <div class="video-dual-item">
+            <div class="video-triple-item">
                 <video id="kingVideo1" controls playsinline>
                     <source src="KING.mp4" type="video/mp4">
                     Browser Anda tidak mendukung pemutar video.
                 </video>
-                <div class="video-item-caption">
-                    <span class="quote-with-tooltip">
-                        👑 <strong>"A King is not born, He is made"</strong>
-                        <span class="quote-tooltip">
-                            <strong>Mentalitas Raja:</strong><br><br>
-                            Tidak ada yang lahir sebagai pemimpin. Kebesaran dibangun melalui kerja keras, disiplin, dan pengorbanan.<br><br>
-                            <em>Intinya:</em> Jadilah raja atas hidupmu sendiri.
-                        </span>
-                    </span>
-                </div>
             </div>
             <!-- Video 2: KING1.mp4 -->
-            <div class="video-dual-item">
+            <div class="video-triple-item">
                 <video id="kingVideo2" controls playsinline>
                     <source src="KING1.mp4" type="video/mp4">
                     Browser Anda tidak mendukung pemutar video.
                 </video>
-                <div class="video-item-caption">
-                    <span class="quote-with-tooltip">
-                        🦁 <strong>"Lions don't lose sleep over the opinions of sheep"</strong>
-                        <span class="quote-tooltip">
-                            <strong>Mindset Singa:</strong><br><br>
-                            Jangan buang waktumu memikirkan opini orang-orang yang tidak relevan. Fokus pada visimu!<br><br>
-                            <em>Intinya:</em> Jadi pemimpin, bukan pengikut.
-                        </span>
-                    </span>
-                </div>
             </div>
         </div>
         <div class="video-message">
@@ -2210,21 +2184,27 @@
 
     // ==================== END TARGET GOALS FUNCTIONS ====================
 
-    // Fungsi untuk toggle container Video Bosan
+    // Fungsi untuk toggle container Video Bosan (Triple Video)
     function toggleVideoDanger() {
         const videoDangerContainer = document.getElementById('videoDangerContainer');
         const bosanVideo = document.getElementById('bosanVideo');
+        const bosanVideo2 = document.getElementById('bosanVideo2');
+        const bosanVideo3 = document.getElementById('bosanVideo3');
         
         videoDangerContainer.classList.toggle('show');
         // Tutup container lain jika terbuka
         closeOtherContainers(videoDangerContainer);
         
-        // Reset video ke awal saat dibuka
+        // Reset semua video ke awal saat dibuka
         if (videoDangerContainer.classList.contains('show')) {
             bosanVideo.currentTime = 0;
+            bosanVideo2.currentTime = 0;
+            bosanVideo3.currentTime = 0;
             pauseOtherVideos('bosanVideo');
         } else {
             bosanVideo.pause();
+            bosanVideo2.pause();
+            bosanVideo3.pause();
         }
     }
 
@@ -2377,6 +2357,8 @@
     function pauseAllVideos() {
         const videos = [
             document.getElementById('bosanVideo'),
+            document.getElementById('bosanVideo2'),
+            document.getElementById('bosanVideo3'),
             document.getElementById('muslimVideo'),
             document.getElementById('mayaVideo'),
             document.getElementById('tripleVideo1'),
@@ -2399,6 +2381,8 @@
     function pauseOtherVideos(currentVideoId) {
         const videos = {
             'bosanVideo': document.getElementById('bosanVideo'),
+            'bosanVideo2': document.getElementById('bosanVideo2'),
+            'bosanVideo3': document.getElementById('bosanVideo3'),
             'muslimVideo': document.getElementById('muslimVideo'),
             'mayaVideo': document.getElementById('mayaVideo'),
             'tripleVideo1': document.getElementById('tripleVideo1'),
@@ -2477,7 +2461,7 @@
             const containers = [
                 {container: habitsContainer},
                 {container: maturityContainer},
-                {container: videoDangerContainer, videoId: 'bosanVideo'},
+                {container: videoDangerContainer, videoIds: ['bosanVideo', 'bosanVideo2', 'bosanVideo3']},
                 {container: videoMuslimContainer, videoId: 'muslimVideo'},
                 {container: videoMayaContainer, videoId: 'mayaVideo'},
                 {container: videoTripleContainer, videoIds: ['tripleVideo1', 'tripleVideo2', 'tripleVideo3']},
