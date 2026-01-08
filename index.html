@@ -481,7 +481,7 @@
         /* Floating Container Left - New Buttons */
         .floating-container-left {
             position: fixed;
-            top: 90px;
+            top: 160px;
             left: 20px;
             z-index: 1001;
             display: flex;
@@ -507,6 +507,15 @@
 
         .floating-button.video-king:hover {
             background: linear-gradient(135deg, #ffca28 0%, #ff8f00 100%);
+        }
+
+        /* Button 10: Video Daun (Focus/Reset Otak) */
+        .floating-button.video-daun {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+        }
+
+        .floating-button.video-daun:hover {
+            background: linear-gradient(135deg, #43a047 0%, #1b5e20 100%);
         }
 
         /* Video Bisnis Container */
@@ -553,6 +562,34 @@
             color: #ff6f00;
             border-top: 1px solid #ffe082;
             text-align: center;
+        }
+
+        /* Video Daun Container */
+        #videoDaunContainer {
+            width: auto;
+            max-width: 95vw;
+            background-color: #000;
+            border-radius: 15px;
+        }
+
+        #videoDaunContainer .video-header {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+        }
+
+        #videoDaunContainer .video-message {
+            background-color: #e8f5e9;
+            color: #1b5e20;
+            border-top: 1px solid #a5d6a7;
+            text-align: center;
+        }
+
+        #videoDaunContainer .video-dual-item {
+            border: 3px solid #4caf50;
+        }
+
+        #videoDaunContainer .video-dual-item .video-item-caption {
+            background-color: #e8f5e9;
+            color: #1b5e20;
         }
 
         /* Container Video Umum */
@@ -1094,7 +1131,7 @@
             }
 
             .floating-container-left {
-                top: 80px;
+                top: 150px;
                 left: 15px;
             }
             
@@ -1124,12 +1161,15 @@
             }
         }
 
-        /* Floating Button Top Left - Target Goals */
+        /* Floating Button Top Left - Target Goals & Daun */
         .floating-button-top-right {
             position: fixed;
             top: 20px;
             left: 20px;
             z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .floating-button.target-goals {
@@ -1496,10 +1536,14 @@
         <img id="reminderImage" src="foto.jpg" alt="Daily Reminder">
     </div>
 
-    <!-- Floating Button Top Right - Target Goals -->
+    <!-- Floating Button Top Right - Target Goals & Daun -->
     <div class="floating-button-top-right">
         <button class="floating-button target-goals" onclick="toggleTargetGoals()" title="Target Jangka Panjang - Alasan Menabung">
             🎯
+        </button>
+        <!-- Button Daun: Focus & Reset Otak 30 Menit -->
+        <button class="floating-button video-daun" onclick="toggleVideoDaun()" title="Focus & Reset Otak 30 Menit">
+            ☘
         </button>
     </div>
 
@@ -1941,7 +1985,60 @@
         </div>
     </div>
 
-    <!-- Container 8: Video Bisnis (Dual Video) -->
+    <!-- Container 8: Video Daun (Focus & Reset Otak) -->
+    <div class="video-container" id="videoDaunContainer">
+        <div class="video-header">
+            <h3 class="video-title">☘ Focus & Reset Otak 30 Menit</h3>
+            <button class="video-close" onclick="toggleVideoDaun()">×</button>
+        </div>
+        <div class="video-dual-grid">
+            <!-- Video 1: daun.mp4 -->
+            <div class="video-dual-item">
+                <video id="daunVideo1" controls playsinline>
+                    <source src="daun.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+                <div class="video-item-caption">
+                    <span class="quote-with-tooltip">
+                        🧠 <strong>"Reset Otak = Reset Fokus"</strong>
+                        <span class="quote-tooltip">
+                            <strong>Cara Kerja Reset Otak:</strong><br><br>
+                            Otak kita seperti komputer — kadang perlu restart untuk bekerja optimal. Reset 30 menit membantu:<br><br>
+                            • Membersihkan mental clutter<br>
+                            • Meningkatkan konsentrasi<br>
+                            • Menurunkan stres dan kelelahan<br><br>
+                            <em>Intinya:</em> Istirahat berkala bukan kemalasan, tapi strategi produktivitas.
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <!-- Video 2: daun1.mp4 -->
+            <div class="video-dual-item">
+                <video id="daunVideo2" controls playsinline>
+                    <source src="daun1.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+                <div class="video-item-caption">
+                    <span class="quote-with-tooltip">
+                        🌿 <strong>"Tenang itu Kekuatan"</strong>
+                        <span class="quote-tooltip">
+                            <strong>Kenapa Tenang itu Penting:</strong><br><br>
+                            Pikiran yang tenang menghasilkan keputusan yang jernih. Dalam dunia yang penuh distraksi, ketenangan adalah senjata rahasia:<br><br>
+                            • Mengurangi reaksi impulsif<br>
+                            • Meningkatkan kreativitas<br>
+                            • Menjaga kesehatan mental jangka panjang<br><br>
+                            <em>Intinya:</em> Fokus dimulai dari ketenangan.
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="video-message">
+            ☘ <strong>Brain Reset:</strong> Ambil jeda 30 menit untuk menyegarkan otak — fokus maksimal, hasil optimal!
+        </div>
+    </div>
+
+    <!-- Container 9: Video Bisnis (Triple Video) -->
     <div class="video-container" id="videoBisnisContainer">
         <div class="video-header">
             <h3 class="video-title">💼 Mindset Bisnis & Entrepreneur</h3>
@@ -1955,15 +2052,24 @@
                     Browser Anda tidak mendukung pemutar video.
                 </video>
             </div>
+            <!-- Video 2: Bisnis1.mp4 -->
             <div class="video-triple-item">
                 <video id="bisnisVideo2" controls playsinline>
                     <source src="Bisnis1.mp4" type="video/mp4">
                     Browser Anda tidak mendukung pemutar video.
                 </video>
             </div>
+            <!-- Video 3: Bisnis2.mp4 - Personal Branding -->
+            <div class="video-triple-item">
+                <video id="bisnisVideo3" controls playsinline>
+                    <source src="Bisnis2.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
         </div>
         <div class="video-message">
-            💼 <strong>Business Mindset:</strong> Belajar dari pengalaman, gagal cepat, bangkit lebih cepat!
+            💼 <strong>Business Mindset:</strong> Belajar dari pengalaman, gagal cepat, bangkit lebih cepat! <br>
+            🚗 <strong>Pro Tip (Video 3):</strong> Beli mobil dulu sebagai "pemancing rezeki" — tingkatkan pamor & personal branding kamu, terutama untuk para affiliator fashion. Kesan mewah itu investasi!
         </div>
     </div>
 
@@ -2289,24 +2395,48 @@
         }
     }
 
-    // Fungsi untuk toggle container Video Bisnis (Dual Video)
+    // Fungsi untuk toggle container Video Bisnis (Triple Video)
     function toggleVideoBisnis() {
         const videoBisnisContainer = document.getElementById('videoBisnisContainer');
         const bisnisVideo1 = document.getElementById('bisnisVideo1');
         const bisnisVideo2 = document.getElementById('bisnisVideo2');
+        const bisnisVideo3 = document.getElementById('bisnisVideo3');
         
         videoBisnisContainer.classList.toggle('show');
         // Tutup container lain jika terbuka
         closeOtherContainers(videoBisnisContainer);
         
-        // Reset kedua video ke awal saat dibuka
+        // Reset semua video ke awal saat dibuka
         if (videoBisnisContainer.classList.contains('show')) {
             bisnisVideo1.currentTime = 0;
             bisnisVideo2.currentTime = 0;
+            bisnisVideo3.currentTime = 0;
             pauseOtherVideos('bisnisVideo1');
         } else {
             bisnisVideo1.pause();
             bisnisVideo2.pause();
+            bisnisVideo3.pause();
+        }
+    }
+
+    // Fungsi untuk toggle container Video Daun (Focus & Reset Otak)
+    function toggleVideoDaun() {
+        const videoDaunContainer = document.getElementById('videoDaunContainer');
+        const daunVideo1 = document.getElementById('daunVideo1');
+        const daunVideo2 = document.getElementById('daunVideo2');
+        
+        videoDaunContainer.classList.toggle('show');
+        // Tutup container lain jika terbuka
+        closeOtherContainers(videoDaunContainer);
+        
+        // Reset kedua video ke awal saat dibuka
+        if (videoDaunContainer.classList.contains('show')) {
+            daunVideo1.currentTime = 0;
+            daunVideo2.currentTime = 0;
+            pauseOtherVideos('daunVideo1');
+        } else {
+            daunVideo1.pause();
+            daunVideo2.pause();
         }
     }
 
@@ -2341,6 +2471,7 @@
             document.getElementById('videoMayaContainer'),
             document.getElementById('videoTripleContainer'),
             document.getElementById('videoAxContainer'),
+            document.getElementById('videoDaunContainer'),
             document.getElementById('videoBisnisContainer'),
             document.getElementById('videoKingContainer'),
             document.getElementById('targetGoalsContainer')
@@ -2366,8 +2497,11 @@
             document.getElementById('tripleVideo3'),
             document.getElementById('axVideo'),
             document.getElementById('xvVideo'),
+            document.getElementById('daunVideo1'),
+            document.getElementById('daunVideo2'),
             document.getElementById('bisnisVideo1'),
             document.getElementById('bisnisVideo2'),
+            document.getElementById('bisnisVideo3'),
             document.getElementById('kingVideo1'),
             document.getElementById('kingVideo2')
         ];
@@ -2390,8 +2524,11 @@
             'tripleVideo3': document.getElementById('tripleVideo3'),
             'axVideo': document.getElementById('axVideo'),
             'xvVideo': document.getElementById('xvVideo'),
+            'daunVideo1': document.getElementById('daunVideo1'),
+            'daunVideo2': document.getElementById('daunVideo2'),
             'bisnisVideo1': document.getElementById('bisnisVideo1'),
             'bisnisVideo2': document.getElementById('bisnisVideo2'),
+            'bisnisVideo3': document.getElementById('bisnisVideo3'),
             'kingVideo1': document.getElementById('kingVideo1'),
             'kingVideo2': document.getElementById('kingVideo2')
         };
@@ -2412,6 +2549,7 @@
         const videoMayaContainer = document.getElementById('videoMayaContainer');
         const videoTripleContainer = document.getElementById('videoTripleContainer');
         const videoAxContainer = document.getElementById('videoAxContainer');
+        const videoDaunContainer = document.getElementById('videoDaunContainer');
         const videoBisnisContainer = document.getElementById('videoBisnisContainer');
         const videoKingContainer = document.getElementById('videoKingContainer');
         const targetGoalsContainer = document.getElementById('targetGoalsContainer');
@@ -2423,6 +2561,7 @@
         const videoMayaButton = document.querySelector('.floating-button.video-maya');
         const videoTripleButton = document.querySelector('.floating-button.video-triple');
         const videoAxButton = document.querySelector('.floating-button.video-ax');
+        const videoDaunButton = document.querySelector('.floating-button.video-daun');
         const videoBisnisButton = document.querySelector('.floating-button.video-bisnis');
         const videoKingButton = document.querySelector('.floating-button.video-king');
         const targetGoalsButton = document.querySelector('.floating-button.target-goals');
@@ -2438,6 +2577,7 @@
             videoMayaContainer.contains(event.target) ||
             videoTripleContainer.contains(event.target) ||
             videoAxContainer.contains(event.target) ||
+            videoDaunContainer.contains(event.target) ||
             videoBisnisContainer.contains(event.target) ||
             videoKingContainer.contains(event.target) ||
             targetGoalsContainer.contains(event.target);
@@ -2450,6 +2590,7 @@
             videoMayaButton.contains(event.target) ||
             videoTripleButton.contains(event.target) ||
             videoAxButton.contains(event.target) ||
+            videoDaunButton.contains(event.target) ||
             videoBisnisButton.contains(event.target) ||
             videoKingButton.contains(event.target) ||
             targetGoalsButton.contains(event.target);
@@ -2466,7 +2607,8 @@
                 {container: videoMayaContainer, videoId: 'mayaVideo'},
                 {container: videoTripleContainer, videoIds: ['tripleVideo1', 'tripleVideo2', 'tripleVideo3']},
                 {container: videoAxContainer, videoIds: ['axVideo', 'xvVideo']},
-                {container: videoBisnisContainer, videoIds: ['bisnisVideo1', 'bisnisVideo2']},
+                {container: videoDaunContainer, videoIds: ['daunVideo1', 'daunVideo2']},
+                {container: videoBisnisContainer, videoIds: ['bisnisVideo1', 'bisnisVideo2', 'bisnisVideo3']},
                 {container: videoKingContainer, videoIds: ['kingVideo1', 'kingVideo2']},
                 {container: targetGoalsContainer}
             ];
