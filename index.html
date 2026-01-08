@@ -2000,14 +2000,14 @@
                 </video>
                 <div class="video-item-caption">
                     <span class="quote-with-tooltip">
-                        🧠 <strong>"Reset Otak = Reset Fokus"</strong>
+                        🔥 <strong>"Mulai Nyamanlah dengan Ketidaknyamanan"</strong>
                         <span class="quote-tooltip">
-                            <strong>Cara Kerja Reset Otak:</strong><br><br>
-                            Otak kita seperti komputer — kadang perlu restart untuk bekerja optimal. Reset 30 menit membantu:<br><br>
-                            • Membersihkan mental clutter<br>
-                            • Meningkatkan konsentrasi<br>
-                            • Menurunkan stres dan kelelahan<br><br>
-                            <em>Intinya:</em> Istirahat berkala bukan kemalasan, tapi strategi produktivitas.
+                            <strong>Growth Mindset:</strong><br><br>
+                            Zona nyaman adalah musuh kemajuan. Sukses dimulai ketika kamu berani menghadapi hal-hal yang tidak nyaman:<br><br>
+                            • Belajar skill baru yang sulit<br>
+                            • Berbicara di depan umum<br>
+                            • Mengambil risiko yang diperhitungkan<br><br>
+                            <em>Intinya:</em> Ketidaknyamanan adalah sinyal bahwa kamu sedang berkembang.
                         </span>
                     </span>
                 </div>
@@ -2028,6 +2028,26 @@
                             • Meningkatkan kreativitas<br>
                             • Menjaga kesehatan mental jangka panjang<br><br>
                             <em>Intinya:</em> Fokus dimulai dari ketenangan.
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <!-- Video 3: daun2.mp4 -->
+            <div class="video-dual-item">
+                <video id="daunVideo3" controls playsinline>
+                    <source src="daun2.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+                <div class="video-item-caption">
+                    <span class="quote-with-tooltip">
+                        💰 <strong>"Uang Itu Suka Kecepatan"</strong>
+                        <span class="quote-tooltip">
+                            <strong>Speed Over Perfection:</strong><br><br>
+                            Dalam bisnis dan peluang, kecepatan mengalahkan kesempurnaan. Orang yang cepat bertindak:<br><br>
+                            • Menangkap peluang sebelum kompetitor<br>
+                            • Belajar dari eksekusi, bukan rencana<br>
+                            • Iterasi cepat, perbaiki sambil jalan<br><br>
+                            <em>Intinya:</em> Cepat lebih baik dari perfect. Done is better than perfect!
                         </span>
                     </span>
                 </div>
@@ -2424,19 +2444,22 @@
         const videoDaunContainer = document.getElementById('videoDaunContainer');
         const daunVideo1 = document.getElementById('daunVideo1');
         const daunVideo2 = document.getElementById('daunVideo2');
+        const daunVideo3 = document.getElementById('daunVideo3');
         
         videoDaunContainer.classList.toggle('show');
         // Tutup container lain jika terbuka
         closeOtherContainers(videoDaunContainer);
         
-        // Reset kedua video ke awal saat dibuka
+        // Reset semua video ke awal saat dibuka
         if (videoDaunContainer.classList.contains('show')) {
             daunVideo1.currentTime = 0;
             daunVideo2.currentTime = 0;
+            daunVideo3.currentTime = 0;
             pauseOtherVideos('daunVideo1');
         } else {
             daunVideo1.pause();
             daunVideo2.pause();
+            daunVideo3.pause();
         }
     }
 
@@ -2499,6 +2522,7 @@
             document.getElementById('xvVideo'),
             document.getElementById('daunVideo1'),
             document.getElementById('daunVideo2'),
+            document.getElementById('daunVideo3'),
             document.getElementById('bisnisVideo1'),
             document.getElementById('bisnisVideo2'),
             document.getElementById('bisnisVideo3'),
@@ -2526,6 +2550,7 @@
             'xvVideo': document.getElementById('xvVideo'),
             'daunVideo1': document.getElementById('daunVideo1'),
             'daunVideo2': document.getElementById('daunVideo2'),
+            'daunVideo3': document.getElementById('daunVideo3'),
             'bisnisVideo1': document.getElementById('bisnisVideo1'),
             'bisnisVideo2': document.getElementById('bisnisVideo2'),
             'bisnisVideo3': document.getElementById('bisnisVideo3'),
@@ -2607,7 +2632,7 @@
                 {container: videoMayaContainer, videoId: 'mayaVideo'},
                 {container: videoTripleContainer, videoIds: ['tripleVideo1', 'tripleVideo2', 'tripleVideo3']},
                 {container: videoAxContainer, videoIds: ['axVideo', 'xvVideo']},
-                {container: videoDaunContainer, videoIds: ['daunVideo1', 'daunVideo2']},
+                {container: videoDaunContainer, videoIds: ['daunVideo1', 'daunVideo2', 'daunVideo3']},
                 {container: videoBisnisContainer, videoIds: ['bisnisVideo1', 'bisnisVideo2', 'bisnisVideo3']},
                 {container: videoKingContainer, videoIds: ['kingVideo1', 'kingVideo2']},
                 {container: targetGoalsContainer}
