@@ -518,6 +518,111 @@
             background: linear-gradient(135deg, #43a047 0%, #1b5e20 100%);
         }
 
+        /* Button 11: Video Sakit (Terbiasa Menahan Rasa Sakit) */
+        .floating-button.video-sakit {
+            background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+        }
+
+        .floating-button.video-sakit:hover {
+            background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
+        }
+
+        /* Video Sakit Container */
+        #videoSakitContainer {
+            width: auto;
+            max-width: 95vw;
+            background-color: #000;
+            border-radius: 15px;
+        }
+
+        #videoSakitContainer .video-header {
+            background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+        }
+
+        #videoSakitContainer .video-message {
+            background-color: #fff3e0;
+            color: #e64a19;
+            border-top: 1px solid #ffccbc;
+            text-align: center;
+        }
+
+        #videoSakitContainer .video-triple-item {
+            border: 3px solid #ff5722;
+        }
+
+        /* Dopamin Hit Tooltip - Enhanced Style */
+        .dopamin-hit-trigger {
+            display: inline-block;
+            margin-top: 8px;
+            cursor: help;
+            position: relative;
+            font-size: 18px;
+            background: linear-gradient(135deg, #212121 0%, #424242 100%);
+            color: #ff5722;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid #ff5722;
+            transition: all 0.3s ease;
+        }
+
+        .dopamin-hit-trigger:hover {
+            background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .dopamin-hit-popup {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 115%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 240px;
+            background: linear-gradient(135deg, #212121 0%, #333 100%);
+            color: #fff;
+            padding: 15px 18px;
+            border-radius: 12px;
+            font-size: 15px;
+            line-height: 1.7;
+            text-align: left;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            z-index: 1010;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            border: 2px solid #ff5722;
+        }
+
+        .dopamin-hit-popup::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
+        .dopamin-hit-trigger:hover .dopamin-hit-popup {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .dopamin-hit-popup .banned-item {
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        /* Video Sakit Message - Caption Styling */
+        #videoSakitContainer .video-message {
+            font-size: 18px;
+            padding: 20px 25px;
+        }
+
+        #videoSakitContainer .video-message strong {
+            font-size: 20px;
+        }
+
         /* Video Bisnis Container */
         #videoBisnisContainer {
             width: auto;
@@ -1591,8 +1696,13 @@
         </button>
         
         <!-- Button 9: Video Bisnis (Briefcase) - Di bawah -->
-        <button class="floating-button video-bisnis" onclick="toggleVideoBisnis()" title="Mindset Bisnis & Entrepreneur">
+        <button class="floating-button video-bisnis" onclick="toggleVideoBisnis()" title="Mindset Bisnis &amp; Entrepreneur">
             💼
+        </button>
+        
+        <!-- Button 10: Video Sakit (Terbiasa Menahan Rasa Sakit) -->
+        <button class="floating-button video-sakit" onclick="toggleVideoSakit()" title="Terbiasa Menahan Rasa Sakit - Menjauhi Dopamin Hit">
+            🔥
         </button>
     </div>
 
@@ -2120,6 +2230,54 @@
         </div>
     </div>
 
+    <!-- Container 10: Video Sakit (Terbiasa Menahan Rasa Sakit) -->
+    <div class="video-container" id="videoSakitContainer">
+        <div class="video-header">
+            <h3 class="video-title">🔥 Terbiasa Menahan Rasa Sakit</h3>
+            <button class="video-close" onclick="toggleVideoSakit()">×</button>
+        </div>
+        <div class="video-triple-grid">
+            <!-- Video 1: batang.mp4 -->
+            <div class="video-triple-item">
+                <video id="sakitVideo1" controls playsinline>
+                    <source src="batang.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
+            <!-- Video 2: daun.mp4 (Tengah) -->
+            <div class="video-triple-item">
+                <video id="sakitVideo2" controls playsinline>
+                    <source src="daun.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
+            <!-- Video 3: cabang.mp4 -->
+            <div class="video-triple-item">
+                <video id="sakitVideo3" controls playsinline>
+                    <source src="cabang.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+            </div>
+        </div>
+        <div class="video-message">
+            🔥 <span style="font-size: x-large;"><b>Terbiasa menahan rasa sakit</b><span>
+            <br>
+            <span class="dopamin-hit-trigger">
+                ⛔ Dopamin Hit
+                <span class="dopamin-hit-popup">
+                    <div class="banned-item">❌ SOSMED</div>
+                    <div class="banned-item">❌ YOUTUBE</div>
+                    <div class="banned-item">❌ GAME</div>
+                    <div class="banned-item">❌ 3gp</div>
+                    <div class="banned-item">❌ FILM</div>
+                    <div class="banned-item">❌ GOSIP</div>
+                    <div class="banned-item">❌ BERITA ONLINE</div>
+                    <div class="banned-item">❌ MUSIC</div>
+                </span>
+            </span>
+        </div>
+    </div>
+
     <!-- Container: Target Jangka Panjang -->
     <div class="collapse-container target-container" id="targetGoalsContainer">
         <h3 class="target-title">🎯 Target Jangka Panjang</h3>
@@ -2484,6 +2642,30 @@
         }
     }
 
+    // Fungsi untuk toggle container Video Sakit (Terbiasa Menahan Rasa Sakit)
+    function toggleVideoSakit() {
+        const videoSakitContainer = document.getElementById('videoSakitContainer');
+        const sakitVideo1 = document.getElementById('sakitVideo1');
+        const sakitVideo2 = document.getElementById('sakitVideo2');
+        const sakitVideo3 = document.getElementById('sakitVideo3');
+        
+        videoSakitContainer.classList.toggle('show');
+        // Tutup container lain jika terbuka
+        closeOtherContainers(videoSakitContainer);
+        
+        // Reset semua video ke awal saat dibuka
+        if (videoSakitContainer.classList.contains('show')) {
+            sakitVideo1.currentTime = 0;
+            sakitVideo2.currentTime = 0;
+            sakitVideo3.currentTime = 0;
+            pauseOtherVideos('sakitVideo1');
+        } else {
+            sakitVideo1.pause();
+            sakitVideo2.pause();
+            sakitVideo3.pause();
+        }
+    }
+
     // Fungsi untuk menutup semua container kecuali yang aktif
     function closeOtherContainers(activeContainer) {
         const containers = [
@@ -2497,6 +2679,7 @@
             document.getElementById('videoDaunContainer'),
             document.getElementById('videoBisnisContainer'),
             document.getElementById('videoKingContainer'),
+            document.getElementById('videoSakitContainer'),
             document.getElementById('targetGoalsContainer')
         ];
         
@@ -2527,7 +2710,10 @@
             document.getElementById('bisnisVideo2'),
             document.getElementById('bisnisVideo3'),
             document.getElementById('kingVideo1'),
-            document.getElementById('kingVideo2')
+            document.getElementById('kingVideo2'),
+            document.getElementById('sakitVideo1'),
+            document.getElementById('sakitVideo2'),
+            document.getElementById('sakitVideo3')
         ];
         
         videos.forEach(video => {
@@ -2555,7 +2741,10 @@
             'bisnisVideo2': document.getElementById('bisnisVideo2'),
             'bisnisVideo3': document.getElementById('bisnisVideo3'),
             'kingVideo1': document.getElementById('kingVideo1'),
-            'kingVideo2': document.getElementById('kingVideo2')
+            'kingVideo2': document.getElementById('kingVideo2'),
+            'sakitVideo1': document.getElementById('sakitVideo1'),
+            'sakitVideo2': document.getElementById('sakitVideo2'),
+            'sakitVideo3': document.getElementById('sakitVideo3')
         };
         
         for (const [id, video] of Object.entries(videos)) {
@@ -2577,6 +2766,7 @@
         const videoDaunContainer = document.getElementById('videoDaunContainer');
         const videoBisnisContainer = document.getElementById('videoBisnisContainer');
         const videoKingContainer = document.getElementById('videoKingContainer');
+        const videoSakitContainer = document.getElementById('videoSakitContainer');
         const targetGoalsContainer = document.getElementById('targetGoalsContainer');
         
         const habitsButton = document.querySelector('.floating-button.habits');
@@ -2589,6 +2779,7 @@
         const videoDaunButton = document.querySelector('.floating-button.video-daun');
         const videoBisnisButton = document.querySelector('.floating-button.video-bisnis');
         const videoKingButton = document.querySelector('.floating-button.video-king');
+        const videoSakitButton = document.querySelector('.floating-button.video-sakit');
         const targetGoalsButton = document.querySelector('.floating-button.target-goals');
         
         const videoCloseButtons = document.querySelectorAll('.video-close');
@@ -2605,6 +2796,7 @@
             videoDaunContainer.contains(event.target) ||
             videoBisnisContainer.contains(event.target) ||
             videoKingContainer.contains(event.target) ||
+            videoSakitContainer.contains(event.target) ||
             targetGoalsContainer.contains(event.target);
         
         const isClickOnButton = 
@@ -2618,6 +2810,7 @@
             videoDaunButton.contains(event.target) ||
             videoBisnisButton.contains(event.target) ||
             videoKingButton.contains(event.target) ||
+            videoSakitButton.contains(event.target) ||
             targetGoalsButton.contains(event.target);
         
         const isClickOnVideoClose = Array.from(videoCloseButtons).some(btn => btn.contains(event.target));
@@ -2635,6 +2828,7 @@
                 {container: videoDaunContainer, videoIds: ['daunVideo1', 'daunVideo2', 'daunVideo3']},
                 {container: videoBisnisContainer, videoIds: ['bisnisVideo1', 'bisnisVideo2', 'bisnisVideo3']},
                 {container: videoKingContainer, videoIds: ['kingVideo1', 'kingVideo2']},
+                {container: videoSakitContainer, videoIds: ['sakitVideo1', 'sakitVideo2', 'sakitVideo3']},
                 {container: targetGoalsContainer}
             ];
             
