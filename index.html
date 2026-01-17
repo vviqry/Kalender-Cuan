@@ -768,11 +768,34 @@
 
       /* Video Container 3: Pejuang Suku Maya */
       #videoMayaContainer {
-        width: 640px; /* Video horizontal 16:9 (640 x 360) */
+        width: 720px; /* Video horizontal 16:9 - diperbesar untuk 2 video */
+        max-width: 95vw;
       }
 
       #videoMayaContainer .video-header {
         background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+      }
+
+      /* Styling untuk dual video horizontal (2 video 16:9 bertumpuk) */
+      .video-dual-horizontal {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .video-horizontal-item {
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .video-horizontal-item video {
+        width: 100%;
+        aspect-ratio: 16/9;
+        display: block;
+        object-fit: contain;
+        background-color: #000;
       }
 
       .video-header {
@@ -2486,11 +2509,19 @@
         <button class="video-close" onclick="toggleVideoMaya()">×</button>
       </div>
       <div class="video-content">
-        <div class="video-player horizontal">
-          <video id="mayaVideo" controls playsinline>
-            <source src="69.mp4" type="video/mp4" />
-            Browser Anda tidak mendukung pemutar video.
-          </video>
+        <div class="video-dual-horizontal">
+          <div class="video-horizontal-item">
+            <video id="mayaVideo70" controls playsinline>
+              <source src="70.mp4" type="video/mp4" />
+              Browser Anda tidak mendukung pemutar video.
+            </video>
+          </div>
+          <div class="video-horizontal-item">
+            <video id="mayaVideo" controls playsinline>
+              <source src="69.mp4" type="video/mp4" />
+              Browser Anda tidak mendukung pemutar video.
+            </video>
+          </div>
         </div>
       </div>
       <div class="video-message">
@@ -2732,9 +2763,8 @@
       <div class="video-message">
         👑 "The more you do, the more you get, the more you lose."
         <br />
-        <em>Semakin banyak yang kamu lakukan, semakin banyak yang kamu dapatkan,</em>
-        <br>
-        <em>semakin banyak pula yang hilang/kamu korbankan</em>
+        <em>(Semakin banyak yang kamu lakukan, semakin banyak yang kamu dapatkan,</em>
+        <em> semakin banyak pula yang hilang/kamu korbankan)</em>
       </div>
     </div>
 
