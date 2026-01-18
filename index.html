@@ -766,9 +766,9 @@
         background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
       }
 
-      /* Video Container 3: Pejuang Suku Maya */
+      /* Video Container 3: Pejuang Suku Maya - Carousel */
       #videoMayaContainer {
-        width: 720px; /* Video horizontal 16:9 - diperbesar untuk 2 video */
+        width: 640px; /* Single video 16:9 */
         max-width: 95vw;
       }
 
@@ -776,26 +776,105 @@
         background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
       }
 
-      /* Styling untuk dual video horizontal (2 video 16:9 bertumpuk) */
-      .video-dual-horizontal {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding: 10px;
-      }
-
-      .video-horizontal-item {
+      /* Video Carousel Styling */
+      .video-carousel {
+        position: relative;
         width: 100%;
-        border-radius: 8px;
         overflow: hidden;
+        background-color: #000;
       }
 
-      .video-horizontal-item video {
-        width: 100%;
-        aspect-ratio: 16/9;
-        display: block;
-        object-fit: contain;
-        background-color: #000;
+      .video-carousel-track {
+        display: flex;
+        transition: transform 0.4s ease-in-out;
+      }
+
+      .video-carousel-slide {
+        min-width: 100% !important;
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16/9 !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        background: transparent !important;
+        overflow: hidden;
+        border-radius: 8px;
+        box-sizing: border-box;
+      }
+
+      .video-carousel-slide video {
+        width: 100% !important;
+        height: 100% !important;
+        aspect-ratio: 16/9 !important;
+        object-fit: cover !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+
+      /* Carousel Navigation Buttons */
+      .carousel-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 152, 0, 0.9);
+        border: none;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .carousel-nav:hover {
+        background: rgba(245, 124, 0, 1);
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .carousel-nav.prev {
+        left: 15px;
+      }
+
+      .carousel-nav.next {
+        right: 15px;
+      }
+
+      /* Carousel Indicators */
+      .carousel-indicators {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 0;
+        background-color: transparent;
+      }
+
+      .carousel-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .carousel-indicator.active {
+        background: #ff9800;
+        transform: scale(1.2);
+      }
+
+      .carousel-indicator:hover {
+        background: rgba(255, 255, 255, 0.7);
       }
 
       .video-header {
@@ -2502,32 +2581,41 @@
       </div>
     </div>
 
-    <!-- Container 5: Video Pejuang Suku Maya -->
+    <!-- Container 5: Video Pejuang Suku Maya - CAROUSEL -->
     <div class="video-container" id="videoMayaContainer">
       <div class="video-header">
         <h3 class="video-title">🔞WIBU Tolol otak di silit</h3>
         <button class="video-close" onclick="toggleVideoMaya()">×</button>
       </div>
       <div class="video-content">
-        <div class="video-dual-horizontal">
-          <div class="video-horizontal-item">
-            <video id="mayaVideo70" controls playsinline>
-              <source src="70.mp4" type="video/mp4" />
-              Browser Anda tidak mendukung pemutar video.
-            </video>
+        <div class="video-carousel" id="mayaCarousel">
+          <button class="carousel-nav prev" onclick="changeSlide(-1)">❮</button>
+          <div class="video-carousel-track" id="carouselTrack">
+            <div class="video-carousel-slide">
+              <video id="mayaVideo70" controls playsinline>
+                <source src="70.mp4" type="video/mp4" />
+                Browser Anda tidak mendukung pemutar video.
+              </video>
+            </div>
+            <div class="video-carousel-slide">
+              <video id="mayaVideo" controls playsinline>
+                <source src="69.mp4" type="video/mp4" />
+                Browser Anda tidak mendukung pemutar video.
+              </video>
+            </div>
           </div>
-          <div class="video-horizontal-item">
-            <video id="mayaVideo" controls playsinline>
-              <source src="69.mp4" type="video/mp4" />
-              Browser Anda tidak mendukung pemutar video.
-            </video>
-          </div>
+          <button class="carousel-nav next" onclick="changeSlide(1)">❯</button>
+        </div>
+        <div class="carousel-indicators">
+          <button class="carousel-indicator active" onclick="goToSlide(0)"></button>
+          <button class="carousel-indicator" onclick="goToSlide(1)"></button>
         </div>
       </div>
       <div class="video-message">
         ☢ <strong>DANGER</strong> bogem mentah tahanan amat menyakitkan !!
       </div>
     </div>
+
 
     <!-- Container 6: Video Triple (3 Video Vertikal Horizontal) -->
     <div class="video-container" id="videoTripleContainer">
@@ -3089,6 +3177,7 @@
         const videoMayaContainer =
           document.getElementById("videoMayaContainer");
         const mayaVideo = document.getElementById("mayaVideo");
+        const mayaVideo70 = document.getElementById("mayaVideo70");
 
         videoMayaContainer.classList.toggle("show");
         // Tutup container lain jika terbuka
@@ -3097,11 +3186,71 @@
         // Reset video ke awal saat dibuka
         if (videoMayaContainer.classList.contains("show")) {
           mayaVideo.currentTime = 0;
+          mayaVideo70.currentTime = 0;
+          // Reset carousel ke slide pertama
+          currentSlide = 0;
+          updateCarousel();
           pauseOtherVideos("mayaVideo");
         } else {
           mayaVideo.pause();
+          mayaVideo70.pause();
         }
       }
+
+      // ==================== CAROUSEL FUNCTIONS ====================
+      let currentSlide = 0;
+      const totalSlides = 2;
+
+      // Fungsi untuk berpindah slide
+      function changeSlide(direction) {
+        currentSlide += direction;
+        
+        // Loop ke awal/akhir jika melewati batas
+        if (currentSlide < 0) {
+          currentSlide = totalSlides - 1;
+        } else if (currentSlide >= totalSlides) {
+          currentSlide = 0;
+        }
+        
+        updateCarousel();
+        pauseAllCarouselVideos();
+      }
+
+      // Fungsi untuk langsung ke slide tertentu
+      function goToSlide(index) {
+        currentSlide = index;
+        updateCarousel();
+        pauseAllCarouselVideos();
+      }
+
+      // Update tampilan carousel
+      function updateCarousel() {
+        const track = document.getElementById("carouselTrack");
+        const indicators = document.querySelectorAll(".carousel-indicator");
+        
+        if (track) {
+          track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+        
+        // Update indicator aktif
+        indicators.forEach((indicator, index) => {
+          if (index === currentSlide) {
+            indicator.classList.add("active");
+          } else {
+            indicator.classList.remove("active");
+          }
+        });
+      }
+
+      // Pause semua video di carousel
+      function pauseAllCarouselVideos() {
+        const mayaVideo = document.getElementById("mayaVideo");
+        const mayaVideo70 = document.getElementById("mayaVideo70");
+        if (mayaVideo) mayaVideo.pause();
+        if (mayaVideo70) mayaVideo70.pause();
+      }
+      // ==================== END CAROUSEL FUNCTIONS ====================
+
 
       // Fungsi untuk toggle container Video Triple
       function toggleVideoTriple() {
@@ -3284,6 +3433,7 @@
           document.getElementById("bosanVideo3"),
           document.getElementById("muslimVideo"),
           document.getElementById("mayaVideo"),
+          document.getElementById("mayaVideo70"),
           document.getElementById("tripleVideo1"),
           document.getElementById("tripleVideo2"),
           document.getElementById("tripleVideo3"),
@@ -3315,6 +3465,7 @@
           bosanVideo3: document.getElementById("bosanVideo3"),
           muslimVideo: document.getElementById("muslimVideo"),
           mayaVideo: document.getElementById("mayaVideo"),
+          mayaVideo70: document.getElementById("mayaVideo70"),
           tripleVideo1: document.getElementById("tripleVideo1"),
           tripleVideo2: document.getElementById("tripleVideo2"),
           tripleVideo3: document.getElementById("tripleVideo3"),
