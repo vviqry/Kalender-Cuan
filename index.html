@@ -766,13 +766,115 @@
         background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
       }
 
-      /* Video Container 3: Pejuang Suku Maya */
+      /* Video Container 3: Pejuang Suku Maya - Carousel */
       #videoMayaContainer {
-        width: 640px; /* Video horizontal 16:9 (640 x 360) */
+        width: 640px; /* Single video 16:9 */
+        max-width: 95vw;
       }
 
       #videoMayaContainer .video-header {
         background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+      }
+
+      /* Video Carousel Styling */
+      .video-carousel {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        background-color: #000;
+      }
+
+      .video-carousel-track {
+        display: flex;
+        transition: transform 0.4s ease-in-out;
+      }
+
+      .video-carousel-slide {
+        min-width: 100% !important;
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16/9 !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        background: transparent !important;
+        overflow: hidden;
+        border-radius: 8px;
+        box-sizing: border-box;
+      }
+
+      .video-carousel-slide video {
+        width: 100% !important;
+        height: 100% !important;
+        aspect-ratio: 16/9 !important;
+        object-fit: cover !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+
+      /* Carousel Navigation Buttons */
+      .carousel-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 152, 0, 0.9);
+        border: none;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .carousel-nav:hover {
+        background: rgba(245, 124, 0, 1);
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .carousel-nav.prev {
+        left: 15px;
+      }
+
+      .carousel-nav.next {
+        right: 15px;
+      }
+
+      /* Carousel Indicators */
+      .carousel-indicators {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 0;
+        background-color: transparent;
+      }
+
+      .carousel-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .carousel-indicator.active {
+        background: #ff9800;
+        transform: scale(1.2);
+      }
+
+      .carousel-indicator:hover {
+        background: rgba(255, 255, 255, 0.7);
       }
 
       .video-header {
@@ -1610,6 +1712,11 @@
           height: 250px;
         }
       }
+
+      /* Custom popover centering */
+      .popover-body {
+        text-align: center !important;
+      }
     </style>
   </head>
 
@@ -1626,15 +1733,24 @@
           <div class="progress" id="progress"></div>
         </div>
         <div class="progress-text" id="progressText">
-          Tabungan: 0 ribu / 5,350 ribu
+          <span 
+            id="tabunganLabel" 
+            style="cursor: pointer; user-select: none;" 
+            data-bs-container="body" 
+            data-bs-toggle="popover" 
+            data-bs-html="true" 
+            data-bs-placement="bottom" 
+            data-bs-content="<div style='color: #212529; font-size: 14px;'>&quot;Tunda Kesenangan!!&quot;</div><div style='font-size: 10.5px; font-style: italic; opacity: 0.6; color: #6c757d; filter: blur(0.5px); margin-top: 4px;'>-Hermanto Tanoko-</div>"
+          >Tabungan:</span>
+          <span id="currentSavingsText">0 ribu</span> / <span id="targetSavingsText" style="cursor: pointer; user-select: none;" onclick="handleTargetClick()">18,3 Juta</span>
         </div>
       </div>
       <div class="nav-buttons">
-        <button onclick="showSlide(0)"><< 2025</button>
-        <button onclick="showSlide(1)">2026 >></button>
+        <button onclick="showSlide(0)"><< 2026</button>
+        <button onclick="showSlide(1)">2027 >></button>
       </div>
-      <div class="slide active" id="slide-2025"></div>
-      <div class="slide" id="slide-2026"></div>
+      <div class="slide active" id="slide-2026"></div>
+      <div class="slide" id="slide-2027"></div>
       <div
         class="modal fade"
         id="todoModal"
@@ -2414,19 +2530,19 @@
       </div>
       <div class="video-triple-grid">
         <div class="video-triple-item">
-          <video id="bosanVideo" controls playsinline>
+          <video id="bosanVideo" controls playsinline loop>
             <source src="1.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
         </div>
         <div class="video-triple-item">
-          <video id="bosanVideo2" controls playsinline>
+          <video id="bosanVideo2" controls playsinline loop>
             <source src="2.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
         </div>
         <div class="video-triple-item">
-          <video id="bosanVideo3" controls playsinline>
+          <video id="bosanVideo3" controls playsinline loop>
             <source src="3.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
@@ -2467,7 +2583,7 @@
       </div>
       <div class="video-content">
         <div class="video-player vertical">
-          <video id="muslimVideo" controls playsinline>
+          <video id="muslimVideo" controls playsinline loop>
             <source src="77.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
@@ -2479,24 +2595,41 @@
       </div>
     </div>
 
-    <!-- Container 5: Video Pejuang Suku Maya -->
+    <!-- Container 5: Video Pejuang Suku Maya - CAROUSEL -->
     <div class="video-container" id="videoMayaContainer">
       <div class="video-header">
         <h3 class="video-title">🔞WIBU Tolol otak di silit</h3>
         <button class="video-close" onclick="toggleVideoMaya()">×</button>
       </div>
       <div class="video-content">
-        <div class="video-player horizontal">
-          <video id="mayaVideo" controls playsinline>
-            <source src="69.mp4" type="video/mp4" />
-            Browser Anda tidak mendukung pemutar video.
-          </video>
+        <div class="video-carousel" id="mayaCarousel">
+          <button class="carousel-nav prev" onclick="changeSlide(-1)">❮</button>
+          <div class="video-carousel-track" id="carouselTrack">
+            <div class="video-carousel-slide">
+              <video id="mayaVideo70" controls playsinline loop>
+                <source src="70.mp4" type="video/mp4" />
+                Browser Anda tidak mendukung pemutar video.
+              </video>
+            </div>
+            <div class="video-carousel-slide">
+              <video id="mayaVideo" controls playsinline loop>
+                <source src="69.mp4" type="video/mp4" />
+                Browser Anda tidak mendukung pemutar video.
+              </video>
+            </div>
+          </div>
+          <button class="carousel-nav next" onclick="changeSlide(1)">❯</button>
+        </div>
+        <div class="carousel-indicators">
+          <button class="carousel-indicator active" onclick="goToSlide(0)"></button>
+          <button class="carousel-indicator" onclick="goToSlide(1)"></button>
         </div>
       </div>
       <div class="video-message">
         ☢ <strong>DANGER</strong> bogem mentah tahanan amat menyakitkan !!
       </div>
     </div>
+
 
     <!-- Container 6: Video Triple (3 Video Vertikal Horizontal) -->
     <div class="video-container" id="videoTripleContainer">
@@ -2506,19 +2639,19 @@
       </div>
       <div class="video-triple-grid">
         <div class="video-triple-item">
-          <video id="tripleVideo1" controls playsinline>
+          <video id="tripleVideo1" controls playsinline loop>
             <source src="x.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
         </div>
         <div class="video-triple-item">
-          <video id="tripleVideo2" controls playsinline>
+          <video id="tripleVideo2" controls playsinline loop>
             <source src="xxx.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
         </div>
         <div class="video-triple-item">
-          <video id="tripleVideo3" controls playsinline>
+          <video id="tripleVideo3" controls playsinline loop>
             <source src="xx.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
@@ -2539,7 +2672,7 @@
       <div class="video-dual-grid">
         <!-- Video 1: ax.mp4 -->
         <div class="video-dual-item">
-          <video id="axVideo" controls playsinline>
+          <video id="axVideo" controls playsinline loop>
             <source src="ax.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
@@ -2561,7 +2694,7 @@
         </div>
         <!-- Video 2: xv.mp4 -->
         <div class="video-dual-item">
-          <video id="xvVideo" controls playsinline>
+          <video id="xvVideo" controls playsinline loop>
             <source src="xv.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
@@ -2598,7 +2731,7 @@
       <div class="video-dual-grid">
         <!-- Video 1: daun.mp4 -->
         <div class="video-dual-item">
-          <video id="daunVideo1" controls playsinline>
+          <video id="daunVideo1" controls playsinline loop>
             <source src="otak.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
@@ -2620,7 +2753,7 @@
         </div>
         <!-- Video 2: daun1.mp4 -->
         <div class="video-dual-item">
-          <video id="daunVideo2" controls playsinline>
+          <video id="daunVideo2" controls playsinline loop>
             <source src="daun1.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
@@ -2642,7 +2775,7 @@
         </div>
         <!-- Video 3: daun2.mp4 -->
         <div class="video-dual-item">
-          <video id="daunVideo3" controls playsinline>
+          <video id="daunVideo3" controls playsinline loop>
             <source src="daun2.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
@@ -2678,21 +2811,21 @@
       <div class="video-triple-grid">
         <!-- Video 1: Bisnis.mp4 -->
         <div class="video-triple-item">
-          <video id="bisnisVideo1" controls playsinline>
+          <video id="bisnisVideo1" controls playsinline loop>
             <source src="Bisnis.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
         </div>
         <!-- Video 2: Bisnis1.mp4 -->
         <div class="video-triple-item">
-          <video id="bisnisVideo2" controls playsinline>
+          <video id="bisnisVideo2" controls playsinline loop>
             <source src="Bisnis1.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
         </div>
         <!-- Video 3: Bisnis2.mp4 - Personal Branding -->
         <div class="video-triple-item">
-          <video id="bisnisVideo3" controls playsinline>
+          <video id="bisnisVideo3" controls playsinline loop>
             <source src="Bisnis2.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
@@ -2716,15 +2849,22 @@
       <div class="video-triple-grid">
         <!-- Video 1: KING.mp4 -->
         <div class="video-triple-item">
-          <video id="kingVideo1" controls playsinline>
+          <video id="kingVideo1" controls playsinline loop>
             <source src="KING.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
         </div>
         <!-- Video 2: KING1.mp4 -->
         <div class="video-triple-item">
-          <video id="kingVideo2" controls playsinline>
+          <video id="kingVideo2" controls playsinline loop>
             <source src="KING1.mp4" type="video/mp4" />
+            Browser Anda tidak mendukung pemutar video.
+          </video>
+        </div>
+        <!-- Video 3: action.mp4 -->
+        <div class="video-triple-item">
+          <video id="kingVideo3" controls playsinline loop>
+            <source src="action.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
         </div>
@@ -2746,21 +2886,21 @@
       <div class="video-triple-grid">
         <!-- Video 1: batang.mp4 -->
         <div class="video-triple-item">
-          <video id="sakitVideo1" controls playsinline>
+          <video id="sakitVideo1" controls playsinline loop>
             <source src="batang.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
         </div>
         <!-- Video 2: daun.mp4 (Tengah) -->
         <div class="video-triple-item">
-          <video id="sakitVideo2" controls playsinline>
+          <video id="sakitVideo2" controls playsinline loop>
             <source src="daun.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
         </div>
         <!-- Video 3: cabang.mp4 -->
         <div class="video-triple-item">
-          <video id="sakitVideo3" controls playsinline>
+          <video id="sakitVideo3" controls playsinline loop>
             <source src="cabang.mp4" type="video/mp4" />
             Browser Anda tidak mendukung pemutar video.
           </video>
@@ -2824,11 +2964,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
-      // PERUBAHAN: Start dari 30 November 2025
+      // PERUBAHAN: Start dari 1 Juli 2026
       const dailySavings = 50; // ribu
-      const startDate = new Date("2025-11-30"); // Mulai 30 Nov 2025 (REVISI)
-      const endDate = new Date("2026-04-10"); // Sampai 10 Apr 2026
-      const specialDate = "2026-04-10";
+      const startDate = new Date("2026-07-01"); // Mulai 1 Jul 2026
+      const endDate = new Date("2027-07-02"); // Sampai 2 Jul 2027
+      const specialDate = "2027-07-02";
 
       // Hitung total hari dan target
       const timeDiff = endDate.getTime() - startDate.getTime();
@@ -3058,6 +3198,7 @@
         const videoMayaContainer =
           document.getElementById("videoMayaContainer");
         const mayaVideo = document.getElementById("mayaVideo");
+        const mayaVideo70 = document.getElementById("mayaVideo70");
 
         videoMayaContainer.classList.toggle("show");
         // Tutup container lain jika terbuka
@@ -3066,11 +3207,71 @@
         // Reset video ke awal saat dibuka
         if (videoMayaContainer.classList.contains("show")) {
           mayaVideo.currentTime = 0;
+          mayaVideo70.currentTime = 0;
+          // Reset carousel ke slide pertama
+          currentSlide = 0;
+          updateCarousel();
           pauseOtherVideos("mayaVideo");
         } else {
           mayaVideo.pause();
+          mayaVideo70.pause();
         }
       }
+
+      // ==================== CAROUSEL FUNCTIONS ====================
+      let currentSlide = 0;
+      const totalSlides = 2;
+
+      // Fungsi untuk berpindah slide
+      function changeSlide(direction) {
+        currentSlide += direction;
+        
+        // Loop ke awal/akhir jika melewati batas
+        if (currentSlide < 0) {
+          currentSlide = totalSlides - 1;
+        } else if (currentSlide >= totalSlides) {
+          currentSlide = 0;
+        }
+        
+        updateCarousel();
+        pauseAllCarouselVideos();
+      }
+
+      // Fungsi untuk langsung ke slide tertentu
+      function goToSlide(index) {
+        currentSlide = index;
+        updateCarousel();
+        pauseAllCarouselVideos();
+      }
+
+      // Update tampilan carousel
+      function updateCarousel() {
+        const track = document.getElementById("carouselTrack");
+        const indicators = document.querySelectorAll(".carousel-indicator");
+        
+        if (track) {
+          track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+        
+        // Update indicator aktif
+        indicators.forEach((indicator, index) => {
+          if (index === currentSlide) {
+            indicator.classList.add("active");
+          } else {
+            indicator.classList.remove("active");
+          }
+        });
+      }
+
+      // Pause semua video di carousel
+      function pauseAllCarouselVideos() {
+        const mayaVideo = document.getElementById("mayaVideo");
+        const mayaVideo70 = document.getElementById("mayaVideo70");
+        if (mayaVideo) mayaVideo.pause();
+        if (mayaVideo70) mayaVideo70.pause();
+      }
+      // ==================== END CAROUSEL FUNCTIONS ====================
+
 
       // Fungsi untuk toggle container Video Triple
       function toggleVideoTriple() {
@@ -3253,6 +3454,7 @@
           document.getElementById("bosanVideo3"),
           document.getElementById("muslimVideo"),
           document.getElementById("mayaVideo"),
+          document.getElementById("mayaVideo70"),
           document.getElementById("tripleVideo1"),
           document.getElementById("tripleVideo2"),
           document.getElementById("tripleVideo3"),
@@ -3284,6 +3486,7 @@
           bosanVideo3: document.getElementById("bosanVideo3"),
           muslimVideo: document.getElementById("muslimVideo"),
           mayaVideo: document.getElementById("mayaVideo"),
+          mayaVideo70: document.getElementById("mayaVideo70"),
           tripleVideo1: document.getElementById("tripleVideo1"),
           tripleVideo2: document.getElementById("tripleVideo2"),
           tripleVideo3: document.getElementById("tripleVideo3"),
@@ -3516,7 +3719,7 @@
               .toString()
               .padStart(2, "0")}`;
 
-            // Cek apakah tanggal dalam periode tabungan (30 Nov 2025 - 10 Apr 2026)
+            // Cek apakah tanggal dalam periode tabungan (1 Jul 2026 - 2 Jul 2027)
             if (date >= startDate && date <= endDate) {
               dayDiv.className = "day checkbox";
               const daySpan = document.createElement("span");
@@ -3669,6 +3872,29 @@
         updateProgress();
       }
 
+      let targetDisplayState = 0; // 0: normal, 1: ***, 2: BEBAS
+
+      function updateTargetDisplay() {
+        const targetElement = document.getElementById("targetSavingsText");
+        if (!targetElement) return;
+
+        const millions = totalSavings / 1000;
+        const normalText = (Math.floor(millions * 10) / 10).toString().replace('.', ',') + ' Juta';
+
+        if (targetDisplayState === 0) {
+          targetElement.textContent = normalText;
+        } else if (targetDisplayState === 1) {
+          targetElement.textContent = "***";
+        } else if (targetDisplayState === 2) {
+          targetElement.textContent = "BEBAS";
+        }
+      }
+
+      function handleTargetClick() {
+        targetDisplayState = (targetDisplayState + 1) % 3;
+        updateTargetDisplay();
+      }
+
       function updateProgress() {
         let checkedCount = 0;
 
@@ -3688,9 +3914,11 @@
         const percentage = target > 0 ? (savings / target) * 100 : 100;
 
         document.getElementById("progress").style.width = `${percentage}%`;
-        document.getElementById(
-          "progressText"
-        ).textContent = `Tabungan: ${savings} ribu / ${target.toLocaleString()} ribu`;
+        const currentElement = document.getElementById("currentSavingsText");
+        if (currentElement) {
+          currentElement.textContent = `${savings} ribu`;
+        }
+        updateTargetDisplay();
       }
 
       function showSlide(index) {
@@ -3813,11 +4041,17 @@
       }
 
       // Generate semua bulan
-      generateAllMonths(2025, "slide-2025");
       generateAllMonths(2026, "slide-2026");
+      generateAllMonths(2027, "slide-2027");
 
       updateProgress();
       renderTodos();
+
+      // Initialize Bootstrap Popovers
+      const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+      const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {
+        sanitize: false
+      }));
     </script>
   </body>
 </html>
